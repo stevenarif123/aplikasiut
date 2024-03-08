@@ -18,4 +18,8 @@ if ($return === 0) {
 } else {
     echo "Backup database gagal.";
 }
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> 739b8ff1d06a9f8214457848fd8f81daa20f119d
