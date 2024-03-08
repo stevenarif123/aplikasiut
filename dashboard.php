@@ -66,6 +66,7 @@ if (isset($_POST['search'])) {
     <input type="submit" name="search" value="Cari">
   </form>
 
+  <a href="backup_database.php">Backup Database</a>
   <br>
 
   <?php if (count($mahasiswa) > 0) { ?>
