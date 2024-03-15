@@ -1,4 +1,5 @@
 <?php
+
 // Start the session
 session_start();
 
@@ -25,14 +26,50 @@ if ($conn->connect_error) {
 // Get the list of majors from the database
 $majors_query = "SELECT DISTINCT Jurusan FROM mahasiswa";
 $majors_result = $conn->query($majors_query);
-$majors = array();
+$majors = array(
+    "Pembangunan",
+    "Ekonomi Syariah",
+    "Akuntansi",
+    "Akuntansi Keuangan Publik",
+    "Pariwisata",
+    "Pendidikan Bahasa Dan Sastra Indonesia",
+    "Pendidikan Bahasa Inggris",
+    "Pendidikan Biologi",
+    "Pendidikan Fisika",
+    "Pendidikan Kimia",
+    "Pendidikan Matematika",
+    "Pendidikan Ekonomi",
+    "Pendidikan Pancasila Dan Kewarganegaraan",
+    "Teknologi Pendidikan",
+    "PGSD",
+    "PGPAUD",
+    "PPG",
+    "Statistika",
+    "Matematika",
+    "Biologi",
+    "Teknologi Pangan",
+    "Agribisnis",
+    "Perencanaan Wilayah Dan Kota",
+    "Sistem Informasi",
+    "Kearsipan (D4)",
+    "Perpajakan (D3)",
+    "Perpustakaan",
+    "Administrasi Publik",
+    "Administrasi Bisnis",
+    "Hukum",
+    "Ilmu Pemerintahan",
+    "Ilmu Komunikasi",
+    "Ilmu Perpustakaan",
+    "Sosiologi",
+    "Sastra Inggris"
+);
 if ($majors_result->num_rows > 0) {
     while ($row = $majors_result->fetch_assoc()) {
         $majors[] = $row['Jurusan'];
     }
 }
 
-// Cek apakah formulir disubmit
+// Check if the form is submitted
 if (isset($_POST['submit'])) {
     // Sanitize and validate input data
     $nim = $conn->real_escape_string(trim($_POST['Nim']));
@@ -45,6 +82,7 @@ if (isset($_POST['submit'])) {
     $jurusan = $conn->real_escape_string(trim($_POST['Jurusan']));
     $nomor_hp = $conn->real_escape_string(trim($_POST['NomorHP']));
     $email = $conn->real_escape_string(trim($_POST['Email']));
+    $password = $conn->real_escape_string(trim($_POST['Password'])); // Assuming password field is added
     $agama = $conn->real_escape_string(trim($_POST['Agama']));
     $jenis_kelamin = $conn->real_escape_string(trim($_POST['JenisKelamin']));
     $status_perkawinan = $conn->real_escape_string(trim($_POST['StatusPerkawinan']));
@@ -55,8 +93,8 @@ if (isset($_POST['submit'])) {
     $layanan_paket_semester = $conn->real_escape_string(trim($_POST['LayananPaketSemester']));
 
     // Prepare the SQL statement
-    $stmt = $conn->prepare("INSERT INTO mahasiswa (Nim, JalurProgram, NamaLengkap, TempatLahir, TanggalLahir, NamaIbuKandung, NIK, Jurusan, NomorHP, Email, Agama, JenisKelamin, StatusPerkawinan, NomorHPAlternatif, NomorIjazah, TahunIjazah, NISN, LayananPaketSemester) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssssssssssss", $nim, $jalur_program, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $email, $agama, $jenis_kelamin, $status_perkawinan, $nomor_hp_alternatif, $nomor_ijazah, $tahun_ijazah, $nisn, $layanan_paket_semester);
+    $stmt = $conn->prepare("INSERT INTO mahasiswa (Nim, JalurProgram, NamaLengkap, TempatLahir, TanggalLahir, NamaIbuKandung, NIK, Jurusan, NomorHP, Email, Password, Agama, JenisKelamin, StatusPerkawinan, NomorHPAlternatif, NomorIjazah, TahunIjazah, NISN, LayananPaketSemester) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssssssssssssss", $nim, $jalur_program, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $email, password_hash($password, PASSWORD_DEFAULT), $agama, $jenis_kelamin, $status_perkawinan, $nomor_hp_alternatif, $nomor_ijazah, $tahun_ijazah, $nisn, $layanan_paket_semester);
 
     // Execute the prepared statement
     if ($stmt->execute()) {
@@ -75,6 +113,7 @@ if (isset($_POST['submit'])) {
 // Close the database connection
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,43 +125,34 @@ $conn->close();
 </head>
 <body>
     <h1>Tambah Data Mahasiswa</h1>
-
     <?php if (isset($error_message)) : ?>
         <p><?php echo $error_message; ?></p>
     <?php endif; ?>
-
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <label for="nim">NIM:</label>
         <input type="text" name="Nim" id="nim" required>
         <br>
-
         <label for="jalur_program">Jalur Program:</label>
         <select name="JalurProgram" id="jalur_program" required>
             <option value="RPL">RPL</option>
             <option value="Reguler">Reguler</option>
         </select>
         <br>
-
         <label for="nama_lengkap">Nama Lengkap:</label>
         <input type="text" name="NamaLengkap" id="nama_lengkap" required>
         <br>
-
         <label for="tempat_lahir">Tempat Lahir:</label>
         <input type="text" name="TempatLahir" id="tempat_lahir" required>
         <br>
-
         <label for="tanggal_lahir">Tanggal Lahir:</label>
         <input type="date" name="TanggalLahir" id="tanggal_lahir" required>
         <br>
-
         <label for="nama_ibu_kandung">Nama Ibu Kandung:</label>
         <input type="text" name="NamaIbuKandung" id="nama_ibu_kandung" required>
         <br>
-
         <label for="nik">NIK:</label>
         <input type="text" name="NIK" id="nik" required>
         <br>
-
         <label for="jurusan">Jurusan:</label>
         <select name="Jurusan" id="jurusan" required>
             <?php foreach ($majors as $major) : ?>
@@ -130,15 +160,15 @@ $conn->close();
             <?php endforeach; ?>
         </select>
         <br>
-
         <label for="nomor_hp">Nomor HP:</label>
         <input type="text" name="NomorHP" id="nomor_hp" required>
         <br>
-
         <label for="email">Email:</label>
         <input type="email" name="Email" id="email" required>
         <br>
-
+        <label for="password">Password:</label>
+        <input type="password" name="Password" id="password" required>
+        <br>
         <label for="agama">Agama:</label>
         <select name="Agama" id="agama" required>
             <!-- Add options for religions here -->
@@ -150,14 +180,12 @@ $conn->close();
             <option value="Konghucu">Konghucu</option>
         </select>
         <br>
-
         <label for="jenis_kelamin">Jenis Kelamin:</label>
         <select name="JenisKelamin" id="jenis_kelamin" required>
             <option value="Laki-laki">Laki-laki</option>
             <option value="Perempuan">Perempuan</option>
         </select>
         <br>
-
         <label for="status_perkawinan">Status Perkawinan:</label>
         <select name="StatusPerkawinan" id="status_perkawinan" required>
             <option value="Belum Menikah">Belum Menikah</option>
@@ -166,33 +194,25 @@ $conn->close();
             <option value="Cerai Mati">Cerai Mati</option>
         </select>
         <br>
-
         <label for="nomor_hp_alternatif">Nomor HP Alternatif:</label>
         <input type="text" name="NomorHPAlternatif" id="nomor_hp_alternatif">
         <br>
-
         <label for="nomor_ijazah">Nomor Ijazah:</label>
         <input type="text" name="NomorIjazah" id="nomor_ijazah" required>
         <br>
-
         <label for="tahun_ijazah">Tahun Ijazah:</label>
         <input type="text" name="TahunIjazah" id="tahun_ijazah" required>
         <br>
-
         <label for="nisn">NISN:</label>
         <input type="text" name="NISN" id="nisn" required>
         <br>
-
         <label for="layanan_paket_semester">Layanan Paket Semester:</label>
         <select name="LayananPaketSemester" id="layanan_paket_semester" required>
             <!-- Add options for semester package services here -->
-            <option value="Paket 1 Semester">Paket 1 Semester</option>
-            <option value="Paket 2 Semester">Paket 2 Semester</option>
-            <option value="Paket 3 Semester">Paket 3 Semester</option>
-            <option value="Paket 4 Semester">Paket 4 Semester</option>
+            <option value="Paket 1 Semester">SIPAS</option>
+            <option value="Paket 2 Semester">NON SIPAS</option>
         </select>
         <br>
-
         <input type="submit" name="submit" value="Simpan">
     </form>
 </body>

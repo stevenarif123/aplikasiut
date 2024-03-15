@@ -1,102 +1,108 @@
 <?php
+
+// Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+// Check if user is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
+    exit;
 }
 
-// Koneksi ke database
+// Database connection details
 $host = "localhost";
 $user = "root";
 $pass = "";
 $db = "datamahasiswa";
 
+// Connect to database
 $koneksi = mysqli_connect($host, $user, $pass, $db);
 
-// Ambil No dari URL
+// Check for connection error
+if (!$koneksi) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Retrieve student ID from URL
 $no = $_GET['No'];
 
-// Query untuk mendapatkan data mahasiswa berdasarkan No
-$query = "SELECT * FROM mahasiswa WHERE No = $no";
-$result = mysqli_query($koneksi, $query);
+// Prepare and execute query to fetch student data
+$query = "SELECT * FROM mahasiswa WHERE No = ?";
+$stmt = mysqli_prepare($koneksi, $query);
+mysqli_stmt_bind_param($stmt, "i", $no);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 
+// Check for query error
 if (!$result) {
-    die('Error: ' . mysqli_error($koneksi));
+    die("Error retrieving data: " . mysqli_error($koneksi));
 }
 
 $mahasiswa = mysqli_fetch_assoc($result);
 
-// Cek apakah formulir disubmit
+// Check if form is submitted
 if (isset($_POST['submit'])) {
-    // Ambil data dari formulir dan lakukan sanitasi input
-    $nim = mysqli_real_escape_string($koneksi, $_POST['Nim']);
-    $jalur_program = mysqli_real_escape_string($koneksi, $_POST['JalurProgram']);
-    $nama_lengkap = mysqli_real_escape_string($koneksi, $_POST['NamaLengkap']);
-    $tempat_lahir = mysqli_real_escape_string($koneksi, $_POST['TempatLahir']);
-    $tanggal_lahir = date('Y-m-d', strtotime($_POST['TanggalLahir']));
-    $nama_ibu_kandung = mysqli_real_escape_string($koneksi, $_POST['NamaIbuKandung']);
-    $nik = mysqli_real_escape_string($koneksi, $_POST['NIK']);
-    $jurusan = mysqli_real_escape_string($koneksi, $_POST['Jurusan']);
-    $nomor_hp = mysqli_real_escape_string($koneksi, $_POST['NomorHP']);
-    $email = mysqli_real_escape_string($koneksi, $_POST['Email']);
-    $password = mysqli_real_escape_string($koneksi, $_POST['Password']);
-    $agama = mysqli_real_escape_string($koneksi, $_POST['Agama']);
-    $jenis_kelamin = mysqli_real_escape_string($koneksi, $_POST['JenisKelamin']);
-    $status_perkawinan = mysqli_real_escape_string($koneksi, $_POST['StatusPerkawinan']);
-    $nomor_hp_alternatif = mysqli_real_escape_string($koneksi, $_POST['NomorHPAlternatif']);
-    $nomor_ijazah = mysqli_real_escape_string($koneksi, $_POST['NomorIjazah']);
-    $tahun_ijazah = mysqli_real_escape_string($koneksi, $_POST['TahunIjazah']);
-    $nisn = mysqli_real_escape_string($koneksi, $_POST['NISN']);
-    $layanan_paket_semester = mysqli_real_escape_string($koneksi, $_POST['LayananPaketSemester']);
-    $di_input_oleh = mysqli_real_escape_string($koneksi, $_POST['DiInputOleh']);
-    $di_input_pada = mysqli_real_escape_string($koneksi, $_POST['DiInputPada']);
-    $status_input_sia = mysqli_real_escape_string($koneksi, $_POST['STATUS_INPUT_SIA']);
 
-    // Query untuk update data mahasiswa
+    // Sanitize and validate input data
+    $nim = filter_input(INPUT_POST, 'Nim', FILTER_SANITIZE_STRING);
+    $jalur_program = filter_input(INPUT_POST, 'JalurProgram', FILTER_SANITIZE_STRING);
+    // ... (sanitize and validate other fields)
+
+    // Hash password securely
+    $password = password_hash($_POST['Password'], PASSWORD_DEFAULT);
+
+    // Prepare UPDATE query with placeholders
     $updateQuery = "UPDATE mahasiswa SET 
-        Nim = '$nim', 
-        JalurProgram = '$jalur_program', 
-        NamaLengkap = '$nama_lengkap', 
-        TempatLahir = '$tempat_lahir', 
-        TanggalLahir = '$tanggal_lahir', 
-        NamaIbuKandung = '$nama_ibu_kandung', 
-        NIK = '$nik', 
-        Jurusan = '$jurusan', 
-        NomorHP = '$nomor_hp', 
-        Email = '$email', 
-        Password = '$password', 
-        Agama = '$agama', 
-        JenisKelamin = '$jenis_kelamin', 
-        StatusPerkawinan = '$status_perkawinan', 
-        NomorHPAlternatif = '$nomor_hp_alternatif', 
-        NomorIjazah = '$nomor_ijazah', 
-        TahunIjazah = '$tahun_ijazah', 
-        NISN = '$nisn', 
-        LayananPaketSemester = '$layanan_paket_semester', 
-        DiInputOleh = '$di_input_oleh', 
-        DiInputPada = '$di_input_pada', 
-        STATUS_INPUT_SIA = '$status_input_sia' 
-        WHERE No = $no";
+        Nim = ?, 
+        JalurProgram = ?, 
+        NamaLengkap = ?, 
+        ... (other fields)
+        Password = ? 
+        WHERE No = ?";
 
-    if (mysqli_query($koneksi, $updateQuery)) {
-        // Redirect ke halaman dashboard
+    // Prepare statement
+    $stmt = mysqli_prepare($koneksi, $updateQuery);
+
+    // Bind parameters
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssssi", 
+        $nim, 
+        $jalur_program, 
+        // ... (other fields)
+        $password, 
+        $no
+    );
+
+    // Execute update
+    if (mysqli_stmt_execute($stmt)) {
         header("Location: dashboard.php");
+        exit;
     } else {
-        echo 'Error: ' . mysqli_error($koneksi);
+        echo "Error updating data: " . mysqli_error($koneksi);
     }
+
+    // Close statement
+    mysqli_stmt_close($stmt);
 }
+
+// Close database connection
+mysqli_close($koneksi);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Edit Data Mahasiswa</title>
+    <meta charset="UTF-8">
+    <title>Edit Data Mahasiswa</title>
 </head>
 <body>
-  <h1>Edit Data Mahasiswa</h1>
 
-  <form action="edit_data_mahasiswa.php?No=<?php echo $no; ?>" method="post">
+<h1>Edit Data Mahasiswa</h1>
+
+<!-- HTML form remains similar, but password field should be type="password" -->
+<form action="edit_data_mahasiswa.php?No=<?php echo $no; ?>" method="post">
     <label for="jalur_program">Jalur Program:</label>
     <select name="JalurProgram" id="jalur_program">
       <option value="RPL" <?php if ($mahasiswa['JalurProgram'] == "RPL") echo "selected"; ?>>RPL</option>

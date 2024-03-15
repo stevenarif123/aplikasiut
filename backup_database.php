@@ -3,7 +3,7 @@
 $host = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'mahasiswa';
+$database = 'datamahasiswa';
 
 // Nama file backup
 $backupFile = 'backup_' . date("Ymd_His") . '.sql';
