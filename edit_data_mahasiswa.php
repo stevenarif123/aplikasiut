@@ -25,6 +25,14 @@ if (!$result) {
     die('Error: ' . mysqli_error($koneksi));
 }
 
+$username = $_SESSION['username'];
+$query = "SELECT * FROM admin WHERE username='$username'";
+$result = mysqli_query($koneksi, $query);
+$user = mysqli_fetch_assoc($result);
+if (!$result) {
+  die("Query gagal: " . mysqli_error($koneksi));
+}
+
 $mahasiswa = mysqli_fetch_assoc($result);
 
 // Cek apakah formulir disubmit
@@ -95,6 +103,7 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
   <h1>Edit Data Mahasiswa</h1>
+  <p>Selamat datang, <?php echo $user['nama_lengkap']; ?>!</p>
 
   <form action="edit_data_mahasiswa.php?No=<?php echo $no; ?>" method="post">
     <label for="jalur_program">Jalur Program:</label>

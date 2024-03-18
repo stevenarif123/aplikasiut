@@ -22,14 +22,49 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Get the list of majors from the database
-$majors_query = "SELECT DISTINCT Jurusan FROM mahasiswa";
-$majors_result = $conn->query($majors_query);
-$majors = array();
-if ($majors_result->num_rows > 0) {
-    while ($row = $majors_result->fetch_assoc()) {
-        $majors[] = $row['Jurusan'];
-    }
+$majors = array("Pembangunan",
+    "Ekonomi Syariah",
+    "Akuntansi",
+    "Akuntansi Keuangan Publik",
+    "Pariwisata",
+    "Pendidikan Bahasa Dan Sastra Indonesia",
+    "Pendidikan Bahasa Inggris",
+    "Pendidikan Biologi",
+    "Pendidikan Fisika",
+    "Pendidikan Kimia",
+    "Pendidikan Matematika",
+    "Pendidikan Ekonomi",
+    "Pendidikan Pancasila Dan Kewarganegaraan",
+    "Teknologi Pendidikan",
+    "PGSD",
+    "PGPAUD",
+    "PPG",
+    "Statistika",
+    "Matematika",
+    "Biologi",
+    "Teknologi Pangan",
+    "Agribisnis",
+    "Perencanaan Wilayah Dan Kota",
+    "Sistem Informasi",
+    "Kearsipan (D4)",
+    "Perpajakan (D3)",
+    "Perpustakaan",
+    "Administrasi Publik",
+    "Administrasi Bisnis",
+    "Hukum",
+    "Ilmu Pemerintahan",
+    "Ilmu Komunikasi",
+    "Ilmu Perpustakaan",
+    "Sosiologi",
+    "Sastra Inggris"
+    );
+
+$username = $_SESSION['username'];
+$query = "SELECT * FROM admin WHERE username='$username'";
+$result = mysqli_query($conn, $query);
+$user = mysqli_fetch_assoc($result);
+if (!$result) {
+  die("Query gagal: " . mysqli_error($conn));
 }
 
 // Cek apakah formulir disubmit
@@ -45,6 +80,7 @@ if (isset($_POST['submit'])) {
     $jurusan = $conn->real_escape_string(trim($_POST['Jurusan']));
     $nomor_hp = $conn->real_escape_string(trim($_POST['NomorHP']));
     $email = $conn->real_escape_string(trim($_POST['Email']));
+    $password = $conn->real_escape_string(trim($_POST['Password']));
     $agama = $conn->real_escape_string(trim($_POST['Agama']));
     $jenis_kelamin = $conn->real_escape_string(trim($_POST['JenisKelamin']));
     $status_perkawinan = $conn->real_escape_string(trim($_POST['StatusPerkawinan']));
@@ -53,20 +89,30 @@ if (isset($_POST['submit'])) {
     $tahun_ijazah = $conn->real_escape_string(trim($_POST['TahunIjazah']));
     $nisn = $conn->real_escape_string(trim($_POST['NISN']));
     $layanan_paket_semester = $conn->real_escape_string(trim($_POST['LayananPaketSemester']));
+    $di_input_oleh = $conn->real_escape_string(trim($user['nama_lengkap']));
+    $status_input_sia = $conn->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
 
     // Prepare the SQL statement
-    $stmt = $conn->prepare("INSERT INTO mahasiswa (Nim, JalurProgram, NamaLengkap, TempatLahir, TanggalLahir, NamaIbuKandung, NIK, Jurusan, NomorHP, Email, Agama, JenisKelamin, StatusPerkawinan, NomorHPAlternatif, NomorIjazah, TahunIjazah, NISN, LayananPaketSemester) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssssssssssss", $nim, $jalur_program, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $email, $agama, $jenis_kelamin, $status_perkawinan, $nomor_hp_alternatif, $nomor_ijazah, $tahun_ijazah, $nisn, $layanan_paket_semester);
+// Prepare the SQL statement
+    $stmt = $conn->prepare("INSERT INTO mahasiswa (No, Nim, JalurProgram, NamaLengkap, TempatLahir, TanggalLahir, NamaIbuKandung, NIK, Jurusan, NomorHP, Email, Password, Agama, JenisKelamin, StatusPerkawinan, NomorHPAlternatif, NomorIjazah, TahunIjazah, NISN, LayananPaketSemester, DiInputOleh, STATUS_INPUT_SIA) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    // Check for errors in preparing the statement
+        if (!$stmt) {
+            die("Prepare failed: " . $conn->error);
+        }
 
-    // Execute the prepared statement
-    if ($stmt->execute()) {
-        // Redirect to the dashboard page after successful insertion
-        header("Location: dashboard.php");
-        exit;
-    } else {
-        // Display an error message
-        $error_message = "Error: " . $stmt->error;
-    }
+    // Bind parameters to the prepared statement
+    $stmt->bind_param("sssssssssssssssssssss", $nim, $jalur_program, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $email, $password, $agama, $jenis_kelamin, $status_perkawinan, $nomor_hp_alternatif, $nomor_ijazah, $tahun_ijazah, $nisn, $layanan_paket_semester, $di_input_oleh, $status_input_sia);
+
+        // Execute the prepared statement
+        if ($stmt->execute()) {
+            // Redirect to the dashboard page after successful insertion
+            header("Location: dashboard.php");
+            exit;
+        } else {
+            // Display an error message
+            $error_message = "Error: " . $stmt->error;
+        }
+
 
     // Close the prepared statement
     $stmt->close();
@@ -79,6 +125,7 @@ $conn->close();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <p>Selamat datang, <?php echo $user['nama_lengkap']; ?>!</p>
     <title>Tambah Data Mahasiswa</title>
     <style>
         /* Add your CSS styles here */
@@ -138,6 +185,10 @@ $conn->close();
         <label for="email">Email:</label>
         <input type="email" name="Email" id="email" required>
         <br>
+        
+        <label for="password">Password</label>
+        <input type="text" name="Password" id="password" required>
+        <br>
 
         <label for="agama">Agama:</label>
         <select name="Agama" id="agama" required>
@@ -172,24 +223,33 @@ $conn->close();
         <br>
 
         <label for="nomor_ijazah">Nomor Ijazah:</label>
-        <input type="text" name="NomorIjazah" id="nomor_ijazah" required>
+        <input type="text" name="NomorIjazah" id="nomor_ijazah">
         <br>
 
         <label for="tahun_ijazah">Tahun Ijazah:</label>
-        <input type="text" name="TahunIjazah" id="tahun_ijazah" required>
+        <input type="text" name="TahunIjazah" id="tahun_ijazah">
         <br>
 
         <label for="nisn">NISN:</label>
-        <input type="text" name="NISN" id="nisn" required>
+        <input type="text" name="NISN" id="nisn">
         <br>
 
         <label for="layanan_paket_semester">Layanan Paket Semester:</label>
         <select name="LayananPaketSemester" id="layanan_paket_semester" required>
             <!-- Add options for semester package services here -->
-            <option value="Paket 1 Semester">Paket 1 Semester</option>
-            <option value="Paket 2 Semester">Paket 2 Semester</option>
-            <option value="Paket 3 Semester">Paket 3 Semester</option>
-            <option value="Paket 4 Semester">Paket 4 Semester</option>
+            <option value="SIPAS">SIPAS</option>
+            <option value="NON SIPAS">NON SIPAS</option>
+        </select>
+        <br>
+
+        <label for="STATUS_INPUT_SIA">STATUS INPUT SIA:</label>
+        <select name="STATUS_INPUT_SIA" id="STATUS_INPUT_SIA" required>
+            <!-- Add options for semester package services here -->
+            <option value="Belum Terdaftar">Input</option>
+            <option value="Input admisi">Input admisi</option>
+            <option value="Pengajuan Admisi">Pengajuan Admisi</option>
+            <option value="Berkas Kurang">Berkas Kurang</option>
+            <option value="Admisi Diterima">Admisi Diterima</option>
         </select>
         <br>
 
