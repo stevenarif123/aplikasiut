@@ -104,7 +104,7 @@ if (isset($_POST['search'])) {
           <td><?php echo $mhs['STATUS_INPUT_SIA']; ?></td>
           <td>
             <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>">Lihat Data</a> |
-            <a href="edit_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>">Edit Data</a> |
+            <a href="edit_data.php?No=<?php echo $mhs['No']; ?>">Edit Data</a> |
             <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus Data</a>
           </td>
         </tr>

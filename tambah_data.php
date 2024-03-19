@@ -176,7 +176,9 @@ $conn->close();
         <label for="email">Email:</label>
         <input type="email" name="Email" id="email" required>
         <br>
-
+        <label for="password">Password Mahasiswa:</label>
+        <input type="text" name="Password" id="password" required>
+        <br>
         <label for="agama">Agama:</label>
         <select name="Agama" id="agama" required>
             <!-- Add options for religions here -->
@@ -216,11 +218,18 @@ $conn->close();
         <br>
         <label for="layanan_paket_semester">Layanan Paket Semester:</label>
         <select name="LayananPaketSemester" id="layanan_paket_semester" required>
+            <option value="SIPAS">SIPAS</option>
+            <option value="NON SIPAS">NON SIPAS</option>
+        </select>
+        <br>
+        <label for="status_input_sia">Status Input Sia:</label>
+        <select name="STATUS_INPUT_SIA" id="status_input_sia" required>
             <!-- Add options for semester package services here -->
-            <option value="Paket 1 Semester">Paket 1 Semester</option>
-            <option value="Paket 2 Semester">Paket 2 Semester</option>
-            <option value="Paket 3 Semester">Paket 3 Semester</option>
-            <option value="Paket 4 Semester">Paket 4 Semester</option>
+            <option value="Belum Terdaftar">Belum Terdaftar</option>
+            <option value="Input admisi">Input admisi</option>
+            <option value="Pengajuan Admisi">Pengajuan Admisi</option>
+            <option value="Berkas Kurang">Berkas Kurang</option>
+            <option value="Admisi Diterima">Admisi Diterima</option>
         </select>
         <br>
         <input type="submit" name="submit" value="Simpan">

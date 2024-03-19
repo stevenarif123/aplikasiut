@@ -48,14 +48,6 @@ if (!$result) {
   die("Query gagal: " . mysqli_error($koneksi));
 }
 
-$username = $_SESSION['username'];
-$query = "SELECT * FROM admin WHERE username='$username'";
-$result = mysqli_query($koneksi, $query);
-$user = mysqli_fetch_assoc($result);
-if (!$result) {
-  die("Query gagal: " . mysqli_error($koneksi));
-}
-
 $mahasiswa = mysqli_fetch_assoc($result);
 
 // Check if form is submitted
@@ -74,7 +66,6 @@ if (isset($_POST['submit'])) {
         Nim = ?, 
         JalurProgram = ?, 
         NamaLengkap = ?, 
-        ... (other fields)
         Password = ? 
         WHERE No = ?";
 
@@ -104,6 +95,39 @@ if (isset($_POST['submit'])) {
 
 // Close database connection
 mysqli_close($koneksi);
+
+$jurusan = [
+  "Pembangunan" => "Pembangunan",
+  "Ekonomi Syariah" => "Ekonomi Syariah",
+  "Akuntansi" => "Akuntansi",
+  "Akuntansi Keuangan Publik" => "Akuntansi Keuangan Publik",
+  "Pariwisata" => "Pariwisata",
+  "Pendidikan Bahasa Dan Sastra Indonesia" => "Pendidikan Bahasa Dan Sastra Indonesia",
+  "Pendidikan Bahasa Inggris" => "Pendidikan Bahasa Inggris",
+  "Pendidikan Biologi" => "Pendidikan Biologi",
+  "Pendidikan Fisika" => "Pendidikan Fisika",
+  "Pendidikan Kimia" => "Pendidikan Kimia",
+  "Pendidikan Matematika" => "Pendidikan Matematika",
+  "Pendidikan Ekonomi" => "Pendidikan Ekonomi",
+  "Pendidikan Pancasila Dan Kewarganegaraan" => "Pendidikan Pancasila Dan Kewarganegaraan",
+  "Teknologi Pendidikan" => "Teknologi Pendidikan",
+  "PGSD" => "PGSD",
+  "PGPAUD" => "PGPAUD",
+  "PPG" => "PPG",
+  "Statistika" => "Statistika",
+  "Matematika" => "Matematika",
+  "Biologi" => "Biologi",
+  "Teknologi Pangan" => "Teknologi Pangan",
+  "Agribisnis" => "Agribisnis",
+  "Perencanaan Wilayah Dan Kota" => "Perencanaan Wilayah Dan Kota",
+  "Sistem Informasi" => "Sistem Informasi",
+  "Kearsipan (D4)" => "Kearsipan (D4)",
+  "Perpajakan (D3)" => "Perpajakan (D3)",
+  "Perpustakaan" => "Perpustakaan",
+  "Administrasi Publik" => "Administrasi Publik"
+];
+
+$selectedJurusan = $mahasiswa['Jurusan'];
 
 ?>
 
@@ -147,44 +171,12 @@ mysqli_close($koneksi);
 
     <label for="jurusan">Jurusan:</label>
     <select name="Jurusan" id="jurusan">
-        <option value="Pembangunan" <?php if ($mahasiswa['Jurusan'] == "Pembangunan") echo "selected"; ?>>Pembangunan</option>
-        <option value="Ekonomi Syariah" <?php if ($mahasiswa['Jurusan'] == "Ekonomi Syariah") echo "selected"; ?>>Ekonomi Syariah</option>
-        <option value="Akuntansi" <?php if ($mahasiswa['Jurusan'] == "Akuntansi") echo "selected"; ?>>Akuntansi</option>
-        <option value="Akuntansi Keuangan Publik" <?php if ($mahasiswa['Jurusan'] == "Akuntansi Keuangan Publik") echo "selected"; ?>>Akuntansi Keuangan Publik</option>
-        <option value="Pariwisata" <?php if ($mahasiswa['Jurusan'] == "Pariwisata") echo "selected"; ?>>Pariwisata</option>
-        <option value="Pendidikan Bahasa Dan Sastra Indonesia" <?php if ($mahasiswa['Jurusan'] == "Pendidikan Bahasa Dan Sastra Indonesia") echo "selected"; ?>>Pendidikan Bahasa Dan Sastra Indonesia</option>
-        <option value="Pendidikan Bahasa Inggris" <?php if ($mahasiswa['Jurusan'] == "Pendidikan Bahasa Inggris") echo "selected"; ?>>Pendidikan Bahasa Inggris</option>
-        <option value="Pendidikan Biologi" <?php if ($mahasiswa['Jurusan'] == "Pendidikan Biologi") echo "selected"; ?>>Pendidikan Biologi</option>
-        <option value="Pendidikan Fisika" <?php if ($mahasiswa['Jurusan'] == "Pendidikan Fisika") echo "selected"; ?>>Pendidikan Fisika</option>
-        <option value="Pendidikan Kimia" <?php if ($mahasiswa['Jurusan'] == "Pendidikan Kimia") echo "selected"; ?>>Pendidikan Kimia</option>
-        <option value="Pendidikan Matematika" <?php if ($mahasiswa['Jurusan'] == "Pendidikan Matematika") echo "selected"; ?>>Pendidikan Matematika</option>
-        <option value="Pendidikan Ekonomi" <?php if ($mahasiswa['Jurusan'] == "Pendidikan Ekonomi") echo "selected"; ?>>Pendidikan Ekonomi</option>
-        <option value="Pendidikan Pancasila Dan Kewarganegaraan" <?php if ($mahasiswa['Jurusan'] == "Pendidikan Pancasila Dan Kewarganegaraan") echo "selected"; ?>>Pendidikan Pancasila Dan Kewarganegaraan</option>
-        <option value="Teknologi Pendidikan" <?php if ($mahasiswa['Jurusan'] == "Teknologi Pendidikan") echo "selected"; ?>>Teknologi Pendidikan</option>
-        <option value="PGSD" <?php if ($mahasiswa['Jurusan'] == "PGSD") echo "selected"; ?>>PGSD</option>
-        <option value="PGPAUD" <?php if ($mahasiswa['Jurusan'] == "PGPAUD") echo "selected"; ?>>PGPAUD</option>
-        <option value="PPG" <?php if ($mahasiswa['Jurusan'] == "PPG") echo "selected"; ?>>PPG</option>
-        <option value="Statistika" <?php if ($mahasiswa['Jurusan'] == "Statistika") echo "selected"; ?>>Statistika</option>
-        <option value="Matematika" <?php if ($mahasiswa['Jurusan'] == "Matematika") echo "selected"; ?>>Matematika</option>
-        <option value="Biologi" <?php if ($mahasiswa['Jurusan'] == "Biologi") echo "selected"; ?>>Biologi</option>
-        <option value="Teknologi Pangan" <?php if ($mahasiswa['Jurusan'] == "Teknologi Pangan") echo "selected"; ?>>Teknologi Pangan</option>
-        <option value="Agribisnis" <?php if ($mahasiswa['Jurusan'] == "Agribisnis") echo "selected"; ?>>Agribisnis</option>
-        <option value="Perencanaan Wilayah Dan Kota" <?php if ($mahasiswa['Jurusan'] == "Perencanaan Wilayah Dan Kota") echo "selected"; ?>>Perencanaan Wilayah Dan Kota</option>
-        <option value="Sistem Informasi" <?php if ($mahasiswa['Jurusan'] == "Sistem Informasi") echo "selected"; ?>>Sistem Informasi</option>
-        <option value="Kearsipan (D4)" <?php if ($mahasiswa['Jurusan'] == "Kearsipan (D4)") echo "selected"; ?>>Kearsipan (D4)</option>
-        <option value="Perpajakan (D3)" <?php if ($mahasiswa['Jurusan'] == "Perpajakan (D3)") echo "selected"; ?>>Perpajakan (D3)</option>
-        <option value="Perpustakaan" <?php if ($mahasiswa['Jurusan'] == "Perpustakaan") echo "selected"; ?>>Perpustakaan</option>
-        <option value="Administrasi Publik" <?php if ($mahasiswa['Jurusan'] == "Administrasi Publik") echo "selected"; ?>>Administrasi Publik</option>
-        <option value="Administrasi Bisnis" <?php if ($mahasiswa['Jurusan'] == "Administrasi Bisnis") echo "selected"; ?>>Administrasi Bisnis</option>
-        <option value="Hukum" <?php if ($mahasiswa['Jurusan'] == "Hukum") echo "selected"; ?>>Hukum</option>
-        <option value="Ilmu Pemerintahan" <?php if ($mahasiswa['Jurusan'] == "Ilmu Pemerintahan") echo "selected"; ?>>Ilmu Pemerintahan</option>
-        <option value="Ilmu Komunikasi" <?php if ($mahasiswa['Jurusan'] == "Ilmu Komunikasi") echo "selected"; ?>>Ilmu Komunikasi</option>
-        <option value="Ilmu Perpustakaan" <?php if ($mahasiswa['Jurusan'] == "Ilmu Perpustakaan") echo "selected"; ?>>Ilmu Perpustakaan</option>
-        <option value="Sosiologi" <?php if ($mahasiswa['Jurusan'] == "Sosiologi") echo "selected"; ?>>Sosiologi</option>
-        <option value="Sastra Inggris" <?php if ($mahasiswa['Jurusan'] == "Sastra Inggris") echo "selected"; ?>>Sastra Inggris</option>
-         <!-- Opsi untuk pencarian -->
-  <option value="Search" disabled="disabled">Cari Jurusan</option>
-</select>
+      <?php foreach ($jurusan as $value => $label): ?>
+          <option value="<?php echo $value; ?>" <?php if ($selectedJurusan == $value) echo "selected"; ?>>
+              <?php echo $label; ?>
+          </option>
+      <?php endforeach; ?>
+    </select>
 
 <!-- Script JavaScript untuk fungsi pencarian -->
 <script>
