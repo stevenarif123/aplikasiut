@@ -65,6 +65,7 @@ if (isset($_POST['submit'])) {
     $jurusan = filter_input(INPUT_POST, 'Jurusan', FILTER_SANITIZE_STRING);
     $nomor_hp = filter_input(INPUT_POST, 'NomorHP', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'Email', FILTER_SANITIZE_EMAIL);
+    $password = filter_input(INPUT_POST, 'Password', FILTER_SANITIZE_EMAIL);
     $agama = filter_input(INPUT_POST, 'Agama', FILTER_SANITIZE_STRING);
     $jenis_kelamin = filter_input(INPUT_POST, 'JenisKelamin', FILTER_SANITIZE_STRING);
     $status_perkawinan = filter_input(INPUT_POST, 'StatusPerkawinan', FILTER_SANITIZE_STRING);
@@ -77,12 +78,6 @@ if (isset($_POST['submit'])) {
     $di_edit_pada = date("Y-m-d H:i:s");
     $status_input_sia = filter_input(INPUT_POST, 'STATUS_INPUT_SIA', FILTER_SANITIZE_STRING);
 
-    // Hash password securely if it's not empty
-    if (!empty($_POST['Password'])) {
-        $password = password_hash($_POST['Password'], PASSWORD_DEFAULT);
-    } else {
-        $password = $mahasiswa['Password']; // Keep existing password
-    }
 
     // Prepare UPDATE query with placeholders
     $updateQuery = "UPDATE mahasiswa SET 
@@ -107,14 +102,16 @@ if (isset($_POST['submit'])) {
         LayananPaketSemester = ?, 
         DiInputOleh = ?, 
         DiEditPada = ?, 
-        STATUS_INPUT_SIA = ? 
+        STATUS_INPUT_SIA = ?
         WHERE No = ?";
 
+    //debug
+   // echo "UPDATE Query: " . $updateQuery . "<br>";
     // Prepare statement
     $stmt = mysqli_prepare($koneksi, $updateQuery);
 
     // Bind parameters
-    mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssis",
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssss",
     $nim,
     $jalur_program,
     $nama_lengkap,
@@ -139,7 +136,9 @@ if (isset($_POST['submit'])) {
     $status_input_sia,
     $no
 );
-
+//echo $_POST['STATUS_INPUT_SIA'];
+//echo "Bound Parameters: ";
+//var_dump($nim, $jalur_program, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $email, $password, $agama, $jenis_kelamin, $status_perkawinan, $nomor_hp_alternatif, $nomor_ijazah, $tahun_ijazah, $nisn, $layanan_paket_semester, $di_input_oleh, $di_edit_pada, $status_input_sia, $no);
 
     // Execute update
     if (mysqli_stmt_execute($stmt)) {
@@ -152,6 +151,7 @@ if (isset($_POST['submit'])) {
     // Close statement
     mysqli_stmt_close($stmt);
 }
+//debug
 
 // Close database connection
 mysqli_close($koneksi);
