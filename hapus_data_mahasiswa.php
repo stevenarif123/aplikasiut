@@ -1,17 +1,20 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-  }
-// Koneksi ke database
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "datamahasiswa";
 
-$koneksi = mysqli_connect($host, $user, $pass, $db);
+// Session status check
+
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+
+// Check if user is logged in
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  exit;
+}
+
+
+
+require_once "koneksi.php";
 
 // Ambil id dari URL
 $id = $_GET['No'];

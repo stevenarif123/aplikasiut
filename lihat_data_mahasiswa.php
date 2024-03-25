@@ -6,13 +6,7 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
   }
 // Koneksi ke database
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "datamahasiswa";
-
-$koneksi = mysqli_connect($host, $user, $pass, $db);
-
+require_once "koneksi.php";
 // Ambil id dari URL
 $id = $_GET['No']; // Pastikan parameter 'No' sesuai dengan yang digunakan di URL
 

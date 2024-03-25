@@ -1,16 +1,13 @@
 <?php
+// Memulai sesi
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
-// Koneksi ke database
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "datamahasiswa";
 
-$koneksi = mysqli_connect($host, $user, $pass, $db);
-
+// Koneksikan ke database
+require_once "koneksi.php";
 // Inisialisasi variabel
+
 $username = "";
 $password = "";
 $error = "";

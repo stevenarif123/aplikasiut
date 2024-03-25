@@ -1,7 +1,7 @@
 <?php
 
 // Include file koneksi database
-require_once "koneksi.php";
+
 
 // Query untuk mengambil data jenis pembayaran
 $sql_jenispembayaran = "SELECT * FROM jenispembayaran";

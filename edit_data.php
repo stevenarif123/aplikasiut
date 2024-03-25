@@ -1,31 +1,20 @@
 <?php
-
-// Start session if not already started
+// Session status check
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
-}
+  }
 
-// Check if user is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
-}
-
-// Database connection details
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "datamahasiswa";
-
-// Connect to database
-$koneksi = mysqli_connect($host, $user, $pass, $db);
-
+  }
+// Connect to the database
+require_once "koneksi.php";
 // Check for connection error
 if (!$koneksi) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
-//Check admin
+// Check get admin data
 $username = $_SESSION['username'];
 $query = "SELECT * FROM admin WHERE username='$username'";
 $result = mysqli_query($koneksi, $query);
