@@ -1,75 +1,35 @@
 <?php
-
 // Include database connection file
 require_once "koneksi.php";
+require_once "kode_generator.php";
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
-  }
-  if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-  }
-
-// Function to generate report code
-function generateKodeLaporan($jenisBayar) {
-    // Mendefinisikan kode untuk setiap jenis pembayaran
-    $kodeJenisBayar = [
-        "SPP" => "SP",
-        "Almamater" => "AL",
-        "Pokjar" => "PK"
-    ];
-
-    // Mendapatkan kode jenis pembayaran untuk jenis pembayaran yang diberikan
-    $kodeJenisPembayaran = $kodeJenisBayar[$jenisBayar];
-
-    // Get the last report code for the given payment type
-    global $koneksi;
-    $query = "SELECT KodeLaporan FROM laporanuangmasuk WHERE JenisBayar = ? ORDER BY id DESC LIMIT 1";
-    $stmt = $koneksi->prepare($query);
-    $stmt->bind_param("s", $jenisBayar);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result) {
-        $row = $result->fetch_assoc();
-        if ($row) {
-            $lastKode = $row['KodeLaporan'];
-
-            // Mengambil bagian angka dari kode laporan terakhir
-            $numericPart = substr($lastKode, 2);
-            $newNumericPart = str_pad(intval($numericPart) + 1, 4, '0', STR_PAD_LEFT); // Increment angka dengan padding 4 digit
-        } else {
-            // Jika tidak ada data sebelumnya, mengembalikan angka awal
-            $newNumericPart = "0001";
-        }
-    } else {
-        // Jika terjadi kesalahan saat mengambil data, tampilkan pesan error
-        echo "Error fetching last report code: " . $koneksi->error;
-        return false;
-    }
-
-    // Menggabungkan kode jenis pembayaran dengan angka yang telah di-generate
-    $newKode = $kodeJenisPembayaran . $newNumericPart;
-
-    return $newKode;
+}
+if (!isset($_SESSION['username'])) {
+    header("Location: ../login.php");
 }
 
 $admin = $_SESSION['username'];
 
+// Mendapatkan jenis pembayaran dari input form
+$jenis_pembayaran = isset($_POST['jenis_bayar']) ? $_POST['jenis_bayar'] : '';
+
+// Menghasilkan kode laporan
+$kode_laporan = generateKodeLaporan($jenis_pembayaran);
+
+// Simpan kode laporan ke database
+
+echo "Kode Laporan: $kode_laporan";
+
 // Initialize variables
 $hasilPencarian = null;
-
-// Array jenis pembayaran
-$jenis_pembayaran = array("SPP", "Almamater", "Pokjar");
 
 // If form is submitted (POST request)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate input data
     // Add your validation logic here
-
-    // Generate report code
-    $kodeLaporan = generateKodeLaporan();
 
     // Get data from form
     $nim = $_POST['nim'] ?? '';
@@ -106,7 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-
     // Prepare SQL query to insert data
     $sql = "INSERT INTO laporanuangmasuk (KodeLaporan, JenisBayar, NamaMahasiswa, Nim, Jurusan, Ut, Pokjar, Total, Admin, isMaba, CatatanKhusus, MetodeBayar, AlamatFile)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -116,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error preparing SQL statement: " . $koneksi->error; // Debugging
     } else {
         // Bind parameters to the statement
-        $bindResult = $stmt->bind_param("sssssssssssss", $kodeLaporan, $jenisBayar, $namaMahasiswa, $nim, $jurusan, $ut, $pokjar, $total, $adminTulis, $isMaba, $catatanKhusus, $metodeBayar, $alamatFile);
+        $bindResult = $stmt->bind_param("sssssssssssss", $kode_laporan, $jenisBayar, $namaMahasiswa, $nim, $jurusan, $ut, $pokjar, $total, $adminTulis, $isMaba, $catatanKhusus, $metodeBayar, $alamatFile);
         if (!$bindResult) {
             echo "Error binding parameters: " . $stmt->error; // Debugging
         } else {
@@ -134,6 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
     $koneksi->close();
 }
+
+$jenis_pembayaran = array("SPP", "Almamater", "Pokjar");
+
 // Get data from query string
 $nim = $_GET['nim'] ?? '';
 $namaMahasiswa = urldecode($_GET['nama'] ?? '');

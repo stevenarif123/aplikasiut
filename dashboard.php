@@ -64,6 +64,7 @@ if (isset($_POST['search'])) {
 
   <a href="backup_database.php">Backup Database</a>
   <a href="tambah_data.php">Tambah Data</a>
+  <a href="./laporanbayar/">Laporan Uang Masuk</a>
   <br>
 
   <?php if (count($mahasiswa) > 0) { ?>
