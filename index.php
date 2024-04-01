@@ -18,6 +18,7 @@
         <li><a href="products.php">Produk</a></li>
         <li><a href="services.php">Layanan</a></li>
         <li><a href="contact.php">Kontak</a></li>
+        <li><a href="./laporanbayar/">Laporan Pembayaran</a></li>
         <li><a href="login.php" class="btn-login">Login</a></li>
       </ul>
     </nav>

@@ -1,11 +1,10 @@
 <?php
-// Memulai sesi
-session_start();
 
-// Memeriksa apakah admin sudah login
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
 if (!isset($_SESSION['username'])) {
-    header('Location: login.php');
-    exit;
+  header("Location: login.php");
 }
 
 // Mengambil data admin
@@ -54,7 +53,7 @@ $result = mysqli_query($koneksi, $query);
 ?>
 
 <h1>Laporan Uang Masuk</h1>
-
+<a href="tambah_laporan.php">Tambah Laporan</a>
 <!-- Pemberitahuan laporan yang belum diverifikasi -->
 <?php if ($totalData > 0): ?>
 <p>Terdapat <b><?php echo $totalData; ?></b> laporan yang belum diverifikasi.</p>
@@ -100,7 +99,7 @@ $result = mysqli_query($koneksi, $query);
                 <a href="edit_laporan.php?id=<?php echo $row['id']; ?>">Edit</a>
                 <a href="lihat_laporan.php?id=<?php echo $row['id']; ?>">Lihat</a>
                 <a href="print_laporan.php?id=<?php echo $row['id']; ?>">Print</a>
-                <a href="hapus_laporan.php?id=<?php echo $row['id']; ?>">Hapus</a>
+                <a href="hapus_laporan.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</a>
             </td>
         </tr>
         <?php endwhile; ?>
