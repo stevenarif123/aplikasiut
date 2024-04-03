@@ -14,33 +14,39 @@ function generateKodeLaporan($jenis_pembayaran) {
     );
 
     // Mendapatkan kode jenis pembayaran dari array
-    $kodeJenis = $kodeJenisPembayaran[$jenis_pembayaran];
+    if (isset($kodeJenisPembayaran[$jenis_pembayaran])) {
+        $kodeJenis = $kodeJenisPembayaran[$jenis_pembayaran];
+        $query = "SELECT KodeLaporan FROM laporanuangmasuk WHERE KodeLaporan LIKE '$kodeJenis%' ORDER BY id DESC LIMIT 1";
+        $result = mysqli_query($koneksi, $query);
 
-    // Mendapatkan kode numerik terakhir dari database
-    $query = "SELECT KodeLaporan FROM laporanuangmasuk WHERE KodeLaporan LIKE '$kodeJenis%' ORDER BY id DESC LIMIT 1";
-    $result = mysqli_query($koneksi, $query);
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            if ($row) {
+                $lastKode = $row['KodeLaporan'];
 
-    if ($result) {
-        $row = mysqli_fetch_assoc($result);
-        if ($row) {
-            $lastKode = $row['KodeLaporan'];
+                // Memproses untuk menghasilkan kode numerik baru
+                $numericPart = substr($lastKode, 2);
+                $newNumericPart = str_pad(intval($numericPart) + 1, 4, '0', STR_PAD_LEFT);
 
-            // Memproses untuk menghasilkan kode numerik baru
-            $numericPart = substr($lastKode, 2);
-            $newNumericPart = str_pad(intval($numericPart) + 1, 4, '0', STR_PAD_LEFT);
+                // Menggabungkan kode jenis dan kode numerik untuk menghasilkan kode pembayaran baru
+                $newKode = $kodeJenis . $newNumericPart;
 
-            // Menggabungkan kode jenis dan kode numerik untuk menghasilkan kode pembayaran baru
-            $newKode = $kodeJenis . $newNumericPart;
-
-            return $newKode;
+                return $newKode;
+            } else {
+                // Jika tidak ada data sebelumnya, return kode awal
+                return $kodeJenis . "0001";
+            }
         } else {
-            // Jika tidak ada data sebelumnya, return kode awal
+            // Jika terjadi error saat mengambil data, return kode awal
+            echo "Error fetching last report code: " . mysqli_error($koneksi); // Debugging
             return $kodeJenis . "0001";
         }
     } else {
-        // Jika terjadi error saat mengambil data, return kode awal
-        echo "Error fetching last report code: " . mysqli_error($koneksi); // Debugging
-        return $kodeJenis . "0001";
+        // Handle the case where the payment type is not found
+        echo "Invalid payment type.";
     }
+
+    // Mendapatkan kode numerik terakhir dari database
+    
 }
 ?>

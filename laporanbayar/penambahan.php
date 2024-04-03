@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Pindahkan berkas yang diunggah ke folder yang ditentukan
         if (move_uploaded_file($_FILES['bukti_file']['tmp_name'], $uploadFile)) {
-            $alamatFile = $uploadFile; // Simpan alamat file ke dalam variabel
+            $alamatFile = './' . $uploadFile; // Tambahkan './' pada awal alamat file
         } else {
             echo "Error uploading file."; // Tampilkan pesan jika terjadi kesalahan saat pengunggahan
         }

@@ -98,7 +98,6 @@ $result = mysqli_query($koneksi, $query);
             <td>
                 <a href="edit_laporan.php?id=<?php echo $row['id']; ?>">Edit</a>
                 <a href="lihat_laporan.php?id=<?php echo $row['id']; ?>">Lihat</a>
-                <a href="print_laporan.php?id=<?php echo $row['id']; ?>">Print</a>
                 <a href="hapus_laporan.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</a>
             </td>
         </tr>
