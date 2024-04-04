@@ -9,7 +9,6 @@ if (!isset($_SESSION['username'])) {
 
 // Mengambil data admin
 $admin = $_SESSION['username'];
-
 // Menghubungkan ke database
 require_once 'koneksi.php';
 

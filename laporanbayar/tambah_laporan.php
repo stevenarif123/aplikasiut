@@ -1,7 +1,12 @@
 <?php
 // Include database connection file
 require_once "koneksi.php";
-
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['username'])) {
+    header("Location: ../login.php");
+}
 // Function to generate report code
 function generateKodeLaporan() {
     global $koneksi; // Make the database connection available inside the function

@@ -112,6 +112,7 @@ $alamatFile = $row['AlamatFile'];
 <?php if ($alamatFile && $metodeBayar == "Transfer") : ?>
     <img src="<?php echo $alamatFile; ?>" alt="Bukti Transfer" style="max-width: 300px;"><br><br>
 <?php endif; ?>
+<button onclick="window.location.href='index.php';">Kembali</button>
 
 </body>
 </html>

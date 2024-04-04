@@ -55,6 +55,7 @@ if (isset($_POST['search'])) {
   <h1>Halaman Dashboard</h1>
 
   <p>Selamat datang, <?php echo $user['nama_lengkap']; ?>!</p>
+  <p>Peran sebagai <?php echo $user['peran']; ?></p>
 
   <form action="dashboard.php" method="post">
     <label for="keyword">Cari data mahasiswa:</label>
@@ -63,6 +64,7 @@ if (isset($_POST['search'])) {
   </form>
 
   <a href="backup_database.php">Backup Database</a>
+  <a href="./laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a>
   <a href="tambah_data.php">Tambah Data</a>
   <a href="./laporanbayar/">Laporan Uang Masuk</a>
   <br>
@@ -102,7 +104,7 @@ if (isset($_POST['search'])) {
           <td>
             <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>">Lihat Data</a> |
             <a href="edit_data.php?No=<?php echo $mhs['No']; ?>">Edit Data</a> |
-            <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus Data</a>
+            <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus Data</a>|
           </td>
         </tr>
         <?php } ?>

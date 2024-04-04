@@ -7,11 +7,8 @@ require_once "kode_generator.php";
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
-// Redirect to login page if user is not logged in
 if (!isset($_SESSION['username'])) {
     header("Location: ../login.php");
-    exit; // Stop further execution
 }
 
 
@@ -43,23 +40,44 @@ $catatanKhusus = $row['CatatanKhusus'] ?? '';
 $isMaba = $row['isMaba'] ?? '';
 $metodeBayar = $row['MetodeBayar'] ?? '';
 $alamatFile = $row['AlamatFile'] ?? '';
-$kodeLaporan = $row['KodeLaporan'];
+$kodeLaporan = $row['KodeLaporan'] ?? '';
+
+// Process form submission
 // Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
     $id = $_POST['id'] ?? '';
     $ut = $_POST['ut'] ?? '';
     $pokjar = $_POST['pokjar'] ?? '';
+    $total = floatval($ut) + floatval($pokjar);
     $catatanKhusus = $_POST['catatan_khusus'] ?? '';
     $isMaba = isset($_POST['is_maba']) ? 1 : 0;
     $metodeBayar = $_POST['metode_bayar'] ?? '';
-    $jenisBayar = $_POST['jenis_bayar'] ??'';
+    $jenisBayar = $_POST['jenis_bayar'] ?? '';
+    $kodeLaporan = $_POST['kode_laporan'] ?? '';
 
-
+    // Handle file upload if Transfer method is selected
+   // Handle file deletion if Transfer method is selected
     $alamatFile = "";
     if ($metodeBayar == "Transfer" && isset($_FILES['bukti_file'])) {
+        // Check if there's an existing file
+        $existingFile = $row['AlamatFile'];
+        if (!empty($existingFile) && file_exists($existingFile)) {
+            // Attempt to delete the existing file
+            if (unlink($existingFile)) {
+                echo "File lama berhasil dihapus.";
+            } else {
+                echo "Gagal menghapus file lama: " . error_get_last()['message'];
+            }
+        } else {
+            echo "File lama tidak ditemukan atau tidak ada yang dihapus.";
+        }
+
+        // Upload the new file
         $uploadDir = "BuktiTF/"; // Folder untuk menyimpan berkas
-        $namaFile = $kodeLaporan . "_" . basename($_FILES['bukti_file']['name']); // Nama file diubah sesuai dengan kode laporan
+        $namaFile = $kodeLaporan; // Nama file diubah sesuai dengan kode laporan
         $uploadFile = $uploadDir . $namaFile; // Path lengkap untuk menyimpan berkas
+
         // Pindahkan berkas yang diunggah ke folder yang ditentukan
         if (move_uploaded_file($_FILES['bukti_file']['tmp_name'], $uploadFile)) {
             $alamatFile = './' . $uploadFile; // Tambahkan './' pada awal alamat file
@@ -68,11 +86,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Prepare SQL query to update data
-    $sql = "UPDATE laporanuangmasuk SET Ut = ?, Pokjar = ?, CatatanKhusus = ?, isMaba = ?, MetodeBayar = ?, JenisBayar = ?, AlamatFile = ? WHERE id = ?";
-    $stmt = $koneksi->prepare($sql);
-    $stmt->bind_param("ssssssss", $ut, $pokjar, $catatanKhusus, $isMaba, $metodeBayar, $jenisBayar, $alamatFile, $id);
 
+    // Prepare SQL query to update data
+    $sql = "UPDATE laporanuangmasuk SET Ut = ?, Pokjar = ?, CatatanKhusus = ?, isMaba = ?, MetodeBayar = ?, JenisBayar = ?, AlamatFile = ?, Total = ? WHERE id = ?";
+    $stmt = $koneksi->prepare($sql);
+    $stmt->bind_param("iisssssii", $ut, $pokjar, $catatanKhusus, $isMaba, $metodeBayar, $jenisBayar, $alamatFile, $total, $id);
 
     // Execute the query
     if ($stmt->execute()) {
@@ -85,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 }
+
 $jenis_pembayaran = array("SPP", "Almamater", "Pokjar");
 
 ?>

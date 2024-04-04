@@ -4,6 +4,15 @@ if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 
+// Redirect to index.php if session already exists
+if (isset($_SESSION['username'])) {
+  header("Location: dashboard.php");
+  exit; // Stop further execution
+}
+
+if (isset($_GET['error']) && $_GET['error'] == 1) {
+  echo "<p style='color: red;'>Akun Anda tidak memiliki izin untuk mengakses halaman tersebut.</p>";
+}
 // Koneksikan ke database
 require_once "koneksi.php";
 // Inisialisasi variabel
@@ -23,14 +32,18 @@ if (isset($_POST['submit'])) {
   $result = mysqli_query($koneksi, $query);
 
   // Cek apakah user ditemukan
-  if (mysqli_num_rows($result) > 0) {
-    // User ditemukan, buat session dan arahkan ke halaman dashboard
-    session_start();
-    $_SESSION['username'] = $username;
-    header("Location: dashboard.php");
+    if (mysqli_num_rows($result) > 0) {
+      // Fetch user data from the result
+      $row = mysqli_fetch_assoc($result);
+      // Start session and set session variables
+      session_start();
+      $_SESSION['username'] = $row['username']; // Set username
+      $_SESSION['peran'] = $row['peran']; // Set user's role
+      header("Location: dashboard.php"); // Redirect to dashboard
+      exit; // Stop further execution
   } else {
-    // User tidak ditemukan, tampilkan pesan error
-    $error = "Username atau password salah!";
+      // User not found, display error message
+      $error = "Username or password is incorrect!";
   }
 }
 

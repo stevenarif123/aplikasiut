@@ -1,6 +1,11 @@
 <?php
 require_once "koneksi.php";
-
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['username'])) {
+    header("Location: ../login.php");
+}
 // Check if laporan ID is provided via GET request
 if(isset($_GET['id'])) {
     // Sanitize the laporan ID to prevent SQL injection

@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $alamatFile = "";
     if ($metodeBayar == "Transfer" && isset($_FILES['bukti_file'])) {
         $uploadDir = "BuktiTF/"; // Folder untuk menyimpan berkas
-        $namaFile = generateKodeLaporan() . "_" . basename($_FILES['bukti_file']['name']); // Nama file diubah sesuai dengan kode laporan
+        $namaFile = $kode_laporan . "_" . basename($_FILES['bukti_file']['name']); // Nama file diubah sesuai dengan kode laporan
         $uploadFile = $uploadDir . $namaFile; // Path lengkap untuk menyimpan berkas
 
         // Pindahkan berkas yang diunggah ke folder yang ditentukan
