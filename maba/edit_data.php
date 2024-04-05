@@ -5,11 +5,11 @@ if (session_status() == PHP_SESSION_NONE) {
   }
 
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
   }
 // Connect to the database
-require_once "koneksi.php";
+require_once "../koneksi.php";
 // Check for connection error
 if (!$koneksi) {
     die("Connection failed: " . mysqli_connect_error());
@@ -17,6 +17,7 @@ if (!$koneksi) {
 // Check get admin data
 $username = $_SESSION['username'];
 $query = "SELECT * FROM admin WHERE username='$username'";
+
 $result = mysqli_query($koneksi, $query);
 $user = mysqli_fetch_assoc($result);
 if (!$result) {
@@ -27,7 +28,7 @@ if (!$result) {
 $no = $_GET['No'];
 
 // Prepare and execute query to fetch student data
-$query = "SELECT * FROM mahasiswa WHERE No = ?";
+$query = "SELECT * FROM mahasiswabaru WHERE No = ?";
 $stmt = mysqli_prepare($koneksi, $query);
 mysqli_stmt_bind_param($stmt, "i", $no);
 mysqli_stmt_execute($stmt);
@@ -42,9 +43,7 @@ $mahasiswa = mysqli_fetch_assoc($result);
 date_default_timezone_set("Asia/Singapore");
 // Check if form is submitted
 if (isset($_POST['submit'])) {
-
     // Sanitize and validate input data
-    $nim = filter_input(INPUT_POST, 'Nim', FILTER_SANITIZE_STRING);
     $jalur_program = filter_input(INPUT_POST, 'JalurProgram', FILTER_SANITIZE_STRING);
     $nama_lengkap = filter_input(INPUT_POST, 'NamaLengkap', FILTER_SANITIZE_STRING);
     $tempat_lahir = filter_input(INPUT_POST, 'TempatLahir', FILTER_SANITIZE_STRING);
@@ -65,41 +64,39 @@ if (isset($_POST['submit'])) {
     $layanan_paket_semester = filter_input(INPUT_POST, 'LayananPaketSemester', FILTER_SANITIZE_STRING);
     $di_input_oleh = $user['nama_lengkap'];
     $di_edit_pada = date("Y-m-d H:i:s");
-
-
-    // Prepare UPDATE query with placeholders
-    $updateQuery = "UPDATE mahasiswa SET 
-        Nim = ?, 
-        JalurProgram = ?, 
-        NamaLengkap = ?, 
-        TempatLahir = ?, 
-        TanggalLahir = ?, 
-        NamaIbuKandung = ?, 
-        NIK = ?, 
-        Jurusan = ?, 
-        NomorHP = ?, 
-        Email = ?, 
-        Password = ?, 
-        Agama = ?, 
-        JenisKelamin = ?, 
-        StatusPerkawinan = ?, 
-        NomorHPAlternatif = ?, 
-        NomorIjazah = ?, 
-        TahunIjazah = ?, 
-        NISN = ?, 
-        LayananPaketSemester = ?, 
-        DiInputOleh = ?, 
-        DiEditPada = ? 
-        WHERE No = ?";
-
-    //debug
-   // echo "UPDATE Query: " . $updateQuery . "<br>";
-    // Prepare statement
-    $stmt = mysqli_prepare($koneksi, $updateQuery);
+    $status_input_sia = filter_input(INPUT_POST, 'STATUS_INPUT_SIA', FILTER_SANITIZE_STRING);
 
     // Bind parameters
-    mysqli_stmt_bind_param($stmt, "ssssssssssssssssssssss",
-    $nim,
+// Prepare UPDATE query with placeholders
+$updateQuery = "UPDATE mahasiswabaru SET 
+    JalurProgram = ?, 
+    NamaLengkap = ?, 
+    TempatLahir = ?, 
+    TanggalLahir = ?, 
+    NamaIbuKandung = ?, 
+    NIK = ?, 
+    Jurusan = ?, 
+    NomorHP = ?, 
+    Email = ?, 
+    Password = ?, 
+    Agama = ?, 
+    JenisKelamin = ?, 
+    StatusPerkawinan = ?, 
+    NomorHPAlternatif = ?, 
+    NomorIjazah = ?, 
+    TahunIjazah = ?, 
+    NISN = ?, 
+    LayananPaketSemester = ?, 
+    DiInputOleh = ?, 
+    DiEditPada = ?, 
+    STATUS_INPUT_SIA = ?
+    WHERE No = ?";
+
+// Prepare statement
+$stmt = mysqli_prepare($koneksi, $updateQuery);
+
+// Bind parameters
+mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssi",
     $jalur_program,
     $nama_lengkap,
     $tempat_lahir,
@@ -120,38 +117,47 @@ if (isset($_POST['submit'])) {
     $layanan_paket_semester,
     $di_input_oleh,
     $di_edit_pada,
-    $no
+    $status_input_sia,
+    $no // No digunakan sebagai parameter terakhir
 );
-//echo $_POST['STATUS_INPUT_SIA'];
-//echo "Bound Parameters: ";
-//var_dump($nim, $jalur_program, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $email, $password, $agama, $jenis_kelamin, $status_perkawinan, $nomor_hp_alternatif, $nomor_ijazah, $tahun_ijazah, $nisn, $layanan_paket_semester, $di_input_oleh, $di_edit_pada, $status_input_sia, $no);
 
-    // Execute update
-    if (mysqli_stmt_execute($stmt)) {
-        header("Location: dashboard.php");
-        exit;
-    } else {
-        echo "Error updating data: " . mysqli_error($koneksi);
-    }
-
-    // Close statement
-    mysqli_stmt_close($stmt);
+// Execute update
+if (mysqli_stmt_execute($stmt)) {
+    header("Location: dashboard.php");
+    //var_dump (mysqli_stmt_execute($stmt)) ;
+    exit;
+} else {
+    echo "Error updating data: " . mysqli_error($koneksi);
+}
 }
 //debug
 
-// Close database connection
-mysqli_close($koneksi);
 
-// Define dropdown options
-$jurusan = [
-    "Pembangunan" => "Pembangunan",
-    "Ekonomi Syariah" => "Ekonomi Syariah",
-    // ... (add other options)
-];
+$queryJurusan = "SELECT * FROM jurusan"; // Ganti 'daftar_jurusan' dengan nama tabel yang sesuai
+$resultJurusan = mysqli_query($koneksi, $queryJurusan);
+
+// Inisialisasi array untuk menyimpan daftar jurusan
+$daftarJurusan = array();
+
+// Periksa apakah query berhasil dieksekusi
+if ($result) {
+    // Loop untuk mengambil setiap baris hasil query dan menyimpannya dalam array
+    while ($row = mysqli_fetch_assoc($result)) {
+        $daftarJurusan[] = $row['nama_jurusan']; // Sesuaikan 'nama_jurusan' dengan nama kolom yang sesuai
+    }
+} else {
+    // Jika query gagal dieksekusi, tampilkan pesan error
+    echo "Error retrieving list of majors: " . mysqli_error($koneksi);
+}
+mysqli_close($koneksi);
 
 $agama = [
     "Islam" => "Islam",
-    "Kristen" => "Kristen",
+    "Protestan" => "Protestan",
+    "Katolik" => "Katolik",
+    "Buddha" => "Buddha",
+    "Hindu" => "Hindu",
+    "Khonghucu" => "Khonghucu",
     // ... (add other options)
 ];
 
@@ -223,7 +229,7 @@ $selectedJurusan = $mahasiswa['Jurusan'];
 
         <label for="jurusan">Jurusan:</label>
         <select name="Jurusan" id="jurusan">
-            <?php foreach ($jurusan as $value => $label): ?>
+            <?php foreach ($daftarJurusan as $value => $label): ?>
                 <option value="<?php echo $value; ?>" <?php if ($selectedJurusan == $value) echo "selected"; ?>>
                     <?php echo $label; ?>
                 </option>
@@ -306,6 +312,16 @@ $selectedJurusan = $mahasiswa['Jurusan'];
         <br>
 
         <label for="DiInputPada">Terakhir di Edit Pada: <?php echo $mahasiswa['DiEditPada']; ?></label>
+        <br>
+
+        <label for="STATUS_INPUT_SIA">Status Input SIA:</label>
+        <select name="STATUS_INPUT_SIA" id="STATUS_INPUT_SIA">
+            <?php foreach ($status_input_sia as $value => $label): ?>
+                <option value="<?php echo $value; ?>" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == $value) echo "selected"; ?>>
+                    <?php echo $label; ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
         <br>
 
         <input type="submit" name="submit" value="Simpan">
