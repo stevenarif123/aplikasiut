@@ -140,7 +140,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "datamahasiswa";
-$nim_to_query = ""; // Default value
+$id_to_query = ""; // Default value
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -152,63 +152,42 @@ if ($conn->connect_error) {
 
 // Cek apakah data yang akan dicari telah disediakan
 // Memeriksa apakah ada parameter GET nim dan tidak kosong
-if (isset($_GET['nim']) && !empty($_GET['nim'])) {
+if (isset($_GET['No']) && !empty($_GET['No'])) {
     // Escape input untuk mencegah SQL injection
-    $nim_to_query = $conn->real_escape_string($_GET['nim']);
-}
-
-// Memeriksa apakah ada parameter GET nama dan tidak kosong
-if (isset($_GET['nama']) && !empty($_GET['nama'])) {
-    // Escape input untuk mencegah SQL injection
-    $nama_to_query = $conn->real_escape_string($_GET['nama']);
+    $id_to_query = $conn->real_escape_string($_GET['No']);
 }
 
 // Memeriksa apakah ada parameter GET jurusan dan tidak kosong
-if (isset($_GET['jurusan']) && !empty($_GET['jurusan'])) {
-    // Escape input untuk mencegah SQL injection
-    $jurusan_to_query = $conn->real_escape_string($_GET['jurusan']);
-}
+// Memeriksa apakah ada parameter GET id dan tidak kosong
+if (!empty($id_to_query)) {
+    // Lakukan kueri ke database
+    $sql = "SELECT Nim, NamaLengkap, Jurusan, Email, Password FROM mahasiswa WHERE No = '$id_to_query'";
+    $result = $conn->query($sql);
 
-// Membuat kueri SQL awal
-$sql = "SELECT Nim, NamaLengkap, Jurusan, Email, Password FROM mahasiswa WHERE 1";
+    if ($result->num_rows > 0) {
+        // output data of the first row (assuming email is unique)
+        $row = $result->fetch_assoc();
+        $email = $row["Email"];
+        $password = $row["Password"];
+        $nim = $row["Nim"];
+        $nama = $row["NamaLengkap"];
+        $jurusan = $row["Jurusan"];
 
-// Memeriksa dan menambahkan kondisi pencarian berdasarkan NIM
-if (isset($nim_to_query)) {
-    $sql .= " AND Nim = '$nim_to_query'";
-}
-
-// Memeriksa dan menambahkan kondisi pencarian berdasarkan Nama
-if (isset($nama_to_query)) {
-    $sql .= " AND NamaLengkap LIKE '%$nama_to_query%'";
-}
-
-// Memeriksa dan menambahkan kondisi pencarian berdasarkan Jurusan
-if (isset($jurusan_to_query)) {
-    $sql .= " AND Jurusan LIKE '%$jurusan_to_query%'";
-}
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    // output data of the first row (assuming email is unique)
-    $row = $result->fetch_assoc();
-    $email = $row["Email"];
-    $password = $row["Password"];
-    $nim = $row["Nim"];
-    $nama = $row["NamaLengkap"];
-    $jurusan = $row["Jurusan"];
-
-    // Mendapatkan access token
-    $accessToken = getAccessToken($email, $password);
-    if ($accessToken) {
-        // Mendapatkan data tagihan
-        $billData = getBillData($accessToken);
-        if ($billData) {
-            // Menampilkan data mahasiswa dan tagihan dalam bentuk tabel
-            displayMahasiswaData($nim, $nama, $jurusan, $billData);
+        // Mendapatkan access token
+        $accessToken = getAccessToken($email, $password);
+        if ($accessToken) {
+            // Mendapatkan data tagihan
+            $billData = getBillData($accessToken);
+            if ($billData) {
+                // Menampilkan data mahasiswa dan tagihan dalam bentuk tabel
+                displayMahasiswaData($nim, $nama, $jurusan, $billData);
+            }
         }
+    } else {
+        echo "Data mahasiswa tidak ditemukan.";
     }
 } else {
-    echo "Data mahasiswa tidak ditemukan.";
+    echo "No ID specified.";
 }
 
 $conn->close();
