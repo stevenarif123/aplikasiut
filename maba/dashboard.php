@@ -50,10 +50,10 @@ if (isset($_POST['search'])) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Halaman Dashboard</title>
+  <title>Mahasiswa Baru</title>
 </head>
 <body>
-  <h1>Halaman Dashboard</h1>
+  <h1>Pengelolaan Calon Mahasiswa Baru</h1>
 
   <p>Selamat datang, <?php echo $user['nama_lengkap']; ?>!</p>
   <p>Peran sebagai <?php echo $user['peran']; ?></p>
