@@ -82,7 +82,7 @@ $koneksi->close();
             <td><?php echo $mahasiswa['Nim']; ?></td>
             <td><?php echo $mahasiswa['Nama']; ?></td>
             <td><?php echo $mahasiswa['Jurusan']; ?></td>
-            <td><a href="detaildata.php?No=<?php echo $mahasiswa['No']; ?>">Status Bayar</a></td>
+            <td><a href="statsusbayar.php?No=<?php echo $mahasiswa['No']; ?>">Status Bayar</a></td>
         </tr>
         <?php endforeach; ?>
     </table>
