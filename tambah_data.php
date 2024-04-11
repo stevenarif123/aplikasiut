@@ -13,88 +13,58 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($koneksi->connect_error) {
+    die("Connection failed: " . $koneksi->connect_error);
 }
 
-$majors = array("Pembangunan",
-    "Ekonomi Syariah",
-    "Akuntansi",
-    "Akuntansi Keuangan Publik",
-    "Pariwisata",
-    "Pendidikan Bahasa Dan Sastra Indonesia",
-    "Pendidikan Bahasa Inggris",
-    "Pendidikan Biologi",
-    "Pendidikan Fisika",
-    "Pendidikan Kimia",
-    "Pendidikan Matematika",
-    "Pendidikan Ekonomi",
-    "Pendidikan Pancasila Dan Kewarganegaraan",
-    "Teknologi Pendidikan",
-    "PGSD",
-    "PGPAUD",
-    "PPG",
-    "Statistika",
-    "Matematika",
-    "Biologi",
-    "Teknologi Pangan",
-    "Agribisnis",
-    "Perencanaan Wilayah Dan Kota",
-    "Sistem Informasi",
-    "Kearsipan (D4)",
-    "Perpajakan (D3)",
-    "Perpustakaan",
-    "Administrasi Publik",
-    "Administrasi Bisnis",
-    "Hukum",
-    "Ilmu Pemerintahan",
-    "Ilmu Komunikasi",
-    "Ilmu Perpustakaan",
-    "Sosiologi",
-    "Sastra Inggris"
-    );
+$query = "SELECT nama_jurusan FROM jurusan";
+$result = mysqli_query($koneksi, $query);
+$majors = array();
+while($row = mysqli_fetch_assoc($result)) {
+    $majors[] = $row['nama_jurusan'];
+}
 
 $username = $_SESSION['username'];
 
 $query = "SELECT * FROM admin WHERE username='$username'";
-$result = mysqli_query($conn, $query);
+$result = mysqli_query($koneksi, $query);
 $user = mysqli_fetch_assoc($result);
 
 if (!$result) {
-  die("Query gagal: " . mysqli_error($conn));
+  die("Query gagal: " . mysqli_error($koneksi));
 }
 
 // Check if the form is submitted
 if (isset($_POST['submit'])) {
     // Sanitize and validate input data
-    $nim = $conn->real_escape_string(trim($_POST['Nim']));
-    $jalur_program = $conn->real_escape_string(trim($_POST['JalurProgram']));
-    $nama_lengkap = $conn->real_escape_string(trim($_POST['NamaLengkap']));
-    $tempat_lahir = $conn->real_escape_string(trim($_POST['TempatLahir']));
+    $nim = $koneksi->real_escape_string(trim($_POST['Nim']));
+    $jalur_program = $koneksi->real_escape_string(trim($_POST['JalurProgram']));
+    $nama_lengkap = $koneksi->real_escape_string(trim($_POST['NamaLengkap']));
+    $tempat_lahir = $koneksi->real_escape_string(trim($_POST['TempatLahir']));
     $tanggal_lahir = date('Y-m-d', strtotime($_POST['TanggalLahir']));
-    $nama_ibu_kandung = $conn->real_escape_string(trim($_POST['NamaIbuKandung']));
-    $nik = $conn->real_escape_string(trim($_POST['NIK']));
-    $jurusan = $conn->real_escape_string(trim($_POST['Jurusan']));
-    $nomor_hp = $conn->real_escape_string(trim($_POST['NomorHP']));
-    $email = $conn->real_escape_string(trim($_POST['Email']));
-    $password = $conn->real_escape_string(trim($_POST['Password']));
-    $agama = $conn->real_escape_string(trim($_POST['Agama']));
-    $jenis_kelamin = $conn->real_escape_string(trim($_POST['JenisKelamin']));
-    $status_perkawinan = $conn->real_escape_string(trim($_POST['StatusPerkawinan']));
-    $nomor_hp_alternatif = $conn->real_escape_string(trim($_POST['NomorHPAlternatif']));
-    $nomor_ijazah = $conn->real_escape_string(trim($_POST['NomorIjazah']));
-    $tahun_ijazah = $conn->real_escape_string(trim($_POST['TahunIjazah']));
-    $nisn = $conn->real_escape_string(trim($_POST['NISN']));
-    $layanan_paket_semester = $conn->real_escape_string(trim($_POST['LayananPaketSemester']));
-    $di_input_oleh = $conn->real_escape_string(trim($user['nama_lengkap']));
-    $status_input_sia = $conn->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
+    $nama_ibu_kandung = $koneksi->real_escape_string(trim($_POST['NamaIbuKandung']));
+    $nik = $koneksi->real_escape_string(trim($_POST['NIK']));
+    $jurusan = $koneksi->real_escape_string(trim($_POST['Jurusan']));
+    $nomor_hp = $koneksi->real_escape_string(trim($_POST['NomorHP']));
+    $email = $koneksi->real_escape_string(trim($_POST['Email']));
+    $password = $koneksi->real_escape_string(trim($_POST['Password']));
+    $agama = $koneksi->real_escape_string(trim($_POST['Agama']));
+    $jenis_kelamin = $koneksi->real_escape_string(trim($_POST['JenisKelamin']));
+    $status_perkawinan = $koneksi->real_escape_string(trim($_POST['StatusPerkawinan']));
+    $nomor_hp_alternatif = $koneksi->real_escape_string(trim($_POST['NomorHPAlternatif']));
+    $nomor_ijazah = $koneksi->real_escape_string(trim($_POST['NomorIjazah']));
+    $tahun_ijazah = $koneksi->real_escape_string(trim($_POST['TahunIjazah']));
+    $nisn = $koneksi->real_escape_string(trim($_POST['NISN']));
+    $layanan_paket_semester = $koneksi->real_escape_string(trim($_POST['LayananPaketSemester']));
+    $di_input_oleh = $koneksi->real_escape_string(trim($user['nama_lengkap']));
+    $status_input_sia = $koneksi->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
 
     // Prepare the SQL statement
 // Prepare the SQL statement
-    $stmt = $conn->prepare("INSERT INTO mahasiswa (No, Nim, JalurProgram, NamaLengkap, TempatLahir, TanggalLahir, NamaIbuKandung, NIK, Jurusan, NomorHP, Email, Password, Agama, JenisKelamin, StatusPerkawinan, NomorHPAlternatif, NomorIjazah, TahunIjazah, NISN, LayananPaketSemester, DiInputOleh, STATUS_INPUT_SIA) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $koneksi->prepare("INSERT INTO mahasiswa (No, Nim, JalurProgram, NamaLengkap, TempatLahir, TanggalLahir, NamaIbuKandung, NIK, Jurusan, NomorHP, Email, Password, Agama, JenisKelamin, StatusPerkawinan, NomorHPAlternatif, NomorIjazah, TahunIjazah, NISN, LayananPaketSemester, DiInputOleh, STATUS_INPUT_SIA) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     // Check for errors in preparing the statement
         if (!$stmt) {
-            die("Prepare failed: " . $conn->error);
+            die("Prepare failed: " . $koneksi->error);
         }
 
     // Bind parameters to the prepared statement
@@ -115,8 +85,8 @@ if (isset($_POST['submit'])) {
     $stmt->close();
 }
 
-// Close the database connection
-$conn->close();
+// Close the database koneksiection
+$koneksi->close();
 ?>
 
 <!DOCTYPE html>

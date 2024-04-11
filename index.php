@@ -24,18 +24,6 @@
     </nav>
   </header>
 
-  <main>
-    <section>
-      <h2>Lorem ipsum dolor sit amet</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt tincidunt augue, a tristique lorem commodo eget. Donec eleifend sit amet augue sit amet condimentum. Mauris consectetur consequat interdum. Suspendisse eget orci eu ipsum accumsan fermentum. Quisque sed augue ut nisl volutpat tincidunt. In hac habitasse platea dictumst. Donec aliquet ornare nisl, non efficitur metus consectetur in. Proin ac vehicula turpis.</p>
-    </section>
-
-    <section>
-      <h2>Lorem ipsum dolor sit amet</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt tincidunt augue, a tristique lorem commodo eget. Donec eleifend sit amet augue sit amet condimentum. Mauris consectetur consequat interdum. Suspendisse eget orci eu ipsum accumsan fermentum. Quisque sed augue ut nisl volutpat tincidunt. In hac habitasse platea dictumst. Donec aliquet ornare nisl, non efficitur metus consectetur in. Proin ac vehicula turpis.</p>
-    </section>
-  </main>
-
   <footer>
     <p>Copyright © 2023</p>
   </footer>
