@@ -1,6 +1,6 @@
 <?php
 // Buat koneksi ke database
-require_once "koneksi.php";
+require_once "../koneksi.php";
 
 // Inisialisasi variabel untuk menyimpan hasil pencarian
 $dataMahasiswa = array();
@@ -82,7 +82,7 @@ $koneksi->close();
             <td><?php echo $mahasiswa['Nim']; ?></td>
             <td><?php echo $mahasiswa['Nama']; ?></td>
             <td><?php echo $mahasiswa['Jurusan']; ?></td>
-            <td><a href="statsusbayar.php?No=<?php echo $mahasiswa['No']; ?>">Status Bayar</a></td>
+            <td><a href="statusbayar.php?No=<?php echo $mahasiswa['No']; ?>">Status Bayar</a></td>
         </tr>
         <?php endforeach; ?>
     </table>
