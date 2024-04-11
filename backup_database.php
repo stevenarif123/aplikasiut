@@ -1,41 +1,69 @@
 <?php
-require_once "koneksi.php";
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit; // tambahkan exit setelah header
-}
-
-
-if (!$koneksi) {
-    die("Koneksi gagal: " . mysqli_connect_error());
-}
+require_once "koneksi.php"; // Pastikan ini adalah file koneksi ke database Anda
 
 // Nama file backup
 $backupFile = 'backup_' . date("Ymd_His") . '.sql';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 // Direktori tempat menyimpan file backup
 $backupDir = dirname(__FILE__) . '/backup/';
 if (!is_dir($backupDir)) {
-    mkdir($backupDir, 0777, true); // Buat direktori jika belum ada
+    mkdir($backupDir, 0777, true);
 }
 
 $backupFileWithPath = $backupDir . $backupFile;
 
-echo "<h3>Backing up database to `<code>{$backupFile}</code>`</h3>";
+// Buka file untuk ditulis
+$handle = fopen($backupFileWithPath, 'w+');
 
-// Jalur lengkap ke mysqldump (sesuaikan dengan instalasi MySQL Anda)
-$mysqldumpPath = "C:\xampp\mysql\bin\mysqldump.exe"; // misalnya: '/usr/bin/mysqldump'
+// Cek koneksi
+if ($koneksi->connect_error) {
+    die("Koneksi gagal: " . $koneksi->connect_error);
+}
 
-// Eksekusi perintah untuk backup database
-exec("{$mysqldumpPath} --user={$username} --password={$password} --host={$host} {$database} --result-file={$backupFileWithPath} 2>&1", $output);
+// Mendapatkan daftar semua tabel dalam database
+$tables = array();
+$result = $koneksi->query("SHOW TABLES");
+while ($row = $result->fetch_row()) {
+    $tables[] = $row[0];
+}
 
-// Tampilkan output dari eksekusi perintah
-var_dump($output);
+// Iterasi setiap tabel dan menulis informasi ke file
+foreach ($tables as $table) {
+    $result = $koneksi->query("SELECT * FROM $table");
+    $numColumns = $result->field_count;
+
+    // Menulis header tabel
+    $return = "DROP TABLE $table;";
+    fwrite($handle, $return . "\n");
+    $row2 = $koneksi->query("SHOW CREATE TABLE $table")->fetch_row();
+    $return = "\n\n" . $row2[1] . ";\n\n";
+    fwrite($handle, $return);
+
+    // Menulis data tabel
+    for ($i = 0; $i < $numColumns; $i++) {
+        while ($row = $result->fetch_row()) {
+            $return = "INSERT INTO $table VALUES(";
+            for ($j = 0; $j < $numColumns; $j++) {
+                $row[$j] = addslashes($row[$j]);
+                $row[$j] = str_replace("\n", "\\n", $row[$j]);
+                if (isset($row[$j])) {
+                    $return .= '"' . $row[$j] . '"';
+                } else {
+                    $return .= '""';
+                }
+                if ($j < ($numColumns - 1)) {
+                    $return .= ',';
+                }
+            }
+            $return .= ");\n";
+            fwrite($handle, $return);
+        }
+    }
+    fwrite($handle, "\n\n\n");
+}
+
+// Tutup file
+fclose($handle);
+
+echo "Backup database telah berhasil disimpan ke lokasi: " . $backupFileWithPath;
 ?>
