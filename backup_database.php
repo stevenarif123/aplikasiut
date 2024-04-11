@@ -1,4 +1,5 @@
 <?php
+require_once "koneksi.php";
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,13 +8,7 @@ if (!isset($_SESSION['username'])) {
     exit; // tambahkan exit setelah header
 }
 
-// Informasi koneksi ke database
-$username = "root";
-$password = "";
-$host = "localhost";
-$database = "datamahasiswa";
 
-$koneksi = mysqli_connect($host, $username, $password, $database);
 if (!$koneksi) {
     die("Koneksi gagal: " . mysqli_connect_error());
 }
