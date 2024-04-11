@@ -47,7 +47,8 @@ if (isset($_POST['submit'])) {
     $jurusan = $koneksi->real_escape_string(trim($_POST['Jurusan']));
     $nomor_hp = $koneksi->real_escape_string(trim($_POST['NomorHP']));
     $email = $koneksi->real_escape_string(trim($_POST['Email']));
-    $password = $koneksi->real_escape_string(trim($_POST['Password']));
+    // Generate password menggunakan tanggal lahir dan menambahkan karakter khusus
+    $password = '@'.date('dmY', strtotime($tanggal_lahir)).'Ut';
     $agama = $koneksi->real_escape_string(trim($_POST['Agama']));
     $jenis_kelamin = $koneksi->real_escape_string(trim($_POST['JenisKelamin']));
     $status_perkawinan = $koneksi->real_escape_string(trim($_POST['StatusPerkawinan']));
@@ -60,8 +61,28 @@ if (isset($_POST['submit'])) {
     $status_input_sia = $koneksi->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
 
     // Prepare the SQL statement
-// Prepare the SQL statement
-    $stmt = $koneksi->prepare("INSERT INTO mahasiswa (No, Nim, JalurProgram, NamaLengkap, TempatLahir, TanggalLahir, NamaIbuKandung, NIK, Jurusan, NomorHP, Email, Password, Agama, JenisKelamin, StatusPerkawinan, NomorHPAlternatif, NomorIjazah, TahunIjazah, NISN, LayananPaketSemester, DiInputOleh, STATUS_INPUT_SIA) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $koneksi->prepare("INSERT INTO mahasiswa (No, 
+    Nim, 
+    JalurProgram, 
+    NamaLengkap, 
+    TempatLahir, 
+    TanggalLahir, 
+    NamaIbuKandung, 
+    NIK, 
+    Jurusan, 
+    NomorHP, 
+    Email, 
+    Password, 
+    Agama, 
+    JenisKelamin, 
+    StatusPerkawinan, 
+    NomorHPAlternatif, 
+    NomorIjazah, 
+    TahunIjazah, 
+    NISN, 
+    LayananPaketSemester, 
+    DiInputOleh, 
+    STATUS_INPUT_SIA) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     // Check for errors in preparing the statement
         if (!$stmt) {
             die("Prepare failed: " . $koneksi->error);
@@ -141,10 +162,10 @@ $koneksi->close();
         <br>
         <label for="email">Email:</label>
         <input type="email" name="Email" id="email" required>
+        
         <br>
-        <label for="password">Password Mahasiswa:</label>
-        <input type="text" name="Password" id="password" required>
-        <br>
+        <input type="hidden" name="Password" id="password">
+        
         <label for="agama">Agama:</label>
         <select name="Agama" id="agama" required>
             <!-- Add options for religions here -->

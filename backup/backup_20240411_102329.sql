@@ -1,6 +1,3 @@
-DROP TABLE admin;
-
-
 CREATE TABLE `admin` (
   `id_admin` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
@@ -25,11 +22,6 @@ INSERT INTO admin VALUES("37","editor02","password123","editor02@example.com","E
 INSERT INTO admin VALUES("38","moderator02","password123","moderator02@example.com","Moderator Dua","2024-02-28 16:14:08","moderator","aktif");
 INSERT INTO admin VALUES("39","admin04","password123","admin04@example.com","Admin Empat","2024-02-28 16:14:08","editor","aktif");
 INSERT INTO admin VALUES("40","admin05","password123","admin05@example.com","Admin Lima","2024-02-28 16:14:08","editor","aktif");
-
-
-
-DROP TABLE jurusan;
-
 
 CREATE TABLE `jurusan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -74,10 +66,6 @@ INSERT INTO jurusan VALUES("34","Sosiologi");
 INSERT INTO jurusan VALUES("35","Sastra Inggris");
 
 
-
-DROP TABLE laporanuangmasuk;
-
-
 CREATE TABLE `laporanuangmasuk` (
   `id` int(50) NOT NULL AUTO_INCREMENT,
   `KodeLaporan` varchar(50) NOT NULL,
@@ -105,11 +93,6 @@ INSERT INTO laporanuangmasuk VALUES("22","SP0002","Almamater","2024-04-02 10:02:
 INSERT INTO laporanuangmasuk VALUES("23","SP0003","SPP","2024-04-03 10:09:24","SRIWANI","","PGSD","500000","100000","600000","superadmin01","1","TES","Transfer","0","","");
 INSERT INTO laporanuangmasuk VALUES("24","SP0004","SPP","2024-04-03 10:19:15","Hermanto Steven Lisu Allo Arif","","Pembangunan","50000","10000","60000","superadmin01","1","","Transfer","0","./BuktiTF/_img394.jpg","");
 INSERT INTO laporanuangmasuk VALUES("25","SP0005","SPP","2024-04-03 10:19:49","RUBEN PANGLOLI","","PGSD","2000","200000","202000","superadmin01","1","","Transfer","0","./BuktiTF/SP0005_img394.jpg","");
-
-
-
-DROP TABLE mahasiswa;
-
 
 CREATE TABLE `mahasiswa` (
   `No` int(11) NOT NULL AUTO_INCREMENT,
@@ -189,10 +172,6 @@ INSERT INTO mahasiswa VALUES("47","","Reguler","JULIVA RANGAN","PA\'GASINGAN","2
 INSERT INTO mahasiswa VALUES("48","","Reguler","DUYUNG SIAMA","SANGALLA&#39;","1999-12-30","RUTH SAMPE DAUN","7318137012990003","Pembangunan","082188030429","f.ann.y.ka.rl.ind.ab.n.c@gmail.com","","","Perempuan","Kawin","082235187261","","2000","","SIPAS","Super Admin Satu","","2024-03-20 14:45:33","");
 INSERT INTO mahasiswa VALUES("49","","Reguler","MINA YUYU&#39;","BITTUANG","2000-02-22","SARA LIKU","7318026202000001","Pembangunan","082291401435","f.ann.y.ka.rl.ind.abnc@gmail.com","","Islam","Perempuan","Belum Kawin","085299995787","","2000","","SIPAS","Super Admin Satu","","2024-03-25 09:27:24","Belum Terdaftar");
 INSERT INTO mahasiswa VALUES("356","","Reguler","Hermanto Steven","Maumerehehe","2024-02-29","Yusfina Lisu","0123","Pembangunan","082293924242","stevenarif123@gmail.com","","Kristen","Perempuan","Belum Kawin","","","2000","","SIPAS","Super Admin Satu","2024-03-19 11:49:57","2024-04-05 10:14:10","Input admisi");
-
-
-
-DROP TABLE mahasiswabaru;
 
 
 CREATE TABLE `mahasiswabaru` (

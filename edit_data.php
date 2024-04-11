@@ -65,6 +65,7 @@ if (isset($_POST['submit'])) {
     $layanan_paket_semester = filter_input(INPUT_POST, 'LayananPaketSemester', FILTER_SANITIZE_STRING);
     $di_input_oleh = $user['nama_lengkap'];
     $di_edit_pada = date("Y-m-d H:i:s");
+    $status_input_sia = $koneksi->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
 
 
     // Prepare UPDATE query with placeholders
@@ -89,7 +90,8 @@ if (isset($_POST['submit'])) {
         NISN = ?, 
         LayananPaketSemester = ?, 
         DiInputOleh = ?, 
-        DiEditPada = ? 
+        DiEditPada = ?,
+        STATUS_INPUT_SIA = ?
         WHERE No = ?";
 
     //debug
@@ -98,7 +100,7 @@ if (isset($_POST['submit'])) {
     $stmt = mysqli_prepare($koneksi, $updateQuery);
 
     // Bind parameters
-    mysqli_stmt_bind_param($stmt, "ssssssssssssssssssssss",
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssss",
     $nim,
     $jalur_program,
     $nama_lengkap,
@@ -120,6 +122,7 @@ if (isset($_POST['submit'])) {
     $layanan_paket_semester,
     $di_input_oleh,
     $di_edit_pada,
+    $status_input_sia,
     $no
 );
 //echo $_POST['STATUS_INPUT_SIA'];
@@ -139,20 +142,24 @@ if (isset($_POST['submit'])) {
 }
 //debug
 
-// Close database connection
-mysqli_close($koneksi);
 
 // Define dropdown options
-$jurusan = [
-    "Pembangunan" => "Pembangunan",
-    "Ekonomi Syariah" => "Ekonomi Syariah",
-    // ... (add other options)
-];
+$query_jurusan = "SELECT nama_jurusan FROM jurusan";
+$result_jurusan = mysqli_query($koneksi, $query_jurusan);
+$jurusan = [];
+while($row = mysqli_fetch_assoc($result_jurusan)) {
+    $jurusan[$row['nama_jurusan']] = $row['nama_jurusan'];
+}
+// Close database connection
+mysqli_close($koneksi);
 
 $agama = [
     "Islam" => "Islam",
     "Kristen" => "Kristen",
-    // ... (add other options)
+    "Katolik" => "Katolik",
+    "Hindu" => "Hindu",
+    "Buddha" => "Buddha",
+    "Konghucu" => "Konghucu",
 ];
 
 $jenis_kelamin = [
@@ -240,7 +247,7 @@ $selectedJurusan = $mahasiswa['Jurusan'];
         <br>
 
         <label for="Password">Password:</label>
-        <input type="text" name="Password" id="password">
+        <input type="text" name="Password" id="password" value="<?php echo $mahasiswa['Password']; ?>">
         <br>
 
         <label for="agama">Agama:</label>
@@ -306,6 +313,16 @@ $selectedJurusan = $mahasiswa['Jurusan'];
         <br>
 
         <label for="DiInputPada">Terakhir di Edit Pada: <?php echo $mahasiswa['DiEditPada']; ?></label>
+        <br>
+
+        <label for="Status Input SIA">Status Input SIA:</label>
+        <select name="STATUS_INPUT_SIA" id="status_input_sia">
+            <option value="Belum Input" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Belum Input') echo "selected"; ?>>Belum Input</option>
+            <option value="Input SIA" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Input SIA') echo "selected"; ?>>Input SIA</option>
+            <option value="Berkas Kurang" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Berkas Kurang') echo "selected"; ?>>Berkas Kurang</option>
+            <option value="Belum Diverifikasi" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Belum Diverifikasi') echo "selected"; ?>>Belum Diverifikasi</option>
+            <option value="Berkas Diterima" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Berkas Diterima') echo "selected"; ?>>Berkas Diterima</option>
+        </select>
         <br>
 
         <input type="submit" name="submit" value="Simpan">

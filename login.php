@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
 ?>
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="./assets/js/color-modes.js"></script>
+  <head><script src="./html/assets/js/color-modes.js"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
-<link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="./html/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -148,7 +148,7 @@ if (isset($_POST['submit'])) {
 
     
     <!-- Custom styles for this template -->
-    <link href="./styles/styles.css" rel="stylesheet">
+    <link href="./html/styles/styles.css" rel="stylesheet">
   </head>
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
