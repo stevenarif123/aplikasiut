@@ -1,4 +1,5 @@
 <?php
+require_once "koneksi.php";
 
 // Start the session
 if (session_status() == PHP_SESSION_NONE) {
@@ -10,15 +11,6 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
 }
-
-// Database credentials (ideally, these should be stored in a separate configuration file or environment variables)
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "datamahasiswa";
-
-// Establish a database connection
-$conn = new mysqli($host, $user, $pass, $db);
 
 // Check connection
 if ($conn->connect_error) {
@@ -63,9 +55,11 @@ $majors = array("Pembangunan",
     );
 
 $username = $_SESSION['username'];
+
 $query = "SELECT * FROM admin WHERE username='$username'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
+
 if (!$result) {
   die("Query gagal: " . mysqli_error($conn));
 }
