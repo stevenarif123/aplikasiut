@@ -64,269 +64,165 @@ $total_halaman = ceil($total_data / $jumlah_data_per_halaman);
 
 ?>
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
-  <head><script src="html/assets/js/color-modes.js"></script>
-
+<html lang="en">
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.122.0">
-    <title>Data Mahasiswa</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
-
-    
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-
-<link href="html/assets/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1rem;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .btn-bd-primary {
-        --bd-violet-bg: #712cf9;
-        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-        --bs-btn-font-weight: 600;
-        --bs-btn-color: var(--bs-white);
-        --bs-btn-bg: var(--bd-violet-bg);
-        --bs-btn-border-color: var(--bd-violet-bg);
-        --bs-btn-hover-color: var(--bs-white);
-        --bs-btn-hover-bg: #6528e0;
-        --bs-btn-hover-border-color: #6528e0;
-        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-        --bs-btn-active-color: var(--bs-btn-hover-color);
-        --bs-btn-active-bg: #5a23c8;
-        --bs-btn-active-border-color: #5a23c8;
-      }
-
-      .bd-mode-toggle {
-        z-index: 1500;
-      }
-
-      .bd-mode-toggle .dropdown-menu .active .bi {
-        display: block !important;
-      }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="html/styles/sidebars.css" rel="stylesheet" type="text/css">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"s crossorigin="anonymous">
   </head>
   <body>
-<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-  <symbol id="bootstrap" viewBox="0 0 118 94">
-    <title>SALUT TATOR</title>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"></path>
-  </symbol>
-  <symbol id="home" viewBox="0 0 16 16">
-    <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
-  </symbol>
-  <symbol id="speedometer2" viewBox="0 0 16 16">
-    <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
-    <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/>
-  </symbol>
-  <symbol id="table" viewBox="0 0 16 16">
-    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
-  </symbol>
-  <symbol id="people-circle" viewBox="0 0 16 16">
-    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-  </symbol>
-  <symbol id="grid" viewBox="0 0 16 16">
-    <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
-  </symbol>
-</svg>
-<main class="d-flex flex-nowrap">
-  <div class="b-example-divider b-example-vr"></div>
-  <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-      <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-      <span class="fs-4">SALUT TATOR</span>
-    </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <a href="dashboard.php" class="nav-link link-body-emphasis" aria-current="page">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-          Home
-        </a>
-      </li>
-      <li>
-        <div class="dropdown">
-          <a href="#" class="nav-link active" data-bs-toggle="dropdown" aria-expanded="false">
-            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">SALUT TANA TORAJA</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="dashboard.php">Dashboard</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="mahasiswa.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Mahasiswa
           </a>
-          <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="mahasiswa.php">Data Mahasiswa</a></li>
+          <ul class="dropdown-menu">
+          <li><a class="dropdown-item active" href="mahasiswa.php">Daftar Mahasiswa</a></li>
             <li><a class="dropdown-item" href="tambah_data.php">Tambah Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
           </ul>
-        </div>
-      </li>
-      <li>
-        <div class="dropdown">
-          <a href="#" class="nav-link link-body-emphasis" data-bs-toggle="dropdown" aria-expanded="false">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-            Laporan
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="./laporanbayar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Laporan Pembayaran
           </a>
-          <ul class="dropdown-menu text-small shadow">
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="./laporanbayar">Laporan Bayar</a></li>
+            <li><a class="dropdown-item" href="./laporanbayar/tambah_laporan.php">Tambah Laporan</a></li>
             <li><a class="dropdown-item" href="./laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
-            <li><a class="dropdown-item" href="./laporanbayar/tambah_laporan.php">Tambah Data</a></li>
-            <li><a class="dropdown-item" href="./laporanbayar/">Laporan Uang Masuk</a></li>
           </ul>
-        </div>
-      </li>
-      <li>
-        <a href="backup_database.php" class="nav-link link-body-emphasis">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-          Backup Database
-        </a>
-      </li>
-    </ul>
-    <hr>
-    <div class="dropdown">
-      <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-        <strong>mdo</strong>
-      </a>
-      <ul class="dropdown-menu text-small shadow">
-        <li><a class="dropdown-item" href="./laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
-        <li><a class="dropdown-item" href="./laporanbayar/tambah_laporan.php">Tambah Data</a></li>
-        <li><a class="dropdown-item" href="./laporanbayar/">Laporan Uang Masuk</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mahasiswa Baru
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="./maba/dashboard.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="./maba/tambah_data.php">Tambah Mahasiswa</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="./cekstatus/pencarian.php">Cek Status Mahasiswa</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-warning text-dark fw-bold" href="logout.php">Keluar</a>
+        </li>
       </ul>
     </div>
   </div>
-  <ul>
-      <p hidden>Selamat datang, <?php echo $user['nama_lengkap']; ?>!</p> <p hidden>Peran sebagai <?php echo $user['peran']; ?></p>
-      <form action="mahasiswa.php" method="post">
-        <label for="keyword">Cari data mahasiswa:</label>
-        <input type="text" name="keyword" id="keyword" value="<?php echo $keyword; ?>">
-        <input type="submit" name="search" value="Cari">
-      </form>
-      <h2>Tabel Mahasiswa</h2>
-        <?php if (count($mahasiswa) > 0) { ?>
-    <div class="table-responsive small">
-      <table class="table table-striped table-sm table-hover">
-        <tr>
-          <th>No</th>
-          <th>Nama Lengkap</th>
-          <th>Tempat Lahir</th>
-          <th>Tanggal lahir</th>
-          <th>Nama Ibu Kandung</th>
-          <th>NIK</th>
-          <th>Jalur Program</th>
-          <th>Jurusan</th>
-          <th>Nomor HP</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Status Input SIA</th>
-          <th>Aksi</th>
-        </tr>
-
-        <?php $no = ($halaman_saat_ini - 1) * $jumlah_data_per_halaman + 1; foreach ($mahasiswa as $mhs) { ?>
+</nav>
+<?php if (count($mahasiswa) > 0) { ?>
+    <div class="container-sm">
+      <table class="table table-hover">
+        <thead>
           <tr>
-            <td><?php echo $no++; ?></td>
-            <td><?php echo $mhs['NamaLengkap']; ?></td>
-            <td><?php echo $mhs['TempatLahir']; ?></td>
-            <td><?php echo $mhs['TanggalLahir']; ?></td>
-            <td><?php echo $mhs['NamaIbuKandung']; ?></td>
-            <td><?php echo $mhs['NIK']; ?></td>
-            <td><?php echo $mhs['JalurProgram']; ?></td>
-            <td><?php echo $mhs['Jurusan']; ?></td>
-            <td><?php echo $mhs['NomorHP']; ?></td>
-            <td><?php echo $mhs['Email']; ?></td>
-            <td><?php echo $mhs['Password']; ?></td>
-            <td><?php echo $mhs['STATUS_INPUT_SIA']; ?></td>
-            <td>
-              <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>">Lihat Data</a> |
-              <a href="edit_data.php?No=<?php echo $mhs['No']; ?>">Edit Data</a> |
-              <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus Data</a>|
-            </td>
+            <th scope="col">No</th>
+            <th scope="col">Nama Lengkap</th>
+            <th scope="col">Jalur Program</th>
+            <th scope="col">Jurusan</th>
+            <th scope="col">Nomor HP</th>
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col" colspan="3">Aksi</th>
           </tr>
+        </thead>
+        <tbody>
+          <?php $no = ($halaman_saat_ini - 1) * $jumlah_data_per_halaman + 1; foreach ($mahasiswa as $mhs) { ?>
+            <tr>
+              <th scope="row"><?php echo $no++; ?></th>
+              <td><?php echo $mhs['NamaLengkap']; ?></td>
+              <td><?php echo $mhs['JalurProgram']; ?></td>
+              <td><?php echo $mhs['Jurusan']; ?></td>
+              <td><?php echo $mhs['NomorHP']; ?></td>
+              <td><?php echo $mhs['Email']; ?></td>
+              <td><?php echo $mhs['Password']; ?></td>
+              <td>
+                <a class="btn btn-info" role="button" href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>">Detail</a>
+              </td>
+              <td>
+                <a class="btn btn-warning" role="button" href="edit_data.php?No=<?php echo $mhs['No']; ?>">Edit</a>
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?php echo $mhs['No']; ?>">Hapus</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modalHapus<?php echo $mhs['No']; ?>" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus data ini?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-danger">Hapus</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
           <?php } ?>
-        </table>
-      </div>
-
-        <!-- Tampilkan opsi pemilihan jumlah data per halaman -->
-        <form action="" method="GET">
-              <label for="jumlah_data_per_halaman">Tampilkan per halaman:</label>
-              <select name="jumlah_data_per_halaman" id="jumlah_data_per_halaman" onchange="this.form.submit()">
-                  <option value="10" <?php echo ($jumlah_data_per_halaman == 10) ? 'selected' : ''; ?>>10</option>
-                  <option value="25" <?php echo ($jumlah_data_per_halaman == 25) ? 'selected' : ''; ?>>25</option>
-                  <option value="100" <?php echo ($jumlah_data_per_halaman == 100) ? 'selected' : ''; ?>>100</option>
-                  <option value="all" <?php echo ($jumlah_data_per_halaman == 'all') ? 'selected' : ''; ?>>Semua</option>
-              </select>
-          </form>
-
-        <!-- Tampilkan navigasi pagination -->
-          <div>
-              <?php if ($halaman_saat_ini > 1) { ?>
-                  <a href="?halaman=<?php echo $halaman_saat_ini - 1; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>">Sebelumnya</a>
-              <?php } ?>
-              <?php for ($i = 1; $i <= $total_halaman; $i++) { ?>
-                  <a href="?halaman=<?php echo $i; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>"><?php echo $i; ?></a>
-              <?php } ?>
-              <?php if ($halaman_saat_ini < $total_halaman) { ?>
-                  <a href="?halaman=<?php echo $halaman_saat_ini + 1; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>">Selanjutnya</a>
-              <?php } ?>
-          </div>
-      <?php } else { ?>
-        <p>Data mahasiswa tidak ditemukan.</p>
-      <?php } ?>
-          </table>
-        </div>
-  </ul>
-</main>
-<script src="html/assets/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="html/styles/sidebars.js"></script></body>
+        </tbody>
+      </table>
+    </div>
+    <!-- Tampilkan opsi pemilihan jumlah data per halaman -->
+    <div class="d-flex justify-content-center my-3">
+        <form action="" method="GET" class="d-flex align-items-center">
+            <label for="jumlah_data_per_halaman" class="me-2">Tampilkan per Halaman:</label>
+            <select name="jumlah_data_per_halaman" id="jumlah_data_per_halaman" class="form-select" onchange="this.form.submit()" style="width: auto;">
+                <option value="10" <?php echo ($jumlah_data_per_halaman == 10) ? 'selected' : ''; ?>>10</option>
+                <option value="25" <?php echo ($jumlah_data_per_halaman == 25) ? 'selected' : ''; ?>>25</option>
+                <option value="100" <?php echo ($jumlah_data_per_halaman == 100) ? 'selected' : ''; ?>>100</option>
+                <option value="all" <?php echo ($jumlah_data_per_halaman == 'all') ? 'selected' : ''; ?>>Semua</option>
+            </select>
+        </form>
+    </div>
+    <!-- Tampilkan navigasi pagination -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <?php if ($halaman_saat_ini > 1) { ?>
+          <li class="page-item">
+            <a class="page-link" href="?halaman=<?php echo $halaman_saat_ini - 1; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>">Sebelumnya</a>
+          </li>
+        <?php } else { ?>
+          <li class="page-item disabled">
+            <a class="page-link">Sebelumnya</a>
+          </li>
+        <?php } ?>
+        
+        <?php for ($i = 1; $i <= $total_halaman; $i++) { ?>
+          <li class="page-item <?php echo ($i == $halaman_saat_ini) ? 'active' : ''; ?>"><a class="page-link" href="?halaman=<?php echo $i; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>"><?php echo $i; ?></a></li>
+        <?php } ?>
+        
+        <?php if ($halaman_saat_ini < $total_halaman) { ?>
+          <li class="page-item">
+            <a class="page-link" href="?halaman=<?php echo $halaman_saat_ini + 1; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>">Selanjutnya</a>
+          </li>
+        <?php } else { ?>
+          <li class="page-item disabled">
+            <a class="page-link">Selanjutnya</a>
+          </li>
+        <?php } ?>
+      </ul>
+    </nav>
+  <?php } else { ?>
+    <p>Data mahasiswa tidak ditemukan.</p>
+  <?php } ?>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>

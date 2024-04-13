@@ -20,7 +20,7 @@ $kode_laporan = generateKodeLaporan($jenis_pembayaran);
 
 // Simpan kode laporan ke database
 
-echo "Kode Laporan: $kode_laporan";
+// echo "Kode Laporan: $kode_laporan";
 
 // Initialize variables
 $hasilPencarian = null;
@@ -102,85 +102,164 @@ $namaMahasiswa = urldecode($_GET['nama'] ?? '');
 $jurusan = urldecode($_GET['jurusan'] ?? '');
 ?>
 
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Laporan Bayar</title>
-</head>
-<body>
-
-<h1>Tambah Laporan Bayar</h1>
-
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
-    <h2>Halo Admin  <?php echo $admin; ?></h2>
-    <label for="nim">NIM : </label>
-    <input type="text" id="nim" name="nim" value="<?php echo $nim; ?>" readonly>
-
-    <label for="nama_mahasiswa">NAMA MAHASISWA : </label>
-    <input type="text" id="nama_mahasiswa" name="nama_mahasiswa" value="<?php echo $namaMahasiswa; ?>" readonly>
-
-    <label for="jurusan">JURUSAN : </label>
-    <input type="text" id="jurusan" name="jurusan" value="<?php echo $jurusan; ?>" readonly>
-
-    <label for="admin">ADMIN PENGINPUT : </label>
-    <input type="text" id="admin" name="admin" value="<?php echo $admin; ?>" readonly>
-
-    <div>
-        <label for="jenis_bayar">Jenis Bayar:</label>
-        <select id="jenis_bayar" name="jenis_bayar" required>
-            <option value="">Pilih Jenis Bayar</option>
-            <?php
-            // Menampilkan opsi jenis pembayaran dari array
-            foreach ($jenis_pembayaran as $jenis) {
-                echo "<option value='$jenis'>$jenis</option>";
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px;
             }
-            ?>
-        </select>
-    </div>
-    <div>
-        <label for="ut">UT:</label>
-        <input type="number" id="ut" name="ut" required>
-    </div>
-    <div>
-        <label for="pokjar">Pokjar:</label>
-        <input type="number" id="pokjar" name="pokjar" required>
-    </div>
-    <div>
-        <label for="catatan_khusus">Catatan Khusus:</label>
-        <textarea id="catatan_khusus" name="catatan_khusus"></textarea>
-    </div>
-    <div>
-        <label for="is_maba">Mahasiswa Baru (Maba):</label>
-        <input type="checkbox" id="is_maba" name="is_maba" value="1">
-    </div>
-    <div>
-    <label>Metode Bayar:</label>
-    <div>
-        <input type="radio" id="metode_transfer" name="metode_bayar" value="Transfer" onchange="toggleUpload(this)"> <label for="metode_transfer">Transfer</label>
-        <input type="radio" id="metode_cash" name="metode_bayar" value="Cash" onchange="toggleUpload(this)"> <label for="metode_cash">Cash</label>
-    </div>
-    </div>
-
-    <div id="upload_section" style="display:none;">
-        <div>
-            <label for="bukti_file">Upload File Bukti Transfer:</label>
-            <input type="file" id="bukti_file" name="bukti_file">
-        </div>
-    </div>
-
+        }
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+        }
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px;
+            }
+        }
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+            }
+        }
+    </style>
     <script>
-        function toggleUpload(selectedMethod) {
-            var uploadSection = document.getElementById("upload_section");
-            if (selectedMethod.value === "Transfer") {
-                uploadSection.style.display = "block";
+        function toggleUpload(element) {
+            if (element.value == "Transfer") {
+                document.getElementById("upload_section").style.display = "block";
             } else {
-                uploadSection.style.display = "none";
+                document.getElementById("upload_section").style.display = "none";
             }
         }
     </script>
-
-    <button type="submit">Tambah Laporan Bayar</button>
-</form>
-
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">SALUT TANA TORAJA</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="../dashboard.php">Dashboard</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="../mahasiswa.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Mahasiswa
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
+                            <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="./laporanbayar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Laporan Pembayaran
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="./">Laporan Bayar</a></li>
+                            <li><a class="dropdown-item" href="./tambah_laporan.php">Tambah Laporan</a></li>
+                            <li><a class="dropdown-item active" href="./verifikasi_laporan.php">Verifikasi Laporan</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Mahasiswa Baru
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="../maba/dashboard.php">Daftar Mahasiswa</a></li>
+                            <li><a class="dropdown-item" href="../maba/tambah_data.php">Tambah Mahasiswa</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="../cekstatus/pencarian.php">Cek Status Mahasiswa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-warning text-dark fw-bold" href="../logout.php">Keluar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h1 class="mb-4">Tambah Laporan Bayar</h1>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="nim" class="form-label">NIM : </label>
+                <input type="text" id="nim" name="nim" value="<?php echo $nim; ?>" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="nama_mahasiswa" class="form-label">NAMA MAHASISWA : </label>
+                <input type="text" id="nama_mahasiswa" name="nama_mahasiswa" value="<?php echo $namaMahasiswa; ?>" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="jurusan" class="form-label">JURUSAN : </label>
+                <input type="text" id="jurusan" name="jurusan" value="<?php echo $jurusan; ?>" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="admin" class="form-label">ADMIN PENGINPUT : </label>
+                <input type="text" id="admin" name="admin" value="<?php echo $admin; ?>" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="jenis_bayar" class="form-label">Jenis Bayar:</label>
+                <select id="jenis_bayar" name="jenis_bayar" class="form-select" required>
+                    <option value="">Pilih Jenis Bayar</option>
+                    <?php
+                    // Menampilkan opsi jenis pembayaran dari array
+                    foreach ($jenis_pembayaran as $jenis) {
+                        echo "<option value='$jenis'>$jenis</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="ut" class="form-label">UT:</label>
+                <input type="number" id="ut" name="ut" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="pokjar" class="form-label">Pokjar:</label>
+                <input type="number" id="pokjar" name="pokjar" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="catatan_khusus" class="form-label">Catatan Khusus:</label>
+                <textarea id="catatan_khusus" name="catatan_khusus" class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="is_maba" class="form-label">Mahasiswa Baru (Maba):</label>
+                <input type="checkbox" id="is_maba" name="is_maba" value="1">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Metode Bayar:</label>
+                <div class="form-check">
+                    <input type="radio" id="metode_transfer" name="metode_bayar" value="Transfer" onchange="toggleUpload(this)" class="form-check-input"> <label for="metode_transfer" class="form-check-label">Transfer</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="metode_cash" name="metode_bayar" value="Cash" onchange="toggleUpload(this)" class="form-check-input"> <label for="metode_cash" class="form-check-label">Cash</label>
+                </div>
+            </div>
+            <div id="upload_section" style="display:none;">
+                <div class="mb-3">
+                    <label for="bukti_file" class="form-label">Unggah Gambar:</label>
+                    <input type="file" id="bukti_file" name="bukti_file" class="form-control" style="display: none;">
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('bukti_file').click()">Pilih Gambar</button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Tambah Laporan Bayar</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
 </body>
 </html>

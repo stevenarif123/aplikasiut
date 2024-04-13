@@ -24,6 +24,6 @@ $query = "DELETE FROM mahasiswa WHERE No=$id";
 mysqli_query($koneksi, $query);
 
 // Redirect ke halaman dashboard
-header("Location: dashboard.php");
+header("Location: mahasiswa.php");
 
 ?>

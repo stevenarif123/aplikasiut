@@ -196,13 +196,13 @@ $selectedJurusan = $mahasiswa['Jurusan'];
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tambah Mahasiswa</title>
+    <title>Edit Data Mahasiswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"s crossorigin="anonymous">
   </head>
   <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">SALUT TANA TORAJA</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -225,7 +225,8 @@ $selectedJurusan = $mahasiswa['Jurusan'];
             Laporan Pembayaran
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="./laporanbayar/tambah_data.php">Tambah Laporan</a></li>
+            <li><a class="dropdown-item" href="./laporanbayar">Laporan Bayar</a></li>
+            <li><a class="dropdown-item" href="./laporanbayar/tambah_laporan.php">Tambah Laporan</a></li>
             <li><a class="dropdown-item" href="./laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
           </ul>
         </li>
@@ -241,45 +242,50 @@ $selectedJurusan = $mahasiswa['Jurusan'];
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="./cekstatus/pencarian.php">Cek Status Mahasiswa</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-warning text-dark fw-bold" href="logout.php">Keluar</a>
+        </li>
       </ul>
     </div>
   </div>
     </nav>
-<div class="container-sm">
-    <p class="isi">Admin : <?php echo $user['nama_lengkap']; ?>!</p>
-    <form action="edit_data.php?No=<?php echo $no; ?>" method="post" class="row g-3">
-        <div class="col-md-6">
+<div class="container-sm mt-3">
+    <h2 class="mb-4">Edit Data Mahasiswa</h2>
+    <form action="edit_data.php?No=<?php echo $no; ?>" method="post">
+        <div class="mb-3">
             <label for="nim" class="form-label">NIM</label>
             <input type="text" class="form-control" name="Nim" id="nim" placeholder="041100000" value="<?php echo $mahasiswa['Nim']; ?>" required>
         </div>
-        <div class="col-md-6">
+        <div class="mb-3">
             <label for="jalur_program" class="form-label">Jalur Program:</label>
-            <select class="form-select" aria-label="JalurProgram" name="JalurProgram" id="jalur_program" required>
+            <select class="form-select" name="JalurProgram" id="jalur_program" required>
                 <option value="RPL" <?php if ($mahasiswa['JalurProgram'] == "RPL") echo "selected"; ?>>RPL</option>
                 <option value="Reguler" <?php if ($mahasiswa['JalurProgram'] == "Reguler") echo "selected"; ?>>Reguler</option>
             </select>
         </div>
-        <div class="col-12">
-            <label for="nama_lengkap">Nama Lengkap:</label>
+        <div class="mb-3">
+            <label for="nama_lengkap" class="form-label">Nama Lengkap:</label>
             <input type="text" class="form-control" name="NamaLengkap" id="nama_lengkap" value="<?php echo $mahasiswa['NamaLengkap']; ?>" required>
         </div>
-        <div class="col-6">
-            <label for="tempat_lahir" class="form-label">Tempat Lahir:</label>
-            <input type="text" class="form-control" name="TempatLahir" id="tempat_lahir" value="<?php echo $mahasiswa['TempatLahir']; ?>" required>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="tempat_lahir" class="form-label">Tempat Lahir:</label>
+                <input type="text" class="form-control" name="TempatLahir" id="tempat_lahir" value="<?php echo $mahasiswa['TempatLahir']; ?>" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
+                <input type="date" class="form-control" name="TanggalLahir" id="tanggal_lahir" value="<?php echo $mahasiswa['TanggalLahir']; ?>" required>
+            </div>
         </div>
-        <div class="col-6">
-            <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
-            <input type="date" class="form-control" name="TanggalLahir" id="tanggal_lahir" value="<?php echo $mahasiswa['TanggalLahir']; ?>" required>
-        </div>
-        <div class="col-12">
+        <div class="mb-3">
             <label for="nama_ibu_kandung" class="form-label">Nama Ibu Kandung:</label>
             <input type="text" class="form-control" name="NamaIbuKandung" id="nama_ibu_kandung" value="<?php echo $mahasiswa['NamaIbuKandung']; ?>" required>
         </div>
-        <div class="col-12">
+        <div class="mb-3">
             <label for="nik" class="form-label">NIK:</label>
             <input type="text" class="form-control" name="NIK" id="nik" value="<?php echo $mahasiswa['NIK']; ?>" required>
         </div>
-        <div class="col-12">
+        <div class="mb-3">
             <label for="jurusan" class="form-label">Jurusan:</label>
             <select class="form-select" name="Jurusan" id="jurusan" required>
                 <?php foreach ($jurusan as $value => $label): ?>
@@ -289,19 +295,21 @@ $selectedJurusan = $mahasiswa['Jurusan'];
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="col-12">
+        <div class="mb-3">
             <label for="nomor_hp" class="form-label">Nomor HP:</label>
             <input type="text" class="form-control" name="NomorHP" id="nomor_hp" value="<?php echo $mahasiswa['NomorHP']; ?>" required>
         </div>
-        <div class="col-md-6">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="Email" id="email" value="<?php echo $mahasiswa['Email']; ?>" required>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="Email" id="email" value="<?php echo $mahasiswa['Email']; ?>" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="Password" id="password" value="<?php echo $mahasiswa['Password']; ?>" disabled>
+            </div>
         </div>
-        <div class="col-md-6">
-            <label for="password" class="form-label">Password</label>
-            <input type="text" class="form-control" name="Password" id="password" value="<?php echo $mahasiswa['Password']; ?>" disabled>
-        </div>
-        <div class="col-12">
+        <div class="mb-3">
             <label for="agama" class="form-label">Agama:</label>
             <select class="form-select" name="Agama" id="agama" required>
                 <?php foreach ($agama as $value => $label): ?>
@@ -311,44 +319,46 @@ $selectedJurusan = $mahasiswa['Jurusan'];
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="col-md-6">
-            <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
-            <select class="form-select" name="JenisKelamin" id="jenis_kelamin" required>
-                <?php foreach ($jenis_kelamin as $value => $label): ?>
-                    <option value="<?php echo $value; ?>" <?php if ($mahasiswa['JenisKelamin'] == $value) echo "selected"; ?>>
-                        <?php echo $label; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
+                <select class="form-select" name="JenisKelamin" id="jenis_kelamin" required>
+                    <?php foreach ($jenis_kelamin as $value => $label): ?>
+                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['JenisKelamin'] == $value) echo "selected"; ?>>
+                            <?php echo $label; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="status_perkawinan" class="form-label">Status Perkawinan:</label>
+                <select class="form-select" name="StatusPerkawinan" id="status_perkawinan" required>
+                    <?php foreach ($status_perkawinan as $value => $label): ?>
+                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['StatusPerkawinan'] == $value) echo "selected"; ?>>
+                            <?php echo $label; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
         </div>
-        <div class="col-md-6">
-            <label class="form-label" for="status_perkawinan" ">Status Perkawinan:</label>
-            <select class="form-select" name="StatusPerkawinan" id="status_perkawinan" required>
-                <?php foreach ($status_perkawinan as $value => $label): ?>
-                    <option value="<?php echo $value; ?>" <?php if ($mahasiswa['StatusPerkawinan'] == $value) echo "selected"; ?>>
-                        <?php echo $label; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <div class="mb-3">
+            <label for="nomor_hp_alternatif" class="form-label">Nomor HP Alternatif:</label>
+            <input type="text" class="form-control" name="NomorHPAlternatif" id="nomor_hp_alternatif" value="<?php echo $mahasiswa['NomorHPAlternatif']; ?>">
         </div>
-        <div class="col-12">
-            <label class="form-label" for="nomor_hp_alternatif">Nomor HP Alternatif:</label>
-            <input type="text" class="form-control" name="NomorHPAlternatif" id="nomor_hp_alternatif value="<?php echo $mahasiswa['NomorHPAlternatif']; ?>"">
-        </div>
-        <div class="col-12">
-            <label class="form-label" for="nomor_ijazah">Nomor Ijazah:</label>
+        <div class="mb-3">
+            <label for="nomor_ijazah" class="form-label">Nomor Ijazah:</label>
             <input type="text" class="form-control" name="NomorIjazah" id="nomor_ijazah" value="<?php echo $mahasiswa['NomorIjazah']; ?>">
         </div>
-        <div class="col-12">
-            <label class="form-label" for="tahun_ijazah">Tahun Ijazah:</label>
+        <div class="mb-3">
+            <label for="tahun_ijazah" class="form-label">Tahun Ijazah:</label>
             <input type="text" class="form-control" name="TahunIjazah" id="tahun_ijazah" value="<?php echo $mahasiswa['TahunIjazah']; ?>">
         </div>
-        <div class="col-12">
-            <label for="nisn">NISN:</label>
+        <div class="mb-3">
+            <label for="nisn" class="form-label">NISN:</label>
             <input type="text" class="form-control" name="NISN" id="nisn" value="<?php echo $mahasiswa['NISN']; ?>">
         </div>
-        <div class="col-12">
-            <label class="form-label" for="layanan_paket_semester">Layanan Paket Semester:</label>
+        <div class="mb-3">
+            <label for="layanan_paket_semester" class="form-label">Layanan Paket Semester:</label>
             <select name="LayananPaketSemester" id="layanan_paket_semester" class="form-select" required>
                 <?php foreach ($layanan_paket_semester as $value => $label): ?>
                     <option value="<?php echo $value; ?>" <?php if ($mahasiswa['LayananPaketSemester'] == $value) echo "selected"; ?>>
@@ -357,28 +367,14 @@ $selectedJurusan = $mahasiswa['Jurusan'];
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="col-md-6">
-            <label for="DiInputOleh">Di Input Oleh</label>
-            <input type="text" class="form-control" name="DiInputOleh" id="di_input_oleh" value="<?php echo $mahasiswa['DiInputOleh']; ?>" disabled>
-        </div>
-        <div class="col-md-6">
-            <label for="TanggalWaktuInput">Tanggal dan Waktu Input</label>
-            <input type="text" class="form-control" name="TanggalWaktuInput" id="tanggal_waktu_input" value="<?php echo $mahasiswa['DiInputPada']; ?>" disabled>
-        </div>
-        <div class="col-md-6">
-            <label for="TanggalInput">Tanggal Input</label>
-            <input type="text" class="form-control" name="TanggalInput" id="tanggal_input" value="<?php echo $mahasiswa['DiInputPada']; ?>" disabled>
-        </div>
-        <div class="col-12">
-            <label class="form-label" for="status_input_sia">Status Input Sia:</label>
-            <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select"s required>
+        <div class="mb-3">
+            <label for="status_input_sia" class="form-label">Status Input Sia:</label>
+            <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select" required>
                 <option value="Belum Terdaftar" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Belum Terdaftar') echo "selected"; ?>>Belum Terdaftar</option>
                 <option value="Admisi Diterima" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Admisi Diterima') echo "selected"; ?>>Admisi Diterima</option>
             </select>
         </div>
-        <div class="col-12">
-            <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
-        </div>
+        <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
     </form>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

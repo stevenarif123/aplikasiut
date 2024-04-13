@@ -69,49 +69,120 @@ if (isset($_GET['verifikasi']) && $_GET['verifikasi'] == "true") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Verifikasi Laporan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">SALUT TANA TORAJA</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="../dashboard.php">Dashboard</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="../mahasiswa.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mahasiswa
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="./" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Laporan Pembayaran
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item active" href="./">Laporan Bayar</a></li>
+            <li><a class="dropdown-item" href="./tambah_laporan.php">Tambah Laporan</a></li>
+            <li><a class="dropdown-item" href="">Verifikasi Laporan</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mahasiswa Baru
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="../maba/dashboard.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../maba/tambah_data.php">Tambah Mahasiswa</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="../cekstatus/pencarian.php">Cek Status Mahasiswa</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-warning text-dark fw-bold" href="../logout.php">Keluar</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container mt-5">
+<h1 class="mb-4">Detail Verifikasi Laporan</h1>
+    <!-- Tampilkan detail pembayaran -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="card-text">Kode Laporan: <?php echo $row['KodeLaporan']; ?></p>
+            <p class="card-text">Jenis Bayar: <?php echo $row['JenisBayar']; ?></p>
+            <p class="card-text">Tanggal Input: <?php echo $row['TanggalInput']; ?></p>
+            <p class="card-text">Nama Mahasiswa: <?php echo $row['NamaMahasiswa']; ?></p>
+            <p class="card-text">NIM: <?php echo $row['Nim']; ?></p>
+            <p class="card-text">Jurusan: <?php echo $row['Jurusan']; ?></p>
+            <p class="card-text">UT: <?php echo $row['Ut']; ?></p>
+            <p class="card-text">Pokjar: <?php echo $row['Pokjar']; ?></p>
+            <p class="card-text">Admin: <?php echo $row['Admin']; ?></p>
+            <p class="card-text">Catatan Khusus: <?php echo $row['CatatanKhusus']; ?></p>
+            <p class="card-text">Metode Bayar: <?php echo $row['MetodeBayar']; ?></p>
+            <p class="card-text">Alamat File: <?php echo $row['AlamatFile']; ?></p>
+            <img src="<?php echo $row['AlamatFile']; ?>" alt="Bukti Transfer" class="img-fluid" style="max-width: 300px;"><br><br>
+        </div>
+    </div>
 
-<h1>Detail Verifikasi Laporan</h1>
-
-<!-- Display details of the payment -->
-<div>
-    <p>Kode Laporan: <?php echo $row['KodeLaporan']; ?></p>
-    <p>Jenis Bayar: <?php echo $row['JenisBayar']; ?></p>
-    <p>Tanggal Input: <?php echo $row['TanggalInput']; ?></p>
-    <p>Nama Mahasiswa: <?php echo $row['NamaMahasiswa']; ?></p>
-    <p>NIM: <?php echo $row['Nim']; ?></p>
-    <p>Jurusan: <?php echo $row['Jurusan']; ?></p>
-    <p>UT: <?php echo $row['Ut']; ?></p>
-    <p>Pokjar: <?php echo $row['Pokjar']; ?></p>
-    <p>Admin: <?php echo $row['Admin']; ?></p>
-    <p>Catatan Khusus: <?php echo $row['CatatanKhusus']; ?></p>
-    <p>Metode Bayar: <?php echo $row['MetodeBayar']; ?></p>
-    <p>Alamat File: <?php echo $row['AlamatFile']; ?></p>
-    <img src="<?php echo $row['AlamatFile']; ?>" alt="Bukti Transfer" style="max-width: 300px;"><br><br>
+    <?php if ($row['isVerifikasi'] == 0) : ?>
+        <!-- Formulir untuk menolak pembayaran dengan catatan khusus -->
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $id); ?>">
+            <div class="mb-3">
+                <label for="catatan_khusus" class="form-label">Catatan Khusus untuk Penolakan:</label>
+                <textarea class="form-control" id="catatan_khusus" name="catatan_khusus" required></textarea>
+            </div>
+            <button type="submit" name="reject" class="btn btn-danger">Tolak</button>
+        </form>
+    <?php endif; ?>
+        <!-- Tombol untuk verifikasi -->
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#verifikasiModal">
+        Verifikasi
+    </button>
+    <!-- Modal untuk verifikasi -->
+    <div class="modal fade" id="verifikasiModal" tabindex="-1" aria-labelledby="verifikasiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verifikasiModalLabel">Verifikasi Pembayaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin memverifikasi pembayaran ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <a href="detail_verifikasi.php?id=<?php echo $row['id']; ?>&verifikasi=true" class="btn btn-primary">Verifikasi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Tombol untuk kembali ke halaman verifikasi -->
+    <a href="verifikasi_laporan.php" class="btn btn-primary">Kembali</a>
 </div>
-
-<?php if ($row['isVerifikasi'] == 0) : ?>
-    <!-- Form for rejecting payment with special notes -->
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $id); ?>">
-        <label for="catatan_khusus">Catatan Khusus untuk Penolakan:</label><br>
-        <textarea id="catatan_khusus" name="catatan_khusus" required></textarea><br><br>
-        <button type="submit" name="reject">Tolak</button>
-    </form>
-<?php endif; ?>
-
-<!-- Button for verification -->
-<a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $id . "&verifikasi=true"); ?>">Verifikasi</a>
-
-<!-- Button to return to verification page -->
-<a href="verifikasi_laporan.php">Kembali</a>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
