@@ -1,1 +1,1 @@
-<?php require './html/sidebar.html';
+<?php require'./html/sidebar.php'; ?>

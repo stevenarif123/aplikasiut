@@ -109,117 +109,177 @@ if (isset($_POST['submit'])) {
 // Close the database koneksiection
 $koneksi->close();
 ?>
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <p>Selamat datang, <?php echo $user['nama_lengkap']; ?>!</p>
-    <title>Tambah Data Mahasiswa</title>
-    <style>
-        /* Add your CSS styles here */
-    </style>
-</head>
-<body>
-    <h1>Tambah Data Mahasiswa</h1>
-    <?php if (isset($error_message)) : ?>
-        <p><?php echo $error_message; ?></p>
-    <?php endif; ?>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <label for="nim">NIM:</label>
-        <input type="text" name="Nim" id="nim" required>
-        <br>
-        <label for="jalur_program">Jalur Program:</label>
-        <select name="JalurProgram" id="jalur_program" required>
-            <option value="RPL">RPL</option>
-            <option value="Reguler">Reguler</option>
-        </select>
-        <br>
-        <label for="nama_lengkap">Nama Lengkap:</label>
-        <input type="text" name="NamaLengkap" id="nama_lengkap" required>
-        <br>
-        <label for="tempat_lahir">Tempat Lahir:</label>
-        <input type="text" name="TempatLahir" id="tempat_lahir" required>
-        <br>
-        <label for="tanggal_lahir">Tanggal Lahir:</label>
-        <input type="date" name="TanggalLahir" id="tanggal_lahir" required>
-        <br>
-        <label for="nama_ibu_kandung">Nama Ibu Kandung:</label>
-        <input type="text" name="NamaIbuKandung" id="nama_ibu_kandung" required>
-        <br>
-        <label for="nik">NIK:</label>
-        <input type="text" name="NIK" id="nik" required>
-        <br>
-        <label for="jurusan">Jurusan:</label>
-        <select name="Jurusan" id="jurusan" required>
-            <?php foreach ($majors as $major) : ?>
-                <option value="<?php echo $major; ?>"><?php echo $major; ?></option>
-            <?php endforeach; ?>
-        </select>
-        <br>
-        <label for="nomor_hp">Nomor HP:</label>
-        <input type="text" name="NomorHP" id="nomor_hp" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" name="Email" id="email" required>
-        
-        <br>
-        <input type="hidden" name="Password" id="password">
-        
-        <label for="agama">Agama:</label>
-        <select name="Agama" id="agama" required>
-            <!-- Add options for religions here -->
-            <option value="Islam">Islam</option>
-            <option value="Kristen">Kristen</option>
-            <option value="Katolik">Katolik</option>
-            <option value="Hindu">Hindu</option>
-            <option value="Buddha">Buddha</option>
-            <option value="Konghucu">Konghucu</option>
-        </select>
-        <br>
-        <label for="jenis_kelamin">Jenis Kelamin:</label>
-        <select name="JenisKelamin" id="jenis_kelamin" required>
-            <option value="Laki-laki">Laki-laki</option>
-            <option value="Perempuan">Perempuan</option>
-        </select>
-        <br>
-        <label for="status_perkawinan">Status Perkawinan:</label>
-        <select name="StatusPerkawinan" id="status_perkawinan" required>
-            <option value="Belum Menikah">Belum Menikah</option>
-            <option value="Menikah">Menikah</option>
-            <option value="Cerai Hidup">Cerai Hidup</option>
-            <option value="Cerai Mati">Cerai Mati</option>
-        </select>
-        <br>
-        <label for="nomor_hp_alternatif">Nomor HP Alternatif:</label>
-        <input type="text" name="NomorHPAlternatif" id="nomor_hp_alternatif">
-        <br>
-        <label for="nomor_ijazah">Nomor Ijazah:</label>
-        <input type="text" name="NomorIjazah" id="nomor_ijazah">
-        <br>
-        <label for="tahun_ijazah">Tahun Ijazah:</label>
-        <input type="text" name="TahunIjazah" id="tahun_ijazah">
-        <br>
-        <label for="nisn">NISN:</label>
-        <input type="text" name="NISN" id="nisn">
-        <br>
-        <label for="layanan_paket_semester">Layanan Paket Semester:</label>
-        <select name="LayananPaketSemester" id="layanan_paket_semester" required>
-            <option value="SIPAS">SIPAS</option>
-            <option value="NON SIPAS">NON SIPAS</option>
-        </select>
-        <br>
-        <label for="status_input_sia">Status Input Sia:</label>
-        <select name="STATUS_INPUT_SIA" id="status_input_sia" required>
-            <!-- Add options for semester package services here -->
-            <option value="Belum Terdaftar">Belum Terdaftar</option>
-            <option value="Input admisi">Input admisi</option>
-            <option value="Pengajuan Admisi">Pengajuan Admisi</option>
-            <option value="Berkas Kurang">Berkas Kurang</option>
-            <option value="Admisi Diterima">Admisi Diterima</option>
-        </select>
-        <br>
-        <input type="submit" name="submit" value="Simpan">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tambah Mahasiswa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"s crossorigin="anonymous">
+  </head>
+  <body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="dashboard.php">Dashboard</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="mahasiswa.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mahasiswa
+          </a>
+          <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="mahasiswa.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item active" href="tambah_data.php">Tambah Mahasiswa</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="./laporanbayar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Laporan Pembayaran
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="./laporanbayar/tambah_data.php">Tambah Laporan</a></li>
+            <li><a class="dropdown-item" href="./laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mahasiswa Baru
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="./maba/dashboard.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="./maba/tambah_data.php">Tambah Mahasiswa</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="./cekstatus/pencarian.php">Cek Status Mahasiswa</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container-sm">
+    <p class="isi">Admin : <?php echo $user['nama_lengkap']; ?>!</p>
+    <form form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="row g-3">
+        <div class="col-md-6">
+            <label for="nim" class="form-label">NIM</label>
+            <input type="text" class="form-control" name="Nim" id="nim" placeholder="041100000" required>
+        </div>
+        <div class="col-md-6">
+            <label for="jalur_program" class="form-label">Jalur Program:</label>
+            <select class="form-select" aria-label="JalurProgram" name="JalurProgram" id="jalur_program" required>
+                <option value="RPL">RPL</option>
+                <option value="Reguler">Reguler</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <label for="nama_lengkap">Nama Lengkap:</label>
+            <input type="text" class="form-control" name="NamaLengkap" id="nama_lengkap" required>
+        </div>
+        <div class="col-6">
+            <label for="tempat_lahir" class="form-label">Tempat Lahir:</label>
+            <input type="text" class="form-control" name="TempatLahir" id="tempat_lahir" required>
+        </div>
+        <div class="col-6">
+            <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
+            <input type="date" class="form-control" name="TanggalLahir" id="tanggal_lahir" required>
+        </div>
+        <div class="col-12">
+            <label for="nama_ibu_kandung" class="form-label">Nama Ibu Kandung:</label>
+            <input type="text" class="form-control" name="NamaIbuKandung" id="nama_ibu_kandung" required>
+        </div>
+        <div class="col-12">
+            <label for="nik" class="form-label">NIK:</label>
+            <input type="text" class="form-control" name="NIK" id="nik" required>
+        </div>
+        <div class="col-12">
+            <label for="jurusan" class="form-label">Jurusan:</label>
+            <select class="form-select" name="Jurusan" id="jurusan" required>
+                <option value="">Pilih Jurusan</option>
+                <?php foreach ($majors as $major) { ?>
+                    <option value="<?php echo $major; ?>"><?php echo $major; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="col-12">
+            <label for="nomor_hp" class="form-label">Nomor HP:</label>
+            <input type="text" class="form-control" name="NomorHP" id="nomor_hp" required>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="Email" id="email" required>
+        </div>
+        <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <input type="text" class="form-control" name="Password" id="password" disabled>
+        </div>
+        <div class="col-12">
+            <label for="agama" class="form-label">Agama:</label>
+            <select class="form-select" name="Agama" id="agama" required>
+                <!-- Add options for religions here -->
+                <option value="Islam">Islam</option>
+                <option value="Kristen">Kristen</option>
+                <option value="Katolik">Katolik</option>
+                <option value="Hindu">Hindu</option>
+                <option value="Buddha">Buddha</option>
+                <option value="Konghucu">Konghucu</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
+            <select class="form-select" name="JenisKelamin" id="jenis_kelamin" required>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="status_perkawinan">Status Perkawinan:</label>
+            <select class="form-select" name="StatusPerkawinan" id="status_perkawinan" required>
+                <option value="Belum Menikah">Belum Menikah</option>
+                <option value="Menikah">Menikah</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="nomor_hp_alternatif">Nomor HP Alternatif:</label>
+            <input type="text" class="form-control" name="NomorHPAlternatif" id="nomor_hp_alternatif">
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="nomor_ijazah">Nomor Ijazah:</label>
+            <input type="text" class="form-control" name="NomorIjazah" id="nomor_ijazah">
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="tahun_ijazah">Tahun Ijazah:</label>
+            <input type="text" class="form-control" name="TahunIjazah" id="tahun_ijazah">
+        </div>
+        <div class="col-12">
+            <label for="nisn">NISN:</label>
+            <input type="text" class="form-control" name="NISN" id="nisn">
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="layanan_paket_semester">Layanan Paket Semester:</label>
+            <select name="LayananPaketSemester" id="layanan_paket_semester" class="form-select" required>
+                <option value="SIPAS">SIPAS</option>
+                <option value="NON SIPAS">NON SIPAS</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="status_input_sia">Status Input Sia:</label>
+            <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select"s required>
+                <!-- Add options for semester package services here -->
+                <option value="Belum Terdaftar">Belum Terdaftar</option>
+                <option value="Admisi Diterima">Admisi Diterima</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
+        </div>
     </form>
-</body>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
 </html>

@@ -1,3 +1,6 @@
+DROP TABLE admin;
+
+
 CREATE TABLE `admin` (
   `id_admin` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
@@ -22,6 +25,11 @@ INSERT INTO admin VALUES("37","editor02","password123","editor02@example.com","E
 INSERT INTO admin VALUES("38","moderator02","password123","moderator02@example.com","Moderator Dua","2024-02-28 16:14:08","moderator","aktif");
 INSERT INTO admin VALUES("39","admin04","password123","admin04@example.com","Admin Empat","2024-02-28 16:14:08","editor","aktif");
 INSERT INTO admin VALUES("40","admin05","password123","admin05@example.com","Admin Lima","2024-02-28 16:14:08","editor","aktif");
+
+
+
+DROP TABLE jurusan;
+
 
 CREATE TABLE `jurusan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -66,6 +74,10 @@ INSERT INTO jurusan VALUES("34","Sosiologi");
 INSERT INTO jurusan VALUES("35","Sastra Inggris");
 
 
+
+DROP TABLE laporanuangmasuk;
+
+
 CREATE TABLE `laporanuangmasuk` (
   `id` int(50) NOT NULL AUTO_INCREMENT,
   `KodeLaporan` varchar(50) NOT NULL,
@@ -94,6 +106,11 @@ INSERT INTO laporanuangmasuk VALUES("23","SP0003","SPP","2024-04-03 10:09:24","S
 INSERT INTO laporanuangmasuk VALUES("24","SP0004","SPP","2024-04-03 10:19:15","Hermanto Steven Lisu Allo Arif","","Pembangunan","50000","10000","60000","superadmin01","1","","Transfer","0","./BuktiTF/_img394.jpg","");
 INSERT INTO laporanuangmasuk VALUES("25","SP0005","SPP","2024-04-03 10:19:49","RUBEN PANGLOLI","","PGSD","2000","200000","202000","superadmin01","1","","Transfer","0","./BuktiTF/SP0005_img394.jpg","");
 
+
+
+DROP TABLE mahasiswa;
+
+
 CREATE TABLE `mahasiswa` (
   `No` int(11) NOT NULL AUTO_INCREMENT,
   `Nim` text NOT NULL,
@@ -121,7 +138,7 @@ CREATE TABLE `mahasiswa` (
   `STATUS_INPUT_SIA` varchar(50) NOT NULL,
   PRIMARY KEY (`No`),
   UNIQUE KEY `NIK` (`NIK`)
-) ENGINE=InnoDB AUTO_INCREMENT=360 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=363 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO mahasiswa VALUES("1","","Reguler","MELIANI TANDO\'","TO\' LEMO","2004-06-16","MARIANA SULE","7317185606040003","Pembangunan","082145230857","f.ann.y.ka.rl.i.n.d.ab.nc@gmail.com","@16062004Ut","Islam","Perempuan","Belum Kawin","","DN-19/M-SMA/K13/23/0","2023","0045045799","SIPAS","Steven Arif","0000-00-00 00:00:00","2024-03-19 11:52:21","");
 INSERT INTO mahasiswa VALUES("2","","Reguler","EVOKMAR LIKU MANGAYUK","TANA TORAJA","1992-10-29","EPIYANTI PALANGIRAN","6408136910920004","PGSD","085397393202","fanny.karli.n.d.a.b.n.c@gmail.com","@29101992Ut","Protestan","Perempuan","Kawin","085241833590","DN-19 Ma 0013646","2011","","","Steven Arif","2029-01-24 21:24:00","2024-03-19 11:52:21","");
@@ -167,11 +184,15 @@ INSERT INTO mahasiswa VALUES("41","","Reguler","ORPA PERO","MAKALE","1993-08-08"
 INSERT INTO mahasiswa VALUES("42","","Reguler","NOBRIANTO DANTA","POMDINGAO\'","2000-11-13","LIMBONG BINTOEN","7318311211802001","PGSD","081241883083","f.ann.y.ka.rl.in.dabn.c@gmail.com","@13112000Ut","Protestan","Laki-laki","Belum Kawin","","","0000","","","Hermanto Steven Lisu Allo Arif","2022-02-24 23:47:00","2024-03-19 11:52:21","");
 INSERT INTO mahasiswa VALUES("43","","Reguler","ANTI PONGTANDI","KURRA","2000-04-17","MERI PONGTANDI","7318385704000001","PGSD","082296689186","f.ann.y.ka.rl.in.dabnc@gmail.com","@17042000Ut","Islam","Perempuan","Belum Kawin","","","0000","","SIPAS","Steven Arif","2027-02-24 17:07:00","2024-03-19 11:52:21","");
 INSERT INTO mahasiswa VALUES("44","","Reguler","NUR AGNI BAHARUDDIN","MAKALE","2005-03-26","SITTI HAJAR","7318056603050002","SISTEM INFORMASI","085654867223","f.ann.y.ka.rl.ind.a.b.n.c@gmail.com","@26032005Ut","Islam","Perempuan","Belum Kawin","","","0000","","","Steven Arif","2027-02-24 17:13:00","2024-03-19 11:52:21","");
-INSERT INTO mahasiswa VALUES("45","","Reguler","AMELIA MANGI&#39;","MAKASSAR","1995-08-16","SELFBERTIN ISUNG DATU PINDAN","7318015608950001","Pembangunan","082325992034","f.ann.y.ka.rl.ind.a.b.nc@gmail.com","@16081995Ut","Islam","Perempuan","Kawin","","","2000","","SIPAS","Super Admin Satu","","2024-03-19 11:52:21","");
+INSERT INTO mahasiswa VALUES("45","","Reguler","AMELIA MANGI&#39;","MAKASSAR","1995-08-16","SELFBERTIN ISUNG DATU PINDAN","7318015608950001","Pembangunan","082325992034","f.ann.y.ka.rl.ind.a.b.nc@gmail.com","@16081995Ut","Islam","Perempuan","Kawin","","","2000","","SIPAS","Super Admin Satu","0000-00-00 00:00:00","2024-03-19 11:52:21","");
 INSERT INTO mahasiswa VALUES("47","","Reguler","JULIVA RANGAN","PA\'GASINGAN","2001-06-08","HERLINA PARE","7318224806010004","MANAJEMEN","085343843409","f.ann.y.ka.rl.ind.a.bnc@gmail.com","@08062001Ut","Katolik","Perempuan","Kawin","","","0000","","","Hermanto Steven Lisu Allo Arif","2023-02-24 00:58:00","2024-03-19 11:52:21","");
-INSERT INTO mahasiswa VALUES("48","","Reguler","DUYUNG SIAMA","SANGALLA&#39;","1999-12-30","RUTH SAMPE DAUN","7318137012990003","Pembangunan","082188030429","f.ann.y.ka.rl.ind.ab.n.c@gmail.com","","","Perempuan","Kawin","082235187261","","2000","","SIPAS","Super Admin Satu","","2024-03-20 14:45:33","");
-INSERT INTO mahasiswa VALUES("49","","Reguler","MINA YUYU&#39;","BITTUANG","2000-02-22","SARA LIKU","7318026202000001","Pembangunan","082291401435","f.ann.y.ka.rl.ind.abnc@gmail.com","","Islam","Perempuan","Belum Kawin","085299995787","","2000","","SIPAS","Super Admin Satu","","2024-03-25 09:27:24","Belum Terdaftar");
-INSERT INTO mahasiswa VALUES("356","","Reguler","Hermanto Steven","Maumerehehe","2024-02-29","Yusfina Lisu","0123","Pembangunan","082293924242","stevenarif123@gmail.com","","Kristen","Perempuan","Belum Kawin","","","2000","","SIPAS","Super Admin Satu","2024-03-19 11:49:57","2024-04-05 10:14:10","Input admisi");
+INSERT INTO mahasiswa VALUES("48","","Reguler","DUYUNG SIAMA","SANGALLA&#39;","1999-12-30","RUTH SAMPE DAUN","7318137012990003","Pembangunan","082188030429","f.ann.y.ka.rl.ind.ab.n.c@gmail.com","","","Perempuan","Kawin","082235187261","","2000","","SIPAS","Super Admin Satu","0000-00-00 00:00:00","2024-03-20 14:45:33","");
+INSERT INTO mahasiswa VALUES("49","","Reguler","MINA YUYU&#39;","BITTUANG","2000-02-22","SARA LIKU","7318026202000001","Pembangunan","082291401435","f.ann.y.ka.rl.ind.abnc@gmail.com","","Islam","Perempuan","Belum Kawin","085299995787","","2000","","SIPAS","Super Admin Satu","0000-00-00 00:00:00","2024-03-25 09:27:24","Belum Terdaftar");
+INSERT INTO mahasiswa VALUES("362","","RPL","Hermanto Steven Lisu Allo Arif","Maumere","2024-04-03","Yusfina Lisu Allo","0","Pembangunan","082271631094","stevenarif123@gmail.com","@03042024Ut","Islam","Laki-laki","Kawin","","","0000","","NON SIPAS","Super Admin Satu","2024-04-11 22:04:53","2024-04-11 22:15:18","Belum Input");
+
+
+
+DROP TABLE mahasiswabaru;
 
 
 CREATE TABLE `mahasiswabaru` (
