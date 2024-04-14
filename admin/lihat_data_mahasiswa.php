@@ -4,22 +4,35 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
-  }
+    exit; // Jangan lupa untuk keluar setelah mengarahkan pengguna
+}
+
 // Koneksi ke database
 require_once "koneksi.php";
+
 // Ambil id dari URL
-$id = $_GET['No']; // Pastikan parameter 'No' sesuai dengan yang digunakan di URL
+$id = $_GET['Nim']; // Pastikan parameter 'Nim' sesuai dengan yang digunakan di URL
+
+// Escape string untuk mencegah SQL Injection
+$id = mysqli_real_escape_string($koneksi, $id);
 
 // Query untuk mendapatkan data mahasiswa berdasarkan id
-$query = "SELECT * FROM mahasiswa WHERE No=$id";
+$query = "SELECT * FROM mahasiswa WHERE Nim='$id'"; // Tambahkan tanda kutip pada $id karena tipe datanya adalah string
 $result = mysqli_query($koneksi, $query);
 
 if (!$result) {
     die("Query Error: " . mysqli_error($koneksi));
 }
 
+// Periksa apakah ada baris data yang ditemukan
+if (mysqli_num_rows($result) == 0) {
+    die("Data Mahasiswa tidak ditemukan"); // Tambahkan penanganan jika data tidak ditemukan
+}
+
+// Ambil data mahasiswa dari hasil query
 $mahasiswa = mysqli_fetch_assoc($result);
 
+// Selanjutnya, Anda dapat menggunakan data mahasiswa ini untuk menampilkan informasi yang diinginkan di halaman web
 ?>
 
 <!doctype html>

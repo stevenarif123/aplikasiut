@@ -1,5 +1,5 @@
 <?php
-
+require_once "../koneksi.php";
 // Fungsi untuk mendapatkan access token
 function getAccessToken($email, $password) {
     $url = "https://api-sia.ut.ac.id/backend-sia/api/graphql";
@@ -146,25 +146,21 @@ function displayMahasiswaData($nim, $nama, $jurusan, $billData) {
 }
 
 // Main program
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "datamahasiswa";
+
 $id_to_query = ""; // Nilai default
 
 // Membuat koneksi
-$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Memeriksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+if ($koneksi->connect_error) {
+    die("Koneksi gagal: " . $koneksi->connect_error);
 }
 
 // Memeriksa apakah data yang akan dicari telah disediakan
 // Memeriksa apakah ada parameter GET No dan tidak kosong
 if (isset($_GET['No']) && !empty($_GET['No'])) {
     // Melindungi input untuk mencegah SQL injection
-    $id_to_query = $conn->real_escape_string($_GET['No']);
+    $id_to_query = $koneksi->real_escape_string($_GET['No']);
 }
 
 // Memeriksa apakah ada parameter GET jurusan dan tidak kosong
@@ -172,7 +168,7 @@ if (isset($_GET['No']) && !empty($_GET['No'])) {
 if (!empty($id_to_query)) {
     // Melakukan kueri ke database
     $sql = "SELECT Nim, NamaLengkap, Jurusan, Email, Password FROM mahasiswa WHERE No = '$id_to_query'";
-    $result = $conn->query($sql);
+    $result = $koneksi->query($sql);
 
     if ($result->num_rows > 0) {
         // output data of the first row (assuming email is unique)
@@ -200,7 +196,7 @@ if (!empty($id_to_query)) {
     echo "Tidak ada ID yang ditentukan.";
 }
 
-$conn->close();
+$koneksi->close();
 
 ?>
 
