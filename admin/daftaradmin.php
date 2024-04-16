@@ -53,7 +53,12 @@ if (isset($_POST['submit'])) {
         $error = "Username tidak ditemukan!";
     }
 }
+
+// Query to retrieve list of admins
+$query = "SELECT * FROM admin";
+$result = mysqli_query($koneksi, $query);
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -79,7 +84,7 @@ if (isset($_POST['submit'])) {
     </style>
 </head>
 <body class="text-center">
-    <main class="form-signin" style="max-width: 330px; padding: 15px; margin: auto;">
+    <main class="form-signin" style="max-width: 800px; padding: 15px; margin: auto;">
         <form action="login.php" method="post" autocomplete="off">
             <img class="mb-4" src="./assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
             <h1 class="h3 mb-3 fw-normal">Silakan Masuk</h1>
@@ -104,6 +109,36 @@ if (isset($_POST['submit'])) {
             ?>
             <p class="mt-5 mb-3 text-muted">&copy; 2024</p>
         </form>
+
+        <div class="mt-5">
+            <h2>Daftar Admin</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Nama Lengkap</th>
+                        <th>Tanggal Dibuat</th>
+                        <th>Peran</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                        <tr>
+                            <td><?php echo $row['id_admin']; ?></td>
+                            <td><?php echo $row['username']; ?></td>
+                            <td><?php echo $row['email']; ?></td>
+                            <td><?php echo $row['nama_lengkap']; ?></td>
+                            <td><?php echo $row['tanggal_dibuat']; ?></td>
+                            <td><?php echo $row['peran']; ?></td>
+                            <td><?php echo $row['status']; ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>

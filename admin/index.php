@@ -1,6 +1,16 @@
+<?php
+// Start session if it hasn't already started
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
