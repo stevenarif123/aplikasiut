@@ -11,13 +11,13 @@ if (!isset($_SESSION['username'])) {
 require_once "koneksi.php";
 
 // Ambil id dari URL
-$id = $_GET['Nim']; // Pastikan parameter 'Nim' sesuai dengan yang digunakan di URL
+$id = $_GET['No']; // Pastikan parameter 'No' sesuai dengan yang digunakan di URL
 
 // Escape string untuk mencegah SQL Injection
 $id = mysqli_real_escape_string($koneksi, $id);
 
 // Query untuk mendapatkan data mahasiswa berdasarkan id
-$query = "SELECT * FROM mahasiswa WHERE Nim='$id'"; // Tambahkan tanda kutip pada $id karena tipe datanya adalah string
+$query = "SELECT * FROM mahasiswa WHERE No='$id'"; // Tambahkan tanda kutip pada $id karena tipe datanya adalah string
 $result = mysqli_query($koneksi, $query);
 
 if (!$result) {

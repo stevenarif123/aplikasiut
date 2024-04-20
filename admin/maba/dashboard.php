@@ -148,7 +148,7 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
     </div>
   </div>
 </nav>
-  <div class="container">
+  <div class="container-sm">
     <h1>Pengelolaan Calon Mahasiswa Baru</h1>
 
     <p>Selamat datang, <?php echo $user['nama_lengkap']; ?>!</p>
@@ -167,6 +167,7 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
         <option value="100" <?php if ($limit == 100) echo "selected"; ?>>100</option>
         <option value="all" <?php if ($limit == 'all') echo "selected"; ?>>Semua Data</option>
       </select>
+      <br>
       <button type="submit" class="btn btn-primary">Tampilkan</button>
     </form>
 
@@ -241,13 +242,19 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
       <div class="pagination">
         <ul class="pagination">
           <?php if ($page > 1) : ?>
-            <li><a href="?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>" class="btn btn-primary">Previous</a></li>
+            <li class="page-item">
+              <a class="page-link" href="?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>" class="btn btn-primary">Sebelumnya</a>
+            </li>
           <?php endif; ?>
           <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-            <li><a href="?page=<?php echo $i; ?>&limit=<?php echo $limit; ?>" <?php if ($page == $i) echo "class='active'"; ?>><?php echo $i; ?></a></li>
+            <li class="page-item">
+              <a class="page-link" href="?page=<?php echo $i; ?>&limit=<?php echo $limit; ?>" <?php if ($page == $i) echo "class='active'"; ?>><?php echo $i; ?></a>
+            </li>
           <?php } ?>
           <?php if ($page < $total_pages) : ?>
-            <li><a href="?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>" class="btn btn-primary">Next</a></li>
+            <li class="page-item">
+              <a class="page-link" href="?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>" class="btn btn-primary">Selanjutnya</a>
+            </li>
           <?php endif; ?>
         </ul>
       </div>
@@ -258,3 +265,5 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
+
+

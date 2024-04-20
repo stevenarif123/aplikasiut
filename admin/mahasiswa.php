@@ -157,9 +157,9 @@ $total_data = $row_total['total'];
               <td><?php echo $mhs['Email']; ?></td>
               <td><?php echo $mhs['Password']; ?></td>
               <td>
-                <a href="lihat_data_mahasiswa.php?Nim=<?php echo $mhs['Nim']; ?>" class="btn btn-primary">Detail</a>
-                <a href="edit_data.php?Nim=<?php echo $mhs['Nim']; ?>" class="btn btn-warning">Edit</a>
-                <a href="hapus_data.php?Nim=<?php echo $mhs['Nim']; ?>" class="btn btn-danger">Hapus</a>
+                <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-primary">Detail</a>
+                <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-warning">Edit</a>
+                <a href="hapus_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-danger">Hapus</a>
               </td>
             </tr>
             <?php
