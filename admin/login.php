@@ -1,8 +1,8 @@
 <?php
 // Start session if it hasn't already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+// if (session_status() == PHP_SESSION_NONE) {
+//     session_start();
+// }
 
 // Redirect to dashboard.php if session already exists
 if (isset($_SESSION['username'])) {
@@ -10,48 +10,47 @@ if (isset($_SESSION['username'])) {
     exit; // Stop further execution
 }
 
-// Sanitize and validate input
-$error = "";
-if (isset($_GET['error']) && $_GET['error'] == 1) {
-    $error = "Akun Anda tidak memiliki izin untuk mengakses halaman tersebut.";
-}
-
 // Establish database connection
 require_once "koneksi.php";
 
 // Handle form submission
 if (isset($_POST['submit'])) {
-    // Sanitize and validate username input
-    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
+    // Sanitize and validate input
+    $username = trim($_POST['username']);
+    $password = $_POST['password'];
 
-    // Query the database to find the user
-    $query = "SELECT * FROM admin WHERE username = ?";
-    $stmt = mysqli_prepare($koneksi, $query);
-    mysqli_stmt_bind_param($stmt, "s", $username);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    // Check if a user is found
-    if (mysqli_num_rows($result) > 0) {
-        // Fetch user data from the result
-        $row = mysqli_fetch_assoc($result);
-
-        // Verify password
-        if (password_verify($_POST['password'], $row['password'])) {
-            // Start a new session and set session variables
-            session_start();
-            $_SESSION['username'] = $row['username'];
-            //$_SESSION['peran'] = $row['peran'];
-            header("Location: dashboard.php");
-            exit; // Stop further execution
-        } else {
-            // Password salah, tampilkan pesan kesalahan
-            $error = "Password salah!";
-        }
+    if (empty($username) || empty($password)) {
+        $error = "Username atau password tidak boleh kosong.";
     } else {
-        // User tidak ditemukan, tampilkan pesan kesalahan
-        $error = "Username tidak ditemukan!";
+        // Query the database to find the user
+        $query = "SELECT * FROM admin WHERE username = ?";
+        $stmt = mysqli_prepare($koneksi, $query);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        // Check if a user is found
+        if (mysqli_num_rows($result) > 0) {
+            // Fetch user data from the result
+            $row = mysqli_fetch_assoc($result);
+
+            // Verify password
+            if (password_verify($password, $row['password'])) {
+                // Start a new session and set session variables
+                session_start();
+                $_SESSION['username'] = $row['username'];
+                header("Location: dashboard.php");
+                exit; // Stop further execution
+            } else {
+                // Password salah
+                $error = "Password salah.";
+            }
+        } else {
+            // User tidak ditemukan
+            $error = "Username salah.";
+        }
     }
+    echo "Hash dari password yang disimpan di database: " . $row['password'];
 }
 ?>
 <!doctype html>
@@ -98,7 +97,7 @@ if (isset($_POST['submit'])) {
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Masuk</button>
             <?php
-            if ($error != "") {
+            if (isset($error) && !empty($error)) {
                 echo "<p style='color: red;'>$error</p>";
             }
             ?>
