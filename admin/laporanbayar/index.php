@@ -22,13 +22,16 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($currentPage - 1) * $dataPerPage;
 
 // Menyiapkan query dasar
-$query = "SELECT * FROM laporanuangmasuk WHERE 1=1"; // Memulai dengan kondisi benar (true)
+$query = "SELECT * FROM laporanuangmasuk WHERE 1=1";
 
-// Menambahkan filter berdasarkan tanggal, nama, dan NIM
-if (isset($_GET['tanggal']) && !empty($_GET['tanggal'])) {
-    $tanggal = $_GET['tanggal'];
-    $query .= " AND TanggalInput LIKE '%$tanggal%'";
+// Menambahkan filter berdasarkan rentang tanggal
+if (isset($_GET['tanggal_awal']) && isset($_GET['tanggal_akhir'])) {
+    $tanggal_awal = $_GET['tanggal_awal'];
+    $tanggal_akhir = $_GET['tanggal_akhir'];
+    $query .= " AND TanggalInput BETWEEN '$tanggal_awal' AND '$tanggal_akhir'";
 }
+
+// Menambahkan filter berdasarkan nama dan NIM (jika diperlukan)
 if (isset($_GET['nama']) && !empty($_GET['nama'])) {
     $nama = $_GET['nama'];
     $query .= " AND NamaMahasiswa LIKE '%$nama%'";
@@ -37,6 +40,7 @@ if (isset($_GET['nim']) && !empty($_GET['nim'])) {
     $nim = $_GET['nim'];
     $query .= " AND Nim LIKE '%$nim%'";
 }
+
 
 // Menambahkan filter untuk laporan yang belum diverifikasi
 $query .= " AND isVerifikasi = 0 AND Admin = '$admin'";
@@ -58,6 +62,22 @@ $result = mysqli_query($koneksi, $query);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"s crossorigin="anonymous">
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            var today = new Date().toISOString().split('T')[0];
+            var inputTanggalAwal = document.getElementById('tanggalAwal');
+            var inputTanggalAkhir = document.getElementById('tanggalAkhir');
+            
+            // Set nilai maksimum untuk input tanggal awal dan akhir
+            inputTanggalAwal.setAttribute('max', today);
+            inputTanggalAkhir.setAttribute('max', today);
+            
+            // Saat nilai input tanggal awal berubah, atur nilai maksimum untuk input tanggal akhir
+            inputTanggalAwal.addEventListener('change', function() {
+              inputTanggalAkhir.setAttribute('min', inputTanggalAwal.value);
+            });
+        });
+    </script>
   </head>
   <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -121,30 +141,36 @@ $result = mysqli_query($koneksi, $query);
 
     <!-- Form filter -->
     <form method="get" class="mb-4">
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="tanggal" class="col-form-label">Tanggal:</label>
-            </div>
-            <div class="col-auto">
-                <input type="date" name="tanggal" id="tanggal" class="form-control">
-            </div>
-            <div class="col-auto">
-                <label for="nama" class="col-form-label">Nama Mahasiswa:</label>
-            </div>
-            <div class="col-auto">
-                <input type="text" name="nama" id="nama" class="form-control">
-            </div>
-            <div class="col-auto">
-                <label for="nim" class="col-form-label">NIM Mahasiswa:</label>
-            </div>
-            <div class="col-auto">
-                <input type="text" name="nim" id="nim" class="form-control">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-secondary">Filter</button>
-            </div>
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="tanggalAwal" class="col-form-label">Tanggal Awal:</label>
         </div>
-    </form>
+        <div class="col-auto">
+            <input type="date" name="tanggal_awal" id="tanggalAwal" class="form-control">
+        </div>
+        <div class="col-auto">
+            <label for="tanggalAkhir" class="col-form-label">Tanggal Akhir:</label>
+        </div>
+        <div class="col-auto">
+            <input type="date" name="tanggal_akhir" id="tanggalAkhir" class="form-control">
+        </div>
+        <div class="col-auto">
+            <label for="nama" class="col-form-label">Nama Mahasiswa:</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" name="nama" id="nama" class="form-control">
+        </div>
+        <div class="col-auto">
+            <label for="nim" class="col-form-label">NIM Mahasiswa:</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" name="nim" id="nim" class="form-control">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-secondary">Filter</button>
+        </div>
+    </div>
+</form>
 
     <!-- Tabel laporan -->
     <table class="table">
@@ -218,6 +244,6 @@ $result = mysqli_query($koneksi, $query);
     mysqli_close($koneksi);
     ?>
 </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   </body>
 </html>

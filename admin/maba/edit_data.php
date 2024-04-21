@@ -327,7 +327,6 @@ $selectedJurusan = $mahasiswa['Jurusan'];
             <div class="form-group">
                 <label for="JenisKelamin" class="form-label">Jenis Kelamin:</label>
                 <select name="JenisKelamin" id="jenis_kelamin" class="form-control">
-                <select name="JenisKelamin" id="jenis_kelamin" class="form-select">
                     <?php foreach ($jenis_kelamin as $value => $label): ?>
                         <option value="<?php echo $value; ?>" <?php if ($mahasiswa['JenisKelamin'] == $value) echo "selected"; ?>>
                             <?php echo $label; ?>

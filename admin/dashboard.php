@@ -16,6 +16,20 @@ if (!isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"s crossorigin="anonymous">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            width: 300px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
   </head>
   <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -68,6 +82,33 @@ if (!isset($_SESSION['username'])) {
     </div>
   </div>
 </nav>
+<div class="container">
+        <div class="card">
+            <div class="card-header">
+                Total Data Mahasiswa
+            </div>
+            <div class="card-body">
+                <?php
+                // Menghubungkan ke database
+                require_once 'koneksi.php';
+
+                // Query untuk mengambil total data mahasiswa
+                $query = "SELECT COUNT(*) AS total_mahasiswa FROM mahasiswa";
+                $result = mysqli_query($koneksi, $query);
+
+                // Mengambil hasil query
+                if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalMahasiswa = $row['total_mahasiswa'];
+                } else {
+                    $totalMahasiswa = 0;
+                }
+                ?>
+                <h5 class="card-title"><?php echo $totalMahasiswa; ?></h5>
+                <p class="card-text">Mahasiswa</p>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>

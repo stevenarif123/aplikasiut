@@ -125,7 +125,7 @@ $total_data = $row_total['total'];
   </div>
 </nav>
 <?php if (count($mahasiswa) > 0) { ?>
-    <div class="container-sm">
+    <div class="container-sm mt-3">
       <form action="" method="POST" class="mb-3">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Cari berdasarkan nama atau nim" name="keyword">
@@ -157,9 +157,9 @@ $total_data = $row_total['total'];
               <td><?php echo $mhs['Email']; ?></td>
               <td><?php echo $mhs['Password']; ?></td>
               <td>
-                <a href="lihat_data_mahasiswa.php?Nim=<?php echo $mhs['Nim']; ?>" class="btn btn-primary">Detail</a>
-                <a href="edit_data.php?Nim=<?php echo $mhs['Nim']; ?>" class="btn btn-warning">Edit</a>
-                <a href="hapus_data.php?Nim=<?php echo $mhs['Nim']; ?>" class="btn btn-danger">Hapus</a>
+                <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-primary">Detail</a>
+                <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-warning">Edit</a>
+                <a href="hapus_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-danger">Hapus</a>
               </td>
             </tr>
             <?php
@@ -198,5 +198,6 @@ $total_data = $row_total['total'];
     <?php
   }
   ?>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   </body>
 </html>
