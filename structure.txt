@@ -1,0 +1,96 @@
+Folder PATH listing
+Volume serial number is ACFA-AEF2
+C:.
+¦   .htaccess
+¦   contact.html
+¦   daftar.php
+¦   index.html
+¦   resume.html
+¦   structure.txt
+¦   
++---admin
+¦   ¦   backup_database.php
+¦   ¦   dashboard.php
+¦   ¦   edit_data.php
+¦   ¦   hapus_data_mahasiswa.php
+¦   ¦   index.php
+¦   ¦   koneksi.php
+¦   ¦   lihat_data_mahasiswa.php
+¦   ¦   login.php
+¦   ¦   logout.php
+¦   ¦   mahasiswa.php
+¦   ¦   package-lock.json
+¦   ¦   README.md
+¦   ¦   tambah_data.php
+¦   ¦   
+¦   +---.vscode
+¦   ¦       settings.json
+¦   ¦       
+¦   +---backup
+¦   ¦       backup_20240412_135424.sql
+¦   ¦       
+¦   +---cekstatus
+¦   ¦       pencarian.php
+¦   ¦       statusbayar.php
+¦   ¦       
+¦   +---html
+¦   ¦   ¦   sidebar.php
+¦   ¦   ¦   
+¦   ¦   +---assets
+¦   ¦   ¦   +---brand
+¦   ¦   ¦   ¦       bootstrap-logo-white.svg
+¦   ¦   ¦   ¦       bootstrap-logo.svg
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---dist
+¦   ¦   ¦   ¦   +---css
+¦   ¦   ¦   ¦   ¦       bootstrap.min.css
+¦   ¦   ¦   ¦   ¦       bootstrap.min.css.map
+¦   ¦   ¦   ¦   ¦       bootstrap.rtl.min.css
+¦   ¦   ¦   ¦   ¦       bootstrap.rtl.min.css.map
+¦   ¦   ¦   ¦   ¦       
+¦   ¦   ¦   ¦   +---js
+¦   ¦   ¦   ¦           bootstrap.bundle.min.js
+¦   ¦   ¦   ¦           bootstrap.bundle.min.js.map
+¦   ¦   ¦   ¦           
+¦   ¦   ¦   +---js
+¦   ¦   ¦           color-modes.js
+¦   ¦   ¦           
+¦   ¦   +---styles
+¦   ¦           dashboard.css
+¦   ¦           dropdowns.css
+¦   ¦           sidebars.css
+¦   ¦           sidebars.js
+¦   ¦           styles.css
+¦   ¦           
+¦   +---laporanbayar
+¦   ¦   ¦   detail_verifikasi.php
+¦   ¦   ¦   edit_laporan.php
+¦   ¦   ¦   hapus_laporan.php
+¦   ¦   ¦   index.php
+¦   ¦   ¦   kode_generator.php
+¦   ¦   ¦   koneksi.php
+¦   ¦   ¦   lihat_laporan.php
+¦   ¦   ¦   penambahan.php
+¦   ¦   ¦   tambah_laporan.php
+¦   ¦   ¦   verifikasi_laporan.php
+¦   ¦   ¦   
+¦   ¦   +---BuktiTF
+¦   +---maba
+¦   ¦       backup_database.php
+¦   ¦       dashboard.php
+¦   ¦       edit_data.php
+¦   ¦       hapus_data_mahasiswa.php
+¦   ¦       koneksi.php
+¦   ¦       lihat_data_mahasiswa.php
+¦   ¦       tambah_data.php
+¦   ¦       
+¦   +---mahasiswa
++---assets
+¦       favicon.ico
+¦       
++---css
+¦       styles.css
+¦       
++---js
+        scripts.js
+        

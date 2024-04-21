@@ -125,7 +125,7 @@ $total_data = $row_total['total'];
   </div>
 </nav>
 <?php if (count($mahasiswa) > 0) { ?>
-    <div class="container-sm">
+    <div class="container-sm mt-3">
       <form action="" method="POST" class="mb-3">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Cari berdasarkan nama atau nim" name="keyword">
@@ -198,5 +198,6 @@ $total_data = $row_total['total'];
     <?php
   }
   ?>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   </body>
 </html>
