@@ -1,13 +1,16 @@
 <?php
-// Periksa apakah ada data yang dikirimkan dari form sebelumnya
-if (!isset($_POST['nama_lengkap'])) {
-    // Jika tidak ada data, kembalikan pengguna ke halaman form pendaftaran
-    header("Location: index.php");
-    exit();
-}
-
-// Jika terdapat data yang dikirimkan, tampilkan pesan sukses beserta data yang diterima
-$nama_lengkap = isset($_POST['nama_lengkap']) ? htmlspecialchars($_POST['nama_lengkap']) : '';
+// $required_fields = ['nama_lengkap', 'tempat_lahir', 'tanggal_lahir']; // Tambahkan field yang diperlukan
+// foreach ($required_fields as $field) {
+//     if (!isset($_POST[$field])) {
+//         // Jika ada data yang belum terisi, kembalikan pengguna ke halaman form
+//         header("Location: index.php");
+//         exit();
+//     }
+// }
+// // Jika terdapat data yang dikirimkan, tampilkan pesan sukses beserta data yang diterima
+// $nama_lengkap = isset($_POST['nama_lengkap']) ? htmlspecialchars($_POST['nama_lengkap']) : '';
+$nama = $_POST['nama_lengkap'];
+echo $nama; 
 ?>
 
 <!DOCTYPE html>

@@ -37,21 +37,6 @@ if(isset($_POST['submit'])){
         $agama = '';
         $jenis_kelamin = '';
         $pesan = '';
-        // echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        // <script>
-        //     document.addEventListener("DOMContentLoaded", function() {
-        //         var alertDiv = document.createElement("div");
-        //         alertDiv.className = "alert alert-success alert-dismissible fade show";
-        //         alertDiv.setAttribute("role", "alert");
-        //         alertDiv.innerText = "Data berhasil disimpan, tunggu informasi selanjutnya melalui Whatsapp.";
-        //         document.body.appendChild(alertDiv);
-                
-        //         setTimeout(function(){
-        //             alertDiv.remove();
-        //             document.getElementById("form-daftar").reset(); // Mengosongkan form setelah alert hilang
-        //         }, 5000); // Menghilangkan alert setelah 5 detik
-        //     });
-        // </script>';
         header("Location: sukses.php");
         exit;
     } else {
@@ -114,9 +99,9 @@ mysqli_close($koneksi);
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
-                    <li class="nav-item active"><a class="nav-link" href="./">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="resume.html">Pengumuman</a></li>
-                    <li class="nav-item"><a class="nav-link" href="daftar.php">Daftar Mahasiswa Baru</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="./pendaftaran">Daftar Mahasiswa Baru</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                 </ul>
             </div>
@@ -126,14 +111,13 @@ mysqli_close($koneksi);
         <div class="row justify-content-center align-items-center">
             <div class="col-md-6">
                 <h2 class="text-center">Formulir Pendaftaran Mahasiswa Baru Universitas Terbuka Tana Toraja</h2>
-                <form id="form-daftar" action="" method="post" class="mt-5">
+                <form id="form-daftar" action="index.php" method="post" class="mt-5">
                     <!-- Lebar form diperbesar menjadi 80% -->
                     <table style="width: 100%;" class="navbar navbar-expand-lg navbar-light bg-white py-3">
                         <!-- Lebar tabel diperbesar menjadi 100% -->
                         <tr>
                             <th><label for="nama_lengkap">Nama Lengkap:</label></th>
-                            <td><input type="text" name="nama_lengkap" class="form-control" value="<?php echo $nama_lengkap; ?>" required></td>
-                            <input type="hidden" name="nama_lengkap" value="<?php echo htmlspecialchars($nama_lengkap); ?>">
+                            <td><input type="text" name="nama_lengkap" class="form-control" value="<?php echo htmlspecialchars($nama_lengkap); ?>" required></td>
                         </tr>
                         <tr>
                             <th><label for="tempat_lahir">Tempat Lahir:</label></th>
@@ -156,8 +140,8 @@ mysqli_close($koneksi);
                             <td>
                                 <select name="jurusan" class="form-select" required>
                                     <option value="">Pilih Jurusan</option>
-                                    <?php foreach ($daftar_jurusan as $jurusan) : ?>
-                                    <option value="<?php echo $jurusan; ?>" <?php if($jurusan == $jurusan) echo 'selected'; ?>><?php echo $jurusan; ?></option>
+                                    <?php foreach ($daftar_jurusan as $jurusan_item) : ?>
+                                    <option value="<?php echo $jurusan_item; ?>" <?php if($jurusan == $jurusan_item) echo 'selected'; ?>><?php echo $jurusan_item; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </td>
