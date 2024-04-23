@@ -198,7 +198,7 @@ $conn->close();
     </div>
   </div>
 </nav>
-    <div class="container mt-5">
+    <div class="container mt-3">
         <h1 class="mb-4">Tambah Data Mahasiswa</h1>
         <form action="tambah_data.php" method="post">
             <div class="mb-3">

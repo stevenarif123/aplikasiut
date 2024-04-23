@@ -131,7 +131,7 @@ if (isset($_POST['submit'])) {
 
     // Execute update
     if (mysqli_stmt_execute($stmt)) {
-        header("Location: dashboard.php");
+        header("Location: mahasiswa.php");
         exit;
     } else {
         echo "Error updating data: " . mysqli_error($koneksi);
@@ -180,11 +180,9 @@ $layanan_paket_semester = [
     // ... (add other options)
 ];
 $status_input_sia = [
-    "Belum Terdaftar" => "Belum Terdaftar",
-    "Input admisi" => "Input admisi",
-    "Pengajuan Admisi" => "Pengajuan Admisi",
-    "Berkas Kurang" => "Berkas Kurang",
-    "Admisi Diterima" => "Admisi Diterima"
+    "AKTIF" => "AKTIF",
+    "CUTI" => "CUTI",
+    "Lainnya" => "Lainnya"
 ];
 
 $selectedJurusan = $mahasiswa['Jurusan'];
@@ -306,7 +304,7 @@ $selectedJurusan = $mahasiswa['Jurusan'];
             </div>
             <div class="col-md-6 mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" name="Password" id="password" value="<?php echo $mahasiswa['Password']; ?>" disabled>
+                <input type="password" class="form-control" name="Password" id="password" value="<?php echo $mahasiswa['Password']; ?>" required>
             </div>
         </div>
         <div class="mb-3">
@@ -370,8 +368,11 @@ $selectedJurusan = $mahasiswa['Jurusan'];
         <div class="mb-3">
             <label for="status_input_sia" class="form-label">Status Input Sia:</label>
             <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select" required>
-                <option value="Belum Terdaftar" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Belum Terdaftar') echo "selected"; ?>>Belum Terdaftar</option>
-                <option value="Admisi Diterima" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == 'Admisi Diterima') echo "selected"; ?>>Admisi Diterima</option>
+                <<?php foreach ($status_input_sia as $value => $label): ?>
+                    <option value="<?php echo $value; ?>" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == $value) echo "selected"; ?>>
+                        <?php echo $label; ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
         <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
