@@ -1,8 +1,8 @@
 <?php
 // Start session if it hasn't already started
-// if (session_status() == PHP_SESSION_NONE) {
-//     session_start();
-// }
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Redirect to dashboard.php if session already exists
 if (isset($_SESSION['username'])) {
@@ -33,25 +33,19 @@ if (isset($_POST['submit'])) {
         if (mysqli_num_rows($result) > 0) {
             // Fetch user data from the result
             $row = mysqli_fetch_assoc($result);
-
+        
             // Verify password
-            if (password_verify($password, $row['password'])) {
-                // Start a new session and set session variables
-                session_start();
-                $_SESSION['username'] = $row['username'];
+            if ($password == $row['password']) { // Perubahan pada baris ini
+                $_SESSION['username'] = $row['username']; }
+                // Redirect to dashboard
                 header("Location: dashboard.php");
                 exit; // Stop further execution
             } else {
-                // Password salah
+                // Password tidak valid
                 $error = "Password salah.";
             }
-        } else {
-            // User tidak ditemukan
-            $error = "Username salah.";
         }
     }
-    echo "Hash dari password yang disimpan di database: " . $row['password'];
-}
 ?>
 <!doctype html>
 <html lang="en">

@@ -28,7 +28,7 @@
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
                             <li class="nav-item active"><a class="nav-link" href="./">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="resume.html">Pengumuman</a></li>
-                            <li class="nav-item"><a class="nav-link" href="daftar.php">Daftar Mahasiswa Baru</a></li>
+                            <li class="nav-item"><a class="nav-link" href="./pendaftaran">Daftar Mahasiswa Baru</a></li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                         </ul>
                     </div>

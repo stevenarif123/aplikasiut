@@ -161,6 +161,7 @@ $koneksi->close();
                 <td><?php echo $mahasiswa['Nama']; ?></td>
                 <td><?php echo $mahasiswa['Jurusan']; ?></td>
                 <td><a href="statusbayar.php?No=<?php echo $mahasiswa['No']; ?>" class="btn btn-info">Status Bayar</a></td>
+                <td><a href="pilihmasa.php?No=<?php echo $mahasiswa['No']; ?>" class="btn btn-info">Cek Nilai</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

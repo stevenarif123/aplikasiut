@@ -142,6 +142,7 @@ $total_data = $row_total['total'];
             <th scope="col">Nama Lengkap</th>
             <th scope="col">Email</th>
             <th scope="col">Password</th>
+            <th scope="col">Status SIA</th>
             <th scope="col">Aksi</th>
           </tr>
         </thead>
@@ -156,10 +157,31 @@ $total_data = $row_total['total'];
               <td><?php echo $mhs['NamaLengkap']; ?></td>
               <td><?php echo $mhs['Email']; ?></td>
               <td><?php echo $mhs['Password']; ?></td>
+              <td><?php echo $mhs['STATUS_INPUT_SIA']; ?></td>
               <td>
                 <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-primary">Detail</a>
                 <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-warning">Edit</a>
-                <a href="hapus_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-danger">Hapus</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Hapus
+                  </button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi Hapus</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus data ini?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-danger">Hapus</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
               </td>
             </tr>
             <?php
@@ -198,6 +220,7 @@ $total_data = $row_total['total'];
     <?php
   }
   ?>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
