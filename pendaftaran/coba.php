@@ -2,16 +2,16 @@
 // Connect to database
 require_once "../admin/koneksi.php";
 
-    $nama_lengkap = '';
-    $tempat_lahir = '';
-    $tanggal_lahir = '';
-    $nama_ibu_kandung = '';
-    $nik = '';
-    $jurusan = '';
-    $nomor_hp = '';
-    $agama = '';
-    $jenis_kelamin = '';
-    $pesan = '';
+$nama_lengkap = '';
+$tempat_lahir = '';
+$tanggal_lahir = '';
+$nama_ibu_kandung = '';
+$nik = '';
+$jurusan = '';
+$nomor_hp = '';
+$agama = '';
+$jenis_kelamin = '';
+$pesan = '';
 
 // Process form data
 if (isset($_POST['submit'])) {
@@ -26,14 +26,29 @@ if (isset($_POST['submit'])) {
     $jenis_kelamin = $_POST['jenis_kelamin'];
     $pesan = $_POST['pesan'];
 
-    // Insert data into database
-    $query = "INSERT INTO mabawebsite (nama_lengkap, tempat_lahir, tanggal_lahir, nama_ibu_kandung, nik, jurusan, nomor_hp, agama, jenis_kelamin, pesan) VALUES ('$nama_lengkap', '$tempat_lahir', '$tanggal_lahir', '$nama_ibu_kandung', '$nik', '$jurusan', '$nomor_hp', '$agama', '$jenis_kelamin', '$pesan')";
+    // Input validation and sanitization
+    if (empty($nama_lengkap)) {
+        header('Content-Type: application/json');
+        $response = array(
+            'success' => false,
+            'message' => 'Nama lengkap tidak boleh kosong.'
+        );
+        echo json_encode($response);
+        exit;
+    }
+    // Insert data into database using prepared statement
+    $query = "INSERT INTO mabawebsite (nama_lengkap, tempat_lahir, tanggal_lahir, nama_ibu_kandung, nik, jurusan, nomor_hp, agama, jenis_kelamin, pesan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    if (mysqli_query($koneksi, $query)) {
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, 'sssssssss', $nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $agama, $jenis_kelamin, $pesan);
+
+    if (mysqli_stmt_execute($stmt)) {
         $pesanstatus = "Data berhasil disimpan";
     } else {
-        $pesanstatus = "Data gagal disimpan";
+        $pesanstatus = "Data gagal disimpan: " . mysqli_error($koneksi);
     }
+
+    mysqli_stmt_close($stmt);
 
     header('Content-Type: application/json');
     $response = array(
@@ -44,6 +59,7 @@ if (isset($_POST['submit'])) {
     exit;
 
 }
+
 // Get list of jurusan from database
 $query_jurusan = "SELECT * FROM jurusan";
 $result_jurusan = mysqli_query($koneksi, $query_jurusan);
@@ -163,64 +179,54 @@ while ($row = mysqli_fetch_assoc($result_jurusan)) {
             <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" id="reset-button" type="reset">Reset</button>
         </form>
         <?php if (isset($pesanstatus)) {?>
-            <div class="mt-4">
-                <p class="text-lg font-bold text-<?php echo $pesanstatus? "success" : "danger";?>"><?php echo $pesanstatus;?></p>
-            </div>
+            $response['success'] = true;
+            $response['message'] = $pesanstatus;
+        } else {
+            $response['success'] = false;
+            $response['message'] = 'Terjadi kesalahan. Silakan coba lagi.';
+        }
+        echo json_encode($response);
+        exit;
         <?php }?>
     </div>
-    <script>
-            document.getElementById('form-daftar').addEventListener('submit', (e) => {
+    <div id="message" class="mt-4"></div>
+        <script>
+            document.getElementById('form-daftar').addEventListener('submit', function (e) {
                 e.preventDefault();
-                Swal.fire({
-                    title: 'Pendaftaran Mahasiswa Baru',
-                    text: 'Mohon tunggu sebentar...',
-                    icon: 'info',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    didOpen: () => {
-                        Swal.showLoading();
+
+                const formData = new FormData(this);
+
+                fetch('coba.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const messageElement = document.getElementById('message');
+
+                    if (data.success) {
+                        messageElement.classList.remove('text-danger');
+                        messageElement.classList.add('text-success');
+                        messageElement.textContent = 'Data berhasil disimpan';
+                        setTimeout(() => {
+                            window.location.href = 'success.php';
+                        }, 2000);
+                    } else {
+                        messageElement.classList.remove('text-success');
+                        messageElement.classList.add('text-danger');
+                        messageElement.textContent = 'Data gagal disimpan';
                     }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Send form data to the server
-                        const formData = new FormData(document.getElementById('form-daftar'));
-                        fetch('coba.php', {
-                            method: 'POST',
-                            body: formData
-                        })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if (data.success) {
-                                Swal.fire({
-                                    title: 'Berhasil!',
-                                    text: 'Data Anda telah disimpan.',
-                                    icon: 'success',
-                                    timer: 2000
-                                }).then(() => {
-                                    window.location.href = 'success.php';
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Gagal!',
-                                    text: 'Data Anda tidak dapat disimpan.',
-                                    icon: 'error',
-                                    timer: 2000
-                                });
-                            }
-                        })
-                        .catch((error) => {
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: 'Terjadi kesalahan pada server.',
-                                icon: 'error',
-                                timer: 2000
-                            });
-                        });
-                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const messageElement = document.getElementById('message');
+                    messageElement.classList.remove('text-success');
+                    messageElement.classList.add('text-danger');
+                    messageElement.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
                 });
             });
         </script>
-
+    </div>
 
 
 </body>
