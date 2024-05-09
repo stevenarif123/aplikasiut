@@ -168,12 +168,16 @@
         if (data.success) { // jika berhasil
           document.querySelector('#pesan-status').classList.add('pesan-sukses'); // tambah class pesan-sukses
           document.querySelector('#pesan-status').textContent = data.message; // set teks status dengan isi dari data.message
-          messageElement.classList.remove('text-danger');
-                        messageElement.classList.add('text-success');
-                        messageElement.textContent = 'Data berhasil disimpan';
-                        setTimeout(() => {
-                            window.location.href = 'success.php';
-                        }, 2000);
+            messageElement.classList.remove('text-danger');
+            messageElement.classList.add('text-success');
+            messageElement.textContent = 'Data berhasil disimpan';
+
+            // Add Tailwind CSS animation
+            messageElement.classList.add('animate__animated', 'animate__bounceIn');
+
+            // Redirect after 2 seconds
+            setTimeout(() => {
+            window.location.href = 'success.php';}, 2000);
         } else { // jika gagal
           document.querySelector('#pesan-status').classList.add('pesan-gagal'); // tambah class pesan-gagal
           document.querySelector('#pesan-status').textContent = data.message; // set teks status dengan isi dari data.message
