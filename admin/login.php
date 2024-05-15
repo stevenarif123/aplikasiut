@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
 <body class="text-center">
     <main class="form-signin" style="max-width: 330px; padding: 15px; margin: auto;">
         <form action="login.php" method="post" autocomplete="off">
-            <img class="mb-4" src="./assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+            <img class="mb-5" src="../assets/salut.png" alt="">
             <h1 class="h3 mb-3 fw-normal">Silakan Masuk</h1>
             <div class="form-floating">
                 <input type="text" class="form-control" name="username" id="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" placeholder="Username">

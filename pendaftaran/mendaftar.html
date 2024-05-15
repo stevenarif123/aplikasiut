@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pendaftaran Mahasiswa Baru</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    <style>
+        /* Tambahkan gaya untuk animasi loading */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 9999;
+        }
+
+        .loading img {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Tambahkan gaya untuk form */
+        #form-daftar {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Gaya untuk label dan input */
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Gaya untuk tombol submit dan reset */
+        .tombol {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tombol:hover {
+            background-color: #0056b3;
+        }
+
+        /* Gaya untuk pesan status */
+        #pesan-status {
+            display: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* Gaya untuk kelas pesan-sukses dan pesan-gagal */
+        .pesan-sukses {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #3c763d;
+        }
+
+        .pesan-gagal {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #a94442;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12">
+        <h1 class="text-3xl font-bold mb-4">Formulir Pendaftaran Mahasiswa Baru</h1>
+        <form id="form-daftar" action="proses.php" method="post">
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="nama_lengkap">Nama Lengkap:</label>
+                <input type="text" id="nama_lengkap" name="nama_lengkap">
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="tempat_lahir">Tempat Lahir:</label>
+                <input type="text" id="tempat_lahir" name="tempat_lahir">
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="tanggal_lahir">Tanggal Lahir:</label>
+                <input type="date" id="tanggal_lahir" name="tanggal_lahir">
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="nama_ibu_kandung">Nama Ibu Kandung:</label>
+                <input type="text" id="nama_ibu_kandung" name="nama_ibu_kandung">
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="nik">NIK:</label>
+                <input type="text" id="nik" name="nik">
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="jurusan">Jurusan:</label>
+                <select id="jurusan" name="jurusan">
+                    <option value="">Pilih Jurusan</option>
+                    <option value="Teknik Informatika">Teknik Informatika</option>
+                    <!-- Tambahkan pilihan jurusan lainnya di sini -->
+                </select>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="nomor_hp">Nomor HP:</label>
+                <input type="text" id="nomor_hp" name="nomor_hp">
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="agama">Agama:</label>
+                <select id="agama" name="agama">
+                    <option value="">Pilih Agama</option>
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen">Kristen</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Buddha">Buddha</option>
+                    <option value="Konghucu">Konghucu</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="jenis_kelamin">Jenis Kelamin:</label>
+                <select id="jenis_kelamin" name="jenis_kelamin">
+                    <option value="">Pilih Jenis Kelamin</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="pesan">Pesan:</label>
+                <textarea id="pesan" name="pesan"></textarea>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <button class="tombol" name="submit" type="submit">Kirim</button>
+                <button class="tombol" type="reset">Reset</button>
+            </div>
+        </form>
+        <div id="pesan-status"></div>
+    </div>
+    <!-- Animasi loading -->
+    <div class="loading">
+        <img src="loading.gif" alt="Loading..." />
+    </div>
+<!-- tambahkan script untuk menghubungkan ke PHP -->
+<script>
+    const baseUrl = "https://<?php echo $_SERVER['HTTP_HOST']; ?>/form-pendaftaran/"; // base url
+    const formData = new FormData(document.querySelector('#form-daftar')); // buat objek data dari form
+    fetch(baseUrl + 'proses.php', { method: "POST", body: formData }) // kirim permintaan ke server PHP
+      .then(response => response.json()) // convert response menjadi objek JSON
+      .then(data => {
+        const messageElement = document.getElementById('message');
+        document.querySelector('#pesan-status').classList.remove('pesan-sukses', 'pesan-gagal'); // hapus class pesan-sukses dan pesan-gagal jika ada
+        if (data.success) { // jika berhasil
+          document.querySelector('#pesan-status').classList.add('pesan-sukses'); // tambah class pesan-sukses
+          document.querySelector('#pesan-status').textContent = data.message; // set teks status dengan isi dari data.message
+            messageElement.classList.remove('text-danger');
+            messageElement.classList.add('text-success');
+            messageElement.textContent = 'Data berhasil disimpan';
+
+            // Add Tailwind CSS animation
+            messageElement.classList.add('animate__animated', 'animate__bounceIn');
+
+            // Redirect after 2 seconds
+            setTimeout(() => {
+            window.location.href = 'success.php';}, 2000);
+        } else { // jika gagal
+          document.querySelector('#pesan-status').classList.add('pesan-gagal'); // tambah class pesan-gagal
+          document.querySelector('#pesan-status').textContent = data.message; // set teks status dengan isi dari data.message
+          messageElement.classList.remove('text-success');
+                        messageElement.classList.add('text-danger');
+                        messageElement.textContent = 'Data gagal disimpan';
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  </script>
+</body>
+</html>

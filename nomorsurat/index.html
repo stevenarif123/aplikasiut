@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Letter Number Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-8">
+        <h1 class="text-3xl font-bold mb-4">Official Letter Number Generator</h1>
+        
+        <form id="letterForm" class="mb-8">
+            <label for="letterType" class="block mb-2">Select Letter Type:</label>
+            <select id="letterType" name="letterType" class="border rounded px-4 py-2 mb-4">
+                <option value="A">Type A</option>
+                <option value="B">Type B</option>
+                <option value="C">Type C</option>
+            </select>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Generate Number</button>
+        </form>
+
+        <div id="letterNumber" class="text-xl font-semibold"></div>
+    </div>
+
+    <script>
+        document.getElementById('letterForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            generateLetterNumber();
+        });
+
+        function generateLetterNumber() {
+            const letterType = document.getElementById('letterType').value;
+            const today = new Date();
+            const month = today.getMonth() + 1;
+            const year = today.getFullYear();
+            const url = `generate_number.php?type=${letterType}&month=${month}&year=${year}`;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('letterNumber').innerText = data;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        generateLetterNumber(); // Generate number on page load
+    </script>
+</body>
+</html>
