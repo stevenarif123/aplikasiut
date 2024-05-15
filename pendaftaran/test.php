@@ -3,6 +3,24 @@
 require_once "../admin/koneksi.php";
 
 $pesanstatus = '';
+$nama_lengkap = '';
+$tempat_lahir = '';
+$tanggal_lahir = '';
+$nama_ibu_kandung = '';
+$nik = '';
+$jurusan = '';
+$nomor_hp = '';
+$agama = '';
+$jenis_kelamin = '';
+$pesan = '';
+
+// Get list of jurusan from database
+$query_jurusan = "SELECT * FROM jurusan";
+$result_jurusan = mysqli_query($koneksi, $query_jurusan);
+$daftar_jurusan = array();
+while ($row = mysqli_fetch_assoc($result_jurusan)) {
+    $daftar_jurusan[] = $row["nama_jurusan"];
+}
 
 // Process form data
 if (isset($_POST['submit'])) {
@@ -19,7 +37,7 @@ if (isset($_POST['submit'])) {
     $pesan = isset($_POST['pesan']) ? $_POST['pesan'] : '';
 
     // Cek apakah semua variabel yang dibutuhkan telah diatur
-    if (!empty($nama_lengkap) && !empty($tempat_lahir) && !empty($tanggal_lahir) && !empty($nama_ibu_kandung) && !empty($nik) && !empty($jurusan) && !empty($nomor_hp) && !empty($agama) && !empty($jenis_kelamin)) {
+    if (isset($nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $agama, $jenis_kelamin, $pesan)) {
         // Insert data into database using prepared statement
         $query = "INSERT INTO mabawebsite (nama_lengkap, tempat_lahir, tanggal_lahir, nama_ibu_kandung, nik, jurusan, nomor_hp, agama, jenis_kelamin, pesan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($koneksi, $query);
@@ -31,9 +49,9 @@ if (isset($_POST['submit'])) {
             $pesanstatus = "Gagal menyimpan data: " . mysqli_error($koneksi);
         }
     } else {
-        $pesanstatus = "Gagal menyimpan data: Mohon lengkapi semua field yang diperlukan";
+        $pesanstatus = "Gagal menyimpan data: Variabel yang diperlukan tidak diatur";
     }
-
+    
     header('Content-Type: application/json');
     $response = array(
         'status' => $pesanstatus

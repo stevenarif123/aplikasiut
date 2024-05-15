@@ -139,180 +139,248 @@ if ($resultJurusan) {
 $conn->close();
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"s crossorigin="anonymous">
-  </head>
-  <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">SALUT TANA TORAJA</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="../dashboard.php">Dashboard</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="../mahasiswa.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Mahasiswa
-          </a>
-          <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="../laporanbayar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Laporan Pembayaran
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../laporanbayar">Laporan Bayar</a></li>
-            <li><a class="dropdown-item" href="../laporanbayar/tambah_laporan.php">Tambah Laporan</a></li>
-            <li><a class="dropdown-item" href="../laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Mahasiswa Baru
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../maba/dashboard.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item active" href="../maba/tambah_data.php">Tambah Mahasiswa</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="../cekstatus/pencarian.php">Cek Status Mahasiswa</a>
-        </li>
-        <!-- Tambahkan tombol log out di sini -->
-        <li class="nav-item">
-          <a class="nav-link btn btn-warning text-dark fw-bold" href="../logout.php">Keluar</a>
-        </li>
-      </ul>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+        .box-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .box-form-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-gray-200 border-b border-gray-300 shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">SALUT TANA TORAJA</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="../dashboard.php">Dashboard</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Mahasiswa
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
+                        <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Laporan Pembayaran
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                        <li><a class="dropdown-item" href="../laporanbayar">Laporan Bayar</a></li>
+                        <li><a class="dropdown-item" href="../laporanbayar/tambah_laporan.php">Tambah Laporan</a></li>
+                        <li><a class="dropdown-item" href="../laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Mahasiswa Baru
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <li><a class="dropdown-item" href="../maba/dashboard.php">Daftar Mahasiswa</a></li>
+                        <li><a class="dropdown-item active" href="../maba/tambah_data.php">Tambah Mahasiswa</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="../cekstatus/pencarian.php">Cek Status Mahasiswa</a>
+                </li>
+                <!-- Tambahkan tombol log out di sini -->
+                <li class="nav-item">
+                    <a class="nav-link btn btn-warning text-dark fw-bold" href="../logout.php">Keluar</a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
-    <div class="container mt-3">
-        <h1 class="mb-4">Tambah Data Mahasiswa</h1>
+
+<div class="container-sm mt-5 relative">
+    <img src="path/to/your/background/image.jpg" alt="Background Image" class="absolute inset-0 box-form-image">
+    <div class="box-form">
+        <h1 class="mb-4 text-2xl">Tambah Data Mahasiswa</h1>
         <form action="tambah_data.php" method="post">
-            <div class="mb-3">
-                <label for="jalur_program" class="form-label">Jalur Program:</label>
-                <select name="JalurProgram" id="jalur_program" class="form-select" required>
-                    <option value="RPL">RPL</option>
-                    <option value="Reguler">Reguler</option>
-                </select>
+            <div class="grid gap-4">
+                <div class="w-1/2 mb-1">
+                    <label for="jalur_program" class="form-label">Jalur Program:</label>
+                    <select name="JalurProgram" id="jalur_program" class="form-select" required>
+                        <option value="" disabled selected>Silahkan Pilih Jalur Program</option>
+                        <option value="RPL">RPL</option>
+                        <option value="Reguler">Reguler</option>
+                    </select>
+                </div>
+                <div class="mb-1">
+                    <label for="nama_lengkap" class="form-label">Nama Lengkap:</label>
+                    <input type="text" name="NamaLengkap" id="nama_lengkap" class="form-control" required>
+                </div>
+                <div class="mb-1 flex flex-wrap -mx-3">
+                    <div class="w-1/2 px-3 mb-1">
+                        <label for="tempat_lahir" class="form-label">Tempat Lahir:</label>
+                        <input type="text" name="TempatLahir" id="tempat_lahir" class="form-control" required>
+                    </div>
+                    <div class="w-1/2 px-3 mb-1">
+                        <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
+                        <input type="date" name="TanggalLahir" id="tanggal_lahir" class="form-control" required>
+                    </div>
+                </div>
+                <div class="mb-1">
+                    <label for="nama_ibu_kandung" class="form-label">Nama Ibu Kandung:</label>
+                    <input type="text" name="NamaIbuKandung" id="nama_ibu_kandung" class="form-control" required>
+                </div>
+                <div class="mb-1">
+                    <label for="nik" class="form-label">NIK:</label>
+                    <input type="text" name="NIK" id="nik" class="form-control" required>
+                </div>
+                <div class="mb-1">
+                    <label for="jurusan" class="form-label">Jurusan:</label>
+                    <select name="Jurusan" id="jurusan" class="form-select" required>
+                        <?php foreach ($daftarJurusan as $major) : ?>
+                            <option value="<?php echo $major; ?>"><?php echo $major; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mb-1">
+                    <label for="nomor_hp" class="form-label">Nomor HP:</label>
+                    <input type="text" name="NomorHP" id="nomor_hp" class="form-control" required>
+                </div>
+                <div class="mb-1 flex flex-wrap -mx-3">
+                    <div class="w-1/2 px-3 mb-6">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" name="Email" id="email" class="form-control" required>
+                    </div>
+                    <div class="w-1/2 px-3 mb-6">
+                        <label for="password" class="form-label">Password Mahasiswa:</label>
+                        <input type="password" name="Password" id="password" class="form-control" required>
+                    </div>
+                </div>
+                    <div class="mb-1">
+                        <label for="agama" class="form-label">Agama:</label>
+                        <select name="Agama" id="agama" class="form-select" required>
+                            <option value="" disabled selected>Silahkan Pilih Agama</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Kristen">Kristen</option>
+                            <option value="Katolik">Katolik</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Buddha">Buddha</option>
+                            <option value="Konghucu">Konghucu</option>
+                        </select>
+                    </div>
+                <div class="mb-1 flex flex-wrap -mx-3">
+                    <div class="w-1/2 px-3 mb-1">
+                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
+                        <select name="JenisKelamin" id="jenis_kelamin" class="form-select" required>
+                        <option value="" disabled selected>Silahkan Pilih Jenis Kelamin</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>  
+                    </div>
+                    <div class="w-1/2 px-3 mb-1">
+                    <label for="status_perkawinan" class="form-label">Status Perkawinan:</label>
+                        <select name="StatusPerkawinan" id="status_perkawinan" class="form-select" required>
+                            <option value="" disabled selected>Silahkan Pilih Status Kawin</option>
+                            <option value="Belum Menikah">Belum Menikah</option>
+                            <option value="Menikah">Menikah</option>
+                            <option value="Cerai Hidup">Cerai Hidup</option>
+                            <option value="Cerai Mati">Cerai Mati</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-1">
+                    <label for="nomor_hp_alternatif" class="form-label">Nomor HP Alternatif:</label>
+                    <input type="text" name="NomorHPAlternatif" id="nomor_hp_alternatif" class="form-control">
+                </div>
+                <div class="mb-1 flex flex-wrap -mx-3">
+                    <div class="w-1/3 px-3 mb-1">
+                        <label for="nomor_ijazah" class="form-label">Nomor Ijazah:</label>
+                        <input type="text" name="NomorIjazah" id="nomor_ijazah" class="form-control">
+                    </div>
+                    <div class="w-1/3 px-3 mb-1">
+                        <label for="tahun_ijazah" class="form-label">Tahun Ijazah:</label>
+                        <input type="text" name="TahunIjazah" id="tahun_ijazah" class="form-control">
+                    </div>
+                    <div class="w-1/3 px-3mb-1">
+                        <label for="nisn" class="form-label">NISN:</label>
+                        <input type="text" name="NISN" id="nisn" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-1">
+                    <label for="layanan_paket_semester" class="form-label">Layanan Paket Semester:</label>
+                    <select name="LayananPaketSemester" id="layanan_paket_semester" class="form-select" required>
+                    <option value="" disabled selected>Silahkan Pilih Layanan Paket Semester</option>
+                        <option value="SIPAS">SIPAS</option>
+                        <option value="NON SIPAS">NON SIPAS</option>
+                    </select>
+                </div>
+                <div class="mb-1">
+                    <label for="status_input_sia" class="form-label">Status Input Sia:</label>
+                    <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select" required>
+                        <!-- Add options for semester package services here -->
+                        <option value="" disabled selected>Silahkan Pilih Status Input di SIA</option>
+                        <option value="Belum Terdaftar">Belum Terdaftar</option>
+                        <option value="Input admisi">Input admisi</option>
+                        <option value="Pengajuan Admisi">Pengajuan Admisi</option>
+                        <option value="Berkas Kurang">Berkas Kurang</option>
+                        <option value="Admisi Diterima">Admisi Diterima</option>
+                    </select>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="nama_lengkap" class="form-label">Nama Lengkap:</label>
-                <input type="text" name="NamaLengkap" id="nama_lengkap" class="form-control" required>
+            <div class="mt-4">
+                <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
             </div>
-            <div class="mb-3">
-                <label for="tempat_lahir" class="form-label">Tempat Lahir:</label>
-                <input type="text" name="TempatLahir" id="tempat_lahir" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
-                <input type="date" name="TanggalLahir" id="tanggal_lahir" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="nama_ibu_kandung" class="form-label">Nama Ibu Kandung:</label>
-                <input type="text" name="NamaIbuKandung" id="nama_ibu_kandung" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="nik" class="form-label">NIK:</label>
-                <input type="text" name="NIK" id="nik" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="jurusan" class="form-label">Jurusan:</label>
-                <select name="Jurusan" id="jurusan" class="form-select" required>
-                    <?php foreach ($daftarJurusan as $major) : ?>
-                        <option value="<?php echo $major; ?>"><?php echo $major; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="nomor_hp" class="form-label">Nomor HP:</label>
-                <input type="text" name="NomorHP" id="nomor_hp" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" name="Email" id="email" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password Mahasiswa:</label>
-                <input type="text" name="Password" id="password" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="agama" class="form-label">Agama:</label>
-                <select name="Agama" id="agama" class="form-select" required>
-                    <!-- Add options for religions here -->
-                    <option value="Islam">Islam</option>
-                    <option value="Kristen">Kristen</option>
-                    <option value="Katolik">Katolik</option>
-                    <option value="Hindu">Hindu</option>
-                    <option value="Buddha">Buddha</option>
-                    <option value="Konghucu">Konghucu</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
-                <select name="JenisKelamin" id="jenis_kelamin" class="form-select" required>
-                    <option value="Laki-laki">Laki-laki</option>
-                    <option value="Perempuan">Perempuan</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="status_perkawinan" class="form-label">Status Perkawinan:</label>
-                <select name="StatusPerkawinan" id="status_perkawinan" class="form-select" required>
-                    <option value="Belum Menikah">Belum Menikah</option>
-                    <option value="Menikah">Menikah</option>
-                    <option value="Cerai Hidup">Cerai Hidup</option>
-                    <option value="Cerai Mati">Cerai Mati</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="nomor_hp_alternatif" class="form-label">Nomor HP Alternatif:</label>
-                <input type="text" name="NomorHPAlternatif" id="nomor_hp_alternatif" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="nomor_ijazah" class="form-label">Nomor Ijazah:</label>
-                <input type="text" name="NomorIjazah" id="nomor_ijazah" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="tahun_ijazah" class="form-label">Tahun Ijazah:</label>
-                <input type="text" name="TahunIjazah" id="tahun_ijazah" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="nisn" class="form-label">NISN:</label>
-                <input type="text" name="NISN" id="nisn" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="layanan_paket_semester" class="form-label">Layanan Paket Semester:</label>
-                <select name="LayananPaketSemester" id="layanan_paket_semester" class="form-select" required>
-                    <option value="SIPAS">SIPAS</option>
-                    <option value="NON SIPAS">NON SIPAS</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="status_input_sia" class="form-label">Status Input Sia:</label>
-                <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select" required>
-                    <!-- Add options for semester package services here -->
-                    <option value="Belum Terdaftar">Belum Terdaftar</option>
-                    <option value="Input admisi">Input admisi</option>
-                    <option value="Pengajuan Admisi">Pengajuan Admisi</option>
-                    <option value="Berkas Kurang">Berkas Kurang</option>
-                    <option value="Admisi Diterima">Admisi Diterima</option>
-                </select>
-            </div>
-            <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
         </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    // Simple animation for the submit button
+    anime({
+        targets: '.btn',
+        duration: 1000,
+        loop: true
+    });
+
+    // Check if the form submission was successful
+    if (window.location.href.includes('success')) {
+        anime({
+            targets: '.box-form',
+            scale: 1.1,
+            duration: 1000,
+            elasticity: 0.5,
+            complete: function() {
+                alert('Data mahasiswa berhasil ditambahkan!');
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
