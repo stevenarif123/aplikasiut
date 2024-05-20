@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json');
+
 // Koneksi ke database
 $host = "localhost";
 $username = "root";
@@ -15,10 +17,8 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Daftar jurusan
 $daftar_jurusan = array("Teknik Informatika", "Sistem Informasi", "Manajemen Informatika", "Ilmu Komputer");
 
-// Proses data dari form
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama_lengkap = $_POST["nama_lengkap"];
     $tempat_lahir = $_POST["tempat_lahir"];
