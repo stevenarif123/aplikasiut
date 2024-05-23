@@ -1,0 +1,10 @@
+/* Example styles from Bootstrap and custom styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+#app {
+    padding: 20px;
+}
+
+/* Include any additional custom styles here */
