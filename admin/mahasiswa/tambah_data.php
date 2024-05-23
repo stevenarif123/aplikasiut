@@ -181,7 +181,7 @@ $koneksi->close();
                         <div class="mb-3">
                             <label for="jalur_program" class="form-label">Jalur Program:</label>
                             <select class="form-select" aria-label="JalurProgram" name="JalurProgram" id="jalur_program" required>
-                                <option value="">Pilih Jalur Program</option>
+                                <option value="" disabled selected>Silahkan Pilih Jalur Programs</option>
                                 <option value="RPL">RPL</option>
                                 <option value="Reguler">Reguler</option>
                             </select>
@@ -211,7 +211,7 @@ $koneksi->close();
                         <div class="mb-3">
                             <label for="jurusan" class="form-label">Jurusan:</label>
                             <select class="form-select" name="Jurusan" id="jurusan" required>
-                                <option value="">Pilih Jurusan</option>
+                                <option value="" disabled selected>Silahkan Pilih Jurusan</option>
                                 <?php foreach ($majors as $major) { ?>
                                     <option value="<?php echo $major; ?>"><?php echo $major; ?></option>
                                 <?php } ?>
@@ -234,7 +234,7 @@ $koneksi->close();
                         <div class="mb-3">
                             <label for="agama" class="form-label">Agama:</label>
                             <select class="form-select" name="Agama" id="agama" required>
-                                <option value="">Pilih Agama</option>
+                                <option value="" disabled selected>Silahkan Pilih Agama</option>
                                 <option value="Islam">Islam</option>
                                 <option value="Kristen">Kristen</option>
                                 <option value="Katolik">Katolik</option>
@@ -247,7 +247,7 @@ $koneksi->close();
                             <div class="col-md-6 mb-3">
                                 <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
                                 <select class="form-select" name="JenisKelamin" id="jenis_kelamin" required>
-                                    <option value="">Pilih Jenis Kelamin</option>
+                                    <option value="" disabled selected>Silahkan Pilih Jenis Kelamin</option>
                                     <option value="Laki-laki">Laki-laki</option>
                                     <option value="Perempuan">Perempuan</option>
                                 </select>
@@ -255,7 +255,7 @@ $koneksi->close();
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="status_perkawinan">Status Perkawinan:</label>
                                 <select class="form-select" name="StatusPerkawinan" id="status_perkawinan" required>
-                                    <option value="">Pilih Status Perkawinan</option>
+                                    <option value="" disabled selected>Silahkan Pilih Status Perkawinan</option>
                                     <option value="Belum Menikah">Belum Menikah</option>
                                     <option value="Menikah">Menikah</option>
                                 </select>
@@ -280,7 +280,7 @@ $koneksi->close();
                         <div class="mb-3">
                             <label class="form-label" for="layanan_paket_semester">Layanan Paket Semester:</label>
                             <select name="LayananPaketSemester" id="layanan_paket_semester" class="form-select" required>
-                                <option value="">Pilih Layanan Paket Semester</option>
+                                <option value="" disabled selected>Pilih Layanan Paket Semester</option>
                                 <option value="SIPAS">SIPAS</option>
                                 <option value="NON SIPAS">NON SIPAS</option>
                             </select>
@@ -288,9 +288,10 @@ $koneksi->close();
                         <div class="mb-3">
                             <label class="form-label" for="status_input_sia">Status Input Sia:</label>
                             <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select" required>
-                                <option value="">Pilih Status Input Sia</option>
+                                <option value="" disabled selected>Pilih Status Input Sia</option>
                                 <option value="Belum Terdaftar">CUTI</option>
                                 <option value="Admisi Diterima">AKTIF</option>
+                                <option value="Admisi Diterima">ALUMNI</option>
                             </select>
                         </div>
                         <div class="d-grid gap-2">

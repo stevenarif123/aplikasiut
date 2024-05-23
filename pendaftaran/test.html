@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pendaftaran Mahasiswa Baru</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    <style>
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 9999;
+        }
+
+        .loading img {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .background-image {
+            background-image: url('tes.jpg'); /* Ganti dengan path ke gambar Anda */
+            background-size: cover;
+            background-position: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        #form-daftar {
+            background-color: rgba(255, 255, 255, 0.9); /* Membuat form semi transparan */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            margin: 0 auto; /* Agar form berada di tengah */
+        }
+
+        @media (min-width: 640px) {
+            #form-daftar {
+                max-width: 80%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            #form-daftar {
+                max-width: 70%;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #form-daftar {
+                max-width: 60%;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            #form-daftar {
+                max-width: 50%;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            #form-daftar {
+                max-width: 40%;
+            }
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .tombol {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tombol:hover {
+            background-color: #0056b3;
+        }
+
+        .tombol:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        #pesan-status {
+            display: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .pesan-sukses {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #3c763d;
+        }
+
+        .pesan-gagal {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #a94442;
+        }
+    </style>
+</head>
+<body>
+    <nav class="bg-white bg-opacity-50 py-3">
+        <div class="container mx-auto px-5 flex items-center justify-between">
+            <a class="text-primary font-bold text-lg" href="./">SALUT TANA TORAJA</a>
+            <button class="block lg:hidden text-gray-500 focus:outline-none" id="navbar-toggler">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+            <div class="hidden lg:flex lg:items-center lg:space-x-4" id="navbar-content">
+                <a class="text-gray-700 hover:text-primary" href="./">Home</a>
+                <a class="text-gray-700 hover:text-primary" href="resume.html">Pengumuman</a>
+                <a class="text-gray-700 hover:text-primary active" href="./pendaftaran">Daftar Mahasiswa Baru</a>
+                <a class="text-gray-700 hover:text-primary" href="contact.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        document.getElementById('navbar-toggler').addEventListener('click', function() {
+            var navbarContent = document.getElementById('navbar-content');
+            navbarContent.classList.toggle('hidden');
+        });
+    </script>
+    
+    <div class="background-image"></div>
+    <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12">
+        <h1 class="text-3xl font-bold mb-4 text-center text-blue">Formulir Pendaftaran Mahasiswa Baru</h1>
+        <form id="form-daftar" action="proses.php" method="post">
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="nama_lengkap">Nama Lengkap:</label>
+                <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap">
+            </div>
+            <div class="mb-1 flex flex-wrap -mx-3">
+                <div class="w-1/2 px-3 mb-1">
+                    <label for="tempat_lahir">Tempat Lahir:</label>
+                    <input type="text" id="tempat_lahir" name="tempat_lahir" required>
+                </div>
+                <div class="w-1/2 px-3 mb-1">
+                    <label for="tanggal_lahir">Tanggal Lahir:</label>
+                    <input type="date" id="tanggal_lahir" name="tanggal_lahir" required>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="nama_ibu_kandung">Nama Ibu Kandung:</label>
+                <input type="text" id="nama_ibu_kandung" name="nama_ibu_kandung" required>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="nik">NIK:</label>
+                <input type="text" id="nik" name="nik" required pattern="\d{16}" maxlength="16" oninput="validateNIK(this)" placeholder="Nomor Induk Kependudukan">
+            </div>
+            
+            <script>
+                function validateNIK(input) {
+                    // Remove any non-digit characters
+                    input.value = input.value.replace(/\D/g, '');
+            
+                    // Ensure the length does not exceed 16 characters
+                    if (input.value.length > 16) {
+                        input.value = input.value.slice(0, 16);
+                    }
+                }
+            </script>            
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="jurusan">Jurusan:</label>
+                <select id="jurusan" name="jurusan" required>
+                    <option value="" disabled selected>Pilih Jurusan</option>
+                    <option value="Teknik Informatika">Teknik Informatika</option>
+                    <!-- Tambahkan pilihan jurusan lainnya di sini -->
+                </select>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="nomor_hp">Nomor HP:</label>
+                <input type="text" id="nomor_hp" name="nomor_hp" required oninput="validateNomorHP(this)">
+            </div>
+            
+            <script>
+                function validateNomorHP(input) {
+                    // Remove any non-digit characters
+                    input.value = input.value.replace(/\D/g, '');
+            
+                    // Ensure the input starts with "08" or "628"
+                    if (!input.value.startsWith('08') && !input.value.startsWith('628')) {
+                        input.setCustomValidity('Nomor HP harus dimulai dengan 08 atau 628');
+                    } else {
+                        input.setCustomValidity('');
+                    }
+                }
+            </script>            
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="agama">Agama:</label>
+                <select id="agama" name="agama" required>
+                    <option value="" disabled selected>Pilih Agama</option>
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen">Kristen</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Buddha">Buddha</option>
+                    <option value="Konghucu">Konghucu</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="jenis_kelamin">Jenis Kelamin:</label>
+                <select id="jenis_kelamin" name="jenis_kelamin" required>
+                    <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label for="pesan">Pesan:</label>
+                <textarea id="pesan" name="pesan" placeholder="Masukkan pertanyaan disini"></textarea>
+            </div>
+            <div class="space-y-2">
+                <label for="Option1" class="flex cursor-pointer items-start gap-4">
+                  <div class="flex items-center">
+                    &#8203;
+                    <input type="checkbox" id="setuju" name="setuju" class="size-4 rounded border-gray-300" required id="Option1" />
+                  </div>
+                  <div>
+                    <strong class="font-medium text-gray-900">Saya menyetujui persyaratan dari SALUT Tana Toraja.</strong>
+                  </div>
+                </label>
+            </div>
+            <div class="flex justify-between">
+                <button class="tombol" type="button" id="submit-btn" disabled>Kirim</button>
+                <button class="tombol" type="reset">Reset</button>
+            </div>
+        </form>
+        <div id="pesan-status"></div>
+    </div>
+    <div class="loading">
+        <img src="loading.gif" alt="Loading..." />
+    </div>
+
+    <script>
+        const submitBtn = document.getElementById('submit-btn');
+        const setujuCheckbox = document.getElementById('setuju');
+        const form = document.getElementById('form-daftar');
+
+        setujuCheckbox.addEventListener('change', function() {
+            submitBtn.disabled = !this.checked;
+        });
+
+        submitBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form submit standar
+
+            // Validasi manual
+            const requiredFields = ['nama_lengkap', 'tempat_lahir', 'tanggal_lahir', 'nama_ibu_kandung', 'nik', 'jurusan', 'nomor_hp', 'agama', 'jenis_kelamin'];
+            let isValid = true;
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value) {
+                    isValid = false;
+                    field.classList.add('border-red-500');
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+
+            if (!isValid) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Mohon lengkapi semua field yang wajib diisi.'
+                });
+                return;
+            }
+
+            const formData = new FormData(form);
+
+            fetch('proses.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses',
+                        text: data.message
+                    }).then(() => {
+                        form.reset();
+                        submitBtn.disabled = true;
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: data.message
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

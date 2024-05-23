@@ -1,0 +1,134 @@
+<div class="container-md mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Tambah Data Mahasiswa</h4>
+                    <form id="tambahMahasiswaForm">
+                        <div class="mb-3">
+                            <label for="nim" class="form-label">NIM</label>
+                            <input type="text" class="form-control" name="Nim" id="nim" placeholder="041100000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jalur_program" class="form-label">Jalur Program:</label>
+                            <select class="form-select" aria-label="JalurProgram" name="JalurProgram" id="jalur_program" required>
+                                <option value="" disabled selected>Silahkan Pilih Jalur Programs</option>
+                                <option value="RPL">RPL</option>
+                                <option value="Reguler">Reguler</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_lengkap" class="form-label">Nama Lengkap:</label>
+                            <input type="text" class="form-control" name="NamaLengkap" id="nama_lengkap" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tempat_lahir" class="form-label">Tempat Lahir:</label>
+                                <input type="text" class="form-control" name="TempatLahir" id="tempat_lahir" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
+                                <input type="date" class="form-control" name="TanggalLahir" id="tanggal_lahir" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_ibu_kandung" class="form-label">Nama Ibu Kandung:</label>
+                            <input type="text" class="form-control" name="NamaIbuKandung" id="nama_ibu_kandung" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nik" class="form-label">NIK:</label>
+                            <input type="text" class="form-control" name="NIK" id="nik" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jurusan" class="form-label">Jurusan:</label>
+                            <select class="form-select" name="Jurusan" id="jurusan" required>
+                                <option value="" disabled selected>Silahkan Pilih Jurusan</option>
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomor_hp" class="form-label">Nomor HP:</label>
+                            <input type="text" class="form-control" name="NomorHP" id="nomor_hp" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" name="Email" id="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="text" class="form-control" name="Password" id="password" disabled>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="agama" class="form-label">Agama:</label>
+                            <select class="form-select" name="Agama" id="agama" required>
+                                <option value="" disabled selected>Silahkan Pilih Agama</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Kristen">Kristen</option>
+                                <option value="Katolik">Katolik</option>
+                                <option value="Hindu">Hindu</option>
+                                <option value="Buddha">Buddha</option>
+                                <option value="Konghucu">Konghucu</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
+                                <select class="form-select" name="JenisKelamin" id="jenis_kelamin" required>
+                                    <option value="" disabled selected>Silahkan Pilih Jenis Kelamin</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="status_perkawinan">Status Perkawinan:</label>
+                                <select class="form-select" name="StatusPerkawinan" id="status_perkawinan" required>
+                                    <option value="" disabled selected>Silahkan Pilih Status Perkawinan</option>
+                                    <option value="Belum Menikah">Belum Menikah</option>
+                                    <option value="Menikah">Menikah</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="nomor_hp_alternatif">Nomor HP Alternatif:</label>
+                            <input type="text" class="form-control" name="NomorHPAlternatif" id="nomor_hp_alternatif">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="nomor_ijazah">Nomor Ijazah:</label>
+                            <input type="text" class="form-control" name="NomorIjazah" id="nomor_ijazah">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="tahun_ijazah">Tahun Ijazah:</label>
+                            <input type="text" class="form-control" name="TahunIjazah" id="tahun_ijazah">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nisn">NISN:</label>
+                            <input type="text" class="form-control" name="NISN" id="nisn">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="layanan_paket_semester">Layanan Paket Semester:</label>
+                            <select name="LayananPaketSemester" id="layanan_paket_semester" class="form-select" required>
+                                <option value="" disabled selected>Pilih Layanan Paket Semester</option>
+                                <option value="SIPAS">SIPAS</option>
+                                <option value="NON SIPAS">NON SIPAS</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="status_input_sia">Status Input Sia:</label>
+                            <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select" required>
+                                <option value="" disabled selected>Pilih Status Input Sia</option>
+                                <option value="Belum Terdaftar">CUTI</option>
+                                <option value="Admisi Diterima">AKTIF</option>
+                                <option value="Admisi Diterima">ALUMNI</option>
+                            </select>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
