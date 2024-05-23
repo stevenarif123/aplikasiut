@@ -2,7 +2,6 @@
 // Include database connection file
 require_once "koneksi.php";
 
-// Check if session is not active, start the session
 // Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
