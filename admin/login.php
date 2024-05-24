@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
             if ($password == $row['password']) { // Perubahan pada baris ini
                 $_SESSION['username'] = $row['username']; }
                 // Redirect to dashboard
-                header("Location: dashboard.php");
+                header("Location: index.php");
                 exit; // Stop further execution
             } else {
                 // Password tidak valid

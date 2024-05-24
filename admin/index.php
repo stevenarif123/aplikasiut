@@ -8,6 +8,39 @@ if (!isset($_SESSION['username'])) {
   header("Location: login.php");
   exit;
 }
+// // Example user roles and their accessible pages
+// $roles = [
+//     'super_admin' => ['Home', 'Dashboard', 'UserManagement'],
+//     'admin' => ['Home', 'AdminDashboard'],
+//     'editor' => ['Home', 'EditorDashboard']
+// ];
+
+// // Assuming user role is stored in session
+// $current_user_role = $_SESSION['user_role'] ?? 'guest';
+
+// function has_access($role, $page, $roles) {
+//     return in_array($page, $roles[$role] ?? []);
+// }
+
+// switch($opsi) {
+//     default:
+//         $halaman = $opsi;
+//         if ($halaman == '') {
+//             $halaman = 'Home';
+//         }
+        
+//         $namafile = $halaman . '.php';
+        
+//         if (file_exists(PUB_DIR . $namafile)) {
+//             if (has_access($current_user_role, $halaman, $roles)) {
+//                 require_once(PUB_DIR . $namafile);
+//             } else {
+//                 echo "Access Denied: You do not have permission to access this page.";
+//             }
+//         } else {
+//             require_once(PUB_DIR . 'error.php');
+//         }
+// }
 ?>
 <!DOCTYPE html>
 <html lang="id">
