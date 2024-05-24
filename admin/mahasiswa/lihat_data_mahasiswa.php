@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Koneksi ke database
-require_once "koneksi.php";
+require_once "../koneksi.php";
 
 // Ambil id dari URL
 $id = $_GET['No']; // Pastikan parameter 'No' sesuai dengan yang digunakan di URL
@@ -53,7 +53,7 @@ $mahasiswa = mysqli_fetch_assoc($result);
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="dashboard.php">Dashboard</a>
+          <a class="nav-link" aria-current="page" href="../dashboard.php">Dashboard</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle active" href="mahasiswa.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,13 +65,13 @@ $mahasiswa = mysqli_fetch_assoc($result);
           </ul>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="./laporanbayar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="../laporanbayar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Laporan Pembayaran
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="./laporanbayar">Laporan Bayar</a></li>
-            <li><a class="dropdown-item" href="./laporanbayar/tambah_laporan.php">Tambah Laporan</a></li>
-            <li><a class="dropdown-item" href="./laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
+            <li><a class="dropdown-item" href="../laporanbayar">Laporan Bayar</a></li>
+            <li><a class="dropdown-item" href="../laporanbayar/tambah_laporan.php">Tambah Laporan</a></li>
+            <li><a class="dropdown-item" href="../laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -79,12 +79,12 @@ $mahasiswa = mysqli_fetch_assoc($result);
             Mahasiswa Baru
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="./maba/dashboard.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="./maba/tambah_data.php">Tambah Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../maba/dashboard.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../maba/tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="./cekstatus/pencarian.php">Cek Status Mahasiswa</a>
+          <a class="nav-link" aria-current="page" href="../cekstatus/pencarian.php">Cek Status Mahasiswa</a>
         </li>
         <li class="nav-item">
             <a class="nav-link btn btn-warning text-dark fw-bold" href="logout.php">Keluar</a>

@@ -2,7 +2,6 @@
 // Include database connection file
 require_once "koneksi.php";
 
-// Check if session is not active, start the session
 // Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -94,8 +93,8 @@ if (isset($_GET['verifikasi']) && $_GET['verifikasi'] == "true") {
             Mahasiswa
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa/mahasiswa.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa/tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">

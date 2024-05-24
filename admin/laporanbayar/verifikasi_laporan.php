@@ -59,8 +59,8 @@ $koneksi->close();
             Mahasiswa
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa/mahasiswa.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa/tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">

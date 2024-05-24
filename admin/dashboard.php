@@ -48,8 +48,8 @@ if (!isset($_SESSION['username'])) {
             Mahasiswa
           </a>
           <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="mahasiswa.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="tambah_data.php">Tambah Mahasiswa</a></li>
+          <li><a class="dropdown-item" href="./mahasiswa/mahasiswa.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="./mahasiswa/tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -94,6 +94,33 @@ if (!isset($_SESSION['username'])) {
 
                 // Query untuk mengambil total data mahasiswa
                 $query = "SELECT COUNT(*) AS total_mahasiswa FROM mahasiswa";
+                $result = mysqli_query($koneksi, $query);
+
+                // Mengambil hasil query
+                if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalMahasiswa = $row['total_mahasiswa'];
+                } else {
+                    $totalMahasiswa = 0;
+                }
+                ?>
+                <h5 class="card-title"><?php echo $totalMahasiswa; ?></h5>
+                <p class="card-text">Mahasiswa</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Total Data Mahasiswa Baru
+            </div>
+            <div class="card-body">
+                <?php
+                // Menghubungkan ke database
+                require_once 'koneksi.php';
+
+                // Query untuk mengambil total data mahasiswa
+                $query = "SELECT COUNT(*) AS total_mahasiswa FROM mahasiswabaru";
                 $result = mysqli_query($koneksi, $query);
 
                 // Mengambil hasil query

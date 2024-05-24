@@ -26,7 +26,7 @@
         }
 
         .background-image {
-            background-image: url('path-to-your-image.jpg'); /* Ganti dengan path ke gambar Anda */
+            background-image: url('tes.jpg'); /* Ganti dengan path ke gambar Anda */
             background-size: cover;
             background-position: center;
             position: fixed;
@@ -42,8 +42,38 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 50%;
+            max-width: 90%;
             margin: 0 auto; /* Agar form berada di tengah */
+        }
+
+        @media (min-width: 640px) {
+            #form-daftar {
+                max-width: 80%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            #form-daftar {
+                max-width: 70%;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #form-daftar {
+                max-width: 60%;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            #form-daftar {
+                max-width: 50%;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            #form-daftar {
+                max-width: 40%;
+            }
         }
 
         label {
@@ -99,13 +129,37 @@
     </style>
 </head>
 <body>
+    <nav class="bg-white bg-opacity-50 py-3">
+        <div class="container mx-auto px-5 flex items-center justify-between">
+            <a class="text-primary font-bold text-lg" href="./">SALUT TANA TORAJA</a>
+            <button class="block lg:hidden text-gray-500 focus:outline-none" id="navbar-toggler">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+            <div class="hidden lg:flex lg:items-center lg:space-x-4" id="navbar-content">
+                <a class="text-gray-700 hover:text-primary" href="./">Home</a>
+                <a class="text-gray-700 hover:text-primary" href="resume.html">Pengumuman</a>
+                <a class="text-gray-700 hover:text-primary active" href="./pendaftaran">Daftar Mahasiswa Baru</a>
+                <a class="text-gray-700 hover:text-primary" href="contact.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        document.getElementById('navbar-toggler').addEventListener('click', function() {
+            var navbarContent = document.getElementById('navbar-content');
+            navbarContent.classList.toggle('hidden');
+        });
+    </script>
+    
     <div class="background-image"></div>
     <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12">
-        <h1 class="text-3xl font-bold mb-4 text-center text-white">Formulir Pendaftaran Mahasiswa Baru</h1>
+        <h1 class="text-3xl font-bold mb-4 text-center text-blue">Formulir Pendaftaran Mahasiswa Baru</h1>
         <form id="form-daftar" action="proses.php" method="post">
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <label for="nama_lengkap">Nama Lengkap:</label>
-                <input type="text" id="nama_lengkap" name="nama_lengkap" required>
+                <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap">
             </div>
             <div class="mb-1 flex flex-wrap -mx-3">
                 <div class="w-1/2 px-3 mb-1">
@@ -123,8 +177,20 @@
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <label for="nik">NIK:</label>
-                <input type="text" id="nik" name="nik" required>
+                <input type="text" id="nik" name="nik" required pattern="\d{16}" maxlength="16" oninput="validateNIK(this)" placeholder="Nomor Induk Kependudukan">
             </div>
+            
+            <script>
+                function validateNIK(input) {
+                    // Remove any non-digit characters
+                    input.value = input.value.replace(/\D/g, '');
+            
+                    // Ensure the length does not exceed 16 characters
+                    if (input.value.length > 16) {
+                        input.value = input.value.slice(0, 16);
+                    }
+                }
+            </script>            
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <label for="jurusan">Jurusan:</label>
                 <select id="jurusan" name="jurusan" required>
@@ -135,8 +201,22 @@
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <label for="nomor_hp">Nomor HP:</label>
-                <input type="text" id="nomor_hp" name="nomor_hp" required>
+                <input type="text" id="nomor_hp" name="nomor_hp" required oninput="validateNomorHP(this)">
             </div>
+            
+            <script>
+                function validateNomorHP(input) {
+                    // Remove any non-digit characters
+                    input.value = input.value.replace(/\D/g, '');
+            
+                    // Ensure the input starts with "08" or "628"
+                    if (!input.value.startsWith('08') && !input.value.startsWith('628')) {
+                        input.setCustomValidity('Nomor HP harus dimulai dengan 08 atau 628');
+                    } else {
+                        input.setCustomValidity('');
+                    }
+                }
+            </script>            
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <label for="agama">Agama:</label>
                 <select id="agama" name="agama" required>
@@ -159,12 +239,17 @@
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <label for="pesan">Pesan:</label>
-                <textarea id="pesan" name="pesan"></textarea>
+                <textarea id="pesan" name="pesan" placeholder="Masukkan pertanyaan disini"></textarea>
             </div>
-            <div class="grid grid-cols-3 gap-4 mb-4">
-                <label class="inline-flex items-center">
-                    <input type="checkbox" id="setuju" name="setuju" required class="mr-2">
-                    Saya menyetujui persyaratan dari SALUT Tana Toraja.
+            <div class="space-y-2">
+                <label for="Option1" class="flex cursor-pointer items-start gap-4">
+                  <div class="flex items-center">
+                    &#8203;
+                    <input type="checkbox" id="setuju" name="setuju" class="size-4 rounded border-gray-300" required id="Option1" />
+                  </div>
+                  <div>
+                    <strong class="font-medium text-gray-900">Saya menyetujui persyaratan dari SALUT Tana Toraja.</strong>
+                  </div>
                 </label>
             </div>
             <div class="flex justify-between">

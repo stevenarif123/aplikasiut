@@ -14,7 +14,7 @@ if (!isset($_SESSION['username'])) {
 
 
 
-require_once "koneksi.php";
+require_once "../koneksi.php";
 
 // Ambil id dari URL
 $id = $_GET['No'];
