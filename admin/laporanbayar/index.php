@@ -6,7 +6,6 @@ if (session_status() == PHP_SESSION_NONE) {
 if (!isset($_SESSION['username'])) {
   header("Location: login.php");
 }
-
 // Mengambil data admin
 $admin = $_SESSION['username'];
 // Menghubungkan ke database
@@ -96,8 +95,8 @@ $result = mysqli_query($koneksi, $query);
             Mahasiswa
           </a>
           <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa/mahasiswa.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa/tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">

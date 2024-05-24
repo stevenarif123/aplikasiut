@@ -33,19 +33,26 @@ if (isset($_POST['submit'])) {
         if (mysqli_num_rows($result) > 0) {
             // Fetch user data from the result
             $row = mysqli_fetch_assoc($result);
-        
+
             // Verify password
-            if ($password == $row['password']) { // Perubahan pada baris ini
-                $_SESSION['username'] = $row['username']; }
+            if ($password == $row['password']) {
+                // Set session variables
+                $_SESSION['username'] = $row['username'];
+                $_SESSION['peran'] = $row['peran']; // Save the role in session
+
                 // Redirect to dashboard
                 header("Location: dashboard.php");
                 exit; // Stop further execution
             } else {
-                // Password tidak valid
+                // Password is incorrect
                 $error = "Password salah.";
             }
+        } else {
+            // Username not found
+            $error = "Username tidak ditemukan.";
         }
     }
+}
 ?>
 <!doctype html>
 <html lang="en">

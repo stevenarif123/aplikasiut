@@ -96,8 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
             Mahasiswa Baru
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../maba/dashboard.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="../maba/tambah_data.php">Tambah Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa/mahasiswa.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa/tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
         <li class="nav-item">
