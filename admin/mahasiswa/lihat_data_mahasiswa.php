@@ -56,12 +56,12 @@ $mahasiswa = mysqli_fetch_assoc($result);
           <a class="nav-link" aria-current="page" href="../dashboard.php">Dashboard</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="mahasiswa.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle active" href="./index.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Mahasiswa
           </a>
           <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="mahasiswa.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="tambah_data.php">Tambah Mahasiswa</a></li>
+          <li><a class="dropdown-item" href="./index.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="./tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
