@@ -6,17 +6,13 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
   }
 // Koneksi ke database
-require_once "koneksi.php";
+require_once "../koneksi.php";
 // Ambil id dari URL
 $id = $_GET['No']; // Pastikan parameter 'No' sesuai dengan yang digunakan di URL
 
 // Query untuk mendapatkan data mahasiswa berdasarkan id
 $query = "SELECT * FROM mahasiswabaru WHERE No=$id";
 $result = mysqli_query($koneksi, $query);
-
-if (!$result) {
-    die("Query Error: " . mysqli_error($koneksi));
-}
 
 $mahasiswa = mysqli_fetch_assoc($result);
 

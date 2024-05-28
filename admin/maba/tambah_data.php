@@ -11,50 +11,43 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-// Establish a database connection
-$conn = new mysqli($host, $user, $pass, $db);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $username = $_SESSION['username'];
 $query = "SELECT * FROM admin WHERE username='$username'";
 
-$result = mysqli_query($conn, $query);
+$result = mysqli_query($koneksi, $query);
 $user = mysqli_fetch_assoc($result);
 if (!$result) {
-  die("Query gagal: " . mysqli_error($conn));
+  die("Query gagal: " . mysqli_error($koneksi));
 }
 
 // Check if the form is submitted
 if (isset($_POST['submit'])) {
     // Sanitize and validate input data
-    $jalur_program = $conn->real_escape_string(trim($_POST['JalurProgram']));
-    $nama_lengkap = $conn->real_escape_string(trim($_POST['NamaLengkap']));
-    $tempat_lahir = $conn->real_escape_string(trim($_POST['TempatLahir']));
+    $jalur_program = $koneksi->real_escape_string(trim($_POST['JalurProgram']));
+    $nama_lengkap = $koneksi->real_escape_string(trim($_POST['NamaLengkap']));
+    $tempat_lahir = $koneksi->real_escape_string(trim($_POST['TempatLahir']));
     $tanggal_lahir = date('Y-m-d', strtotime($_POST['TanggalLahir']));
-    $nama_ibu_kandung = $conn->real_escape_string(trim($_POST['NamaIbuKandung']));
-    $nik = $conn->real_escape_string(trim($_POST['NIK']));
-    $jurusan = $conn->real_escape_string(trim($_POST['Jurusan']));
-    $nomor_hp = $conn->real_escape_string(trim($_POST['NomorHP']));
-    $email = $conn->real_escape_string(trim($_POST['Email']));
-    $password = $conn->real_escape_string(trim($_POST['Password']));
-    $agama = $conn->real_escape_string(trim($_POST['Agama']));
-    $jenis_kelamin = $conn->real_escape_string(trim($_POST['JenisKelamin']));
-    $status_perkawinan = $conn->real_escape_string(trim($_POST['StatusPerkawinan']));
-    $nomor_hp_alternatif = $conn->real_escape_string(trim($_POST['NomorHPAlternatif']));
-    $nomor_ijazah = $conn->real_escape_string(trim($_POST['NomorIjazah']));
-    $tahun_ijazah = $conn->real_escape_string(trim($_POST['TahunIjazah']));
-    $nisn = $conn->real_escape_string(trim($_POST['NISN']));
-    $layanan_paket_semester = $conn->real_escape_string(trim($_POST['LayananPaketSemester']));
-    $di_input_oleh = $conn->real_escape_string(trim($user['nama_lengkap']));
-    $status_input_sia = $conn->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
+    $nama_ibu_kandung = $koneksi->real_escape_string(trim($_POST['NamaIbuKandung']));
+    $nik = $koneksi->real_escape_string(trim($_POST['NIK']));
+    $jurusan = $koneksi->real_escape_string(trim($_POST['Jurusan']));
+    $nomor_hp = $koneksi->real_escape_string(trim($_POST['NomorHP']));
+    $email = $koneksi->real_escape_string(trim($_POST['Email']));
+    $password = $koneksi->real_escape_string(trim($_POST['Password']));
+    $agama = $koneksi->real_escape_string(trim($_POST['Agama']));
+    $jenis_kelamin = $koneksi->real_escape_string(trim($_POST['JenisKelamin']));
+    $status_perkawinan = $koneksi->real_escape_string(trim($_POST['StatusPerkawinan']));
+    $nomor_hp_alternatif = $koneksi->real_escape_string(trim($_POST['NomorHPAlternatif']));
+    $nomor_ijazah = $koneksi->real_escape_string(trim($_POST['NomorIjazah']));
+    $tahun_ijazah = $koneksi->real_escape_string(trim($_POST['TahunIjazah']));
+    $nisn = $koneksi->real_escape_string(trim($_POST['NISN']));
+    $layanan_paket_semester = $koneksi->real_escape_string(trim($_POST['LayananPaketSemester']));
+    $di_input_oleh = $koneksi->real_escape_string(trim($user['nama_lengkap']));
+    $status_input_sia = $koneksi->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
 
     // Prepare the SQL statement
 // Prepare the SQL statement
-    $stmt = $conn->prepare("INSERT INTO mahasiswabaru ( 
+    $stmt = $koneksi->prepare("INSERT INTO mahasiswabaru ( 
     JalurProgram, 
     NamaLengkap, 
     TempatLahir, 
@@ -77,7 +70,7 @@ if (isset($_POST['submit'])) {
     STATUS_INPUT_SIA) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     // Check for errors in preparing the statement
         if (!$stmt) {
-            die("Prepare failed: " . $conn->error);
+            die("Prepare failed: " . $koneksi->error);
         }
 
     // Bind parameters to the prepared statement
@@ -118,25 +111,50 @@ if (isset($_POST['submit'])) {
     $stmt->close();
 }
 
-$queryJurusan = "SELECT * FROM jurusan"; // Ganti 'daftar_jurusan' dengan nama tabel yang sesuai
-$resultJurusan = mysqli_query($koneksi, $queryJurusan);
+$daftarJurusan = array(
+    "Manajemen",
+    "Ekonomi Pembangunan",
+    "Ekonomi Syariah",
+    "Akuntansi",
+    "Akuntansi Keuangan Publik",
+    "Pariwisata",
+    "Pendidikan Bahasa dan Sastra Indonesia",
+    "Pendidikan Bahasa Inggris",
+    "Pendidikan Biologi",
+    "Pendidikan Fisika",
+    "Pendidikan Kimia",
+    "Pendidikan Matematika",
+    "Pendidikan Ekonomi",
+    "Pendidikan Pancasila dan Kewarganegaraan",
+    "Teknologi Pendidikan",
+    "Pendidikan Guru Sekolah Dasar (PGSD)",
+    "Pendidikan Guru Pendidikan Anak Usia Dini (PGPAUD)",
+    "Program Pendidikan Profesi Guru (PPG)",
+    "Pendidikan Agama Islam (PAI)",
+    "Statistika",
+    "Matematika",
+    "Biologi",
+    "Teknologi Pangan",
+    "Agribisnis",
+    "Perencanaan Wilayah dan Kota",
+    "Sistem Informasi",
+    "Sains Data",
+    "Kearsipan (D4)",
+    "Perpajakan (D3)",
+    "Administrasi Publik (S1)",
+    "Administrasi Bisnis (S1)",
+    "Hukum (S1)",
+    "Ilmu Pemerintahan (S1)",
+    "Ilmu Komunikasi (S1)",
+    "Ilmu Perpustakaan (S1)",
+    "Sosiologi (S1)",
+    "Sastra Inggris (S1)",
+    "Perpajakan (S1)"
+);
 
-// Inisialisasi array untuk menyimpan daftar jurusan
-$daftarJurusan = array();
-
-// Periksa apakah query berhasil dieksekusi
-if ($resultJurusan) {
-    // Loop untuk mengambil setiap baris hasil query dan menyimpannya dalam array
-    while ($row = mysqli_fetch_assoc($resultJurusan)) {
-        $daftarJurusan[] = $row['nama_jurusan']; // Sesuaikan 'nama_jurusan' dengan nama kolom yang sesuai
-    }
-} else {
-    // Jika query gagal dieksekusi, tampilkan pesan error
-    echo "Error retrieving list of majors: " . mysqli_error($koneksi);
-}
 
 // Close the database connection
-$conn->close();
+$koneksi->close();
 ?>
 
 <!DOCTYPE html>
@@ -260,6 +278,7 @@ $conn->close();
                 <div class="mb-1">
                     <label for="jurusan" class="form-label">Jurusan:</label>
                     <select name="Jurusan" id="jurusan" class="form-select" required>
+                        <option value="" disabled selected>Pilih Jurusan</option>
                         <?php foreach ($daftarJurusan as $major) : ?>
                             <option value="<?php echo $major; ?>"><?php echo $major; ?></option>
                         <?php endforeach; ?>

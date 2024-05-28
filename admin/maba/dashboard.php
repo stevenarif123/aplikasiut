@@ -7,11 +7,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Koneksi ke database
-require_once "koneksi.php";
-
-if (!$koneksi) {
-  die("Koneksi gagal: " . mysqli_connect_error());
-}
+require_once "../koneksi.php";
 
 // Query untuk mendapatkan data user
 $username = $_SESSION['username'];
@@ -149,11 +145,9 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
   </div>
 </nav>
   <div class="container-sm">
-    <h1>Pengelolaan Calon Mahasiswa Baru</h1>
-
-    <p>Selamat datang, <?php echo $user['nama_lengkap']; ?>!</p>
-    <p>Peran sebagai <?php echo $user['peran']; ?></p>
-
+    <h1 class="h1">Pengelolaan Calon Mahasiswa Baru</h1>
+    <h2 class="h2">Mahasiswa Baru dari Website</h2>
+    <a class="btn btn-primary" href="./mabawebsite/" role="button">Proses</a>
     <form action="dashboard.php" method="post" class="mb-3">
       <label for="keyword" class="form-label">Cari data mahasiswa:</label>
       <div class="input-group">

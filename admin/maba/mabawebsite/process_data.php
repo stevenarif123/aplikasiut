@@ -1,5 +1,5 @@
 <?php
-require_once "../koneksi.php";
+require_once "../../koneksi.php";
 
 $id = intval($_POST['id']);
 $sql = "SELECT * FROM mabawebsite WHERE id = ?";

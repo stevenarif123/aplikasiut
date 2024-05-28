@@ -43,6 +43,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else if (page === 'tambahMahasiswa') {
                     loadTambahForm();
                 }
+
+                // Add event listener to "Kembali" button
+                const kembaliBtn = document.querySelector('.kembali-btn');
+                if (kembaliBtn) {
+                    kembaliBtn.addEventListener('click', function() {
+                        loadContent('daftarMahasiswa');
+                    });
+                }
             })
             .catch(error => console.error('Error loading content:', error));
     }

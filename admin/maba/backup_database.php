@@ -3,20 +3,11 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit; // tambahkan exit setelah header
 }
 
-// Informasi koneksi ke database
-$username = "root";
-$password = "";
-$host = "localhost";
-$database = "datamahasiswa";
-
-$koneksi = mysqli_connect($host, $username, $password, $database);
-if (!$koneksi) {
-    die("Koneksi gagal: " . mysqli_connect_error());
-}
+require_once "../koneksi.php";
 
 // Nama file backup
 $backupFile = 'backup_' . date("Ymd_His") . '.sql';
