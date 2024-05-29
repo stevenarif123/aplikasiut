@@ -48,7 +48,7 @@ if (!isset($_SESSION['username'])) {
             Mahasiswa
           </a>
           <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="./mahasiswa/mahasiswa.php">Daftar Mahasiswa</a></li>
+          <li><a class="dropdown-item" href="./mahasiswa/index.php">Daftar Mahasiswa</a></li>
             <li><a class="dropdown-item" href="./mahasiswa/tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
