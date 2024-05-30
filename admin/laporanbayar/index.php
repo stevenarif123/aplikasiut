@@ -131,6 +131,7 @@ $result = mysqli_query($koneksi, $query);
 <div class="container-sm">
     <h1 class="mt-4">Laporan Uang Masuk</h1>
     <a href="tambah_laporan.php" class="btn btn-primary mb-3">Tambah Laporan</a>
+    <a href="laporanbayarmaba.php" class="btn btn-primary mb-3">Tambah Laporan MABA</a>
     <!-- Pemberitahuan laporan yang belum diverifikasi -->
     <?php if ($totalData > 0): ?>
     <div class="alert alert-warning" role="alert">
