@@ -10,7 +10,8 @@ function generateKodeLaporan($jenis_pembayaran) {
     $kodeJenisPembayaran = array(
         "SPP" => "SP",
         "Almamater" => "AL",
-        "Pokjar" => "PJ"
+        "Pokjar" => "PJ",
+        "Admisi" => "AD"
     );
 
     // Mendapatkan kode jenis pembayaran dari array

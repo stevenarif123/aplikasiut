@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $koneksi->close();
 }
 
-$jenis_pembayaran = array("SPP", "Almamater", "Pokjar");
+$jenis_pembayaran = array("SPP", "Almamater", "Pokjar", "Admisi");
 
 // Get data from query string
 $nim = $_GET['nim'] ?? '';

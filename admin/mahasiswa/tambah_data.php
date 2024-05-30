@@ -289,9 +289,9 @@ $koneksi->close();
                             <label class="form-label" for="status_input_sia">Status Input Sia:</label>
                             <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select" required>
                                 <option value="" disabled selected>Pilih Status Input Sia</option>
-                                <option value="Belum Terdaftar">CUTI</option>
-                                <option value="Admisi Diterima">AKTIF</option>
-                                <option value="Admisi Diterima">ALUMNI</option>
+                                <option value="CUTI">CUTI</option>
+                                <option value="AKTIF">AKTIF</option>
+                                <option value="ALUMNI">ALUMNI</option>
                             </select>
                         </div>
                         <div class="d-grid gap-2">
