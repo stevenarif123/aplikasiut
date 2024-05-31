@@ -168,7 +168,7 @@
                 </div>
                 <div class="w-1/2 px-3 mb-1">
                     <label for="tanggal_lahir">Tanggal Lahir:</label>
-                    <input type="date" id="tanggal_lahir" name="tanggal_lahir" required>
+                    <input type="date" id="tanggal_lahir" name="tanggal_lahir" required min="<?php echo date('Y-m-d', strtotime('-15 years')); ?>">
                 </div>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
@@ -212,13 +212,47 @@
                 <label for="jurusan">Jurusan:</label>
                 <select id="jurusan" name="jurusan" required>
                     <option value="" disabled selected>Pilih Jurusan</option>
-                    <option value="Teknik Informatika">Teknik Informatika</option>
+                    <option value="Manajemen">Manajemen</option>
+                    <option value="Ekonomi Pembangunan">Ekonomi Pembangunan</option>
+                    <option value="Ekonomi Syariah">Ekonomi Syariah</option>
+                    <option value="Akuntansi">Akuntansi</option>
+                    <option value="Akuntansi Keuangan Publik">Akuntansi Keuangan Publik</option>
+                    <option value="Pariwisata">Pariwisata</option>
+                    <option value="Pendidikan Bahasa dan Sastra Indonesia">Pendidikan Bahasa dan Sastra Indonesia</option>
+                    <option value="Pendidikan Bahasa Inggris">Pendidikan Bahasa Inggris</option>
+                    <option value="Pendidikan Biologi">Pendidikan Biologi</option>
+                    <option value="Pendidikan Fisika">Pendidikan Fisika</option>
+                    <option value="Pendidikan Kimia">Pendidikan Kimia</option>
+                    <option value="Pendidikan Matematika">Pendidikan Matematika</option>
+                    <option value="Pendidikan Ekonomi">Pendidikan Ekonomi</option>
+                    <option value="Pendidikan Pancasila dan Kewarganegaraan">Pendidikan Pancasila dan Kewarganegaraan</option>
+                    <option value="Teknologi Pendidikan">Teknologi Pendidikan</option>
+                    <option value="Pendidikan Guru Sekolah Dasar (PGSD)">Pendidikan Guru Sekolah Dasar (PGSD)</option>
+                    <option value="Pendidikan Guru Pendidikan Anak Usia Dini (PGPAUD)">Pendidikan Guru Pendidikan Anak Usia Dini (PGPAUD)</option>
+                    <option value="Program Pendidikan Profesi Guru (PPG)">Program Pendidikan Profesi Guru (PPG)</option>
+                    <option value="Pendidikan Agama Islam (PAI)">Pendidikan Agama Islam (PAI)</option>
+                    <option value="Statistika">Statistika</option>
+                    <option value="Matematika">Matematika</option>
+                    <option value="Biologi">Biologi</option>
+                    <option value="Teknologi Pangan">Teknologi Pangan</option>
+                    <option value="Agribisnis">Agribisnis</option>
+                    <option value="Perencanaan Wilayah dan Kota">Perencanaan Wilayah dan Kota</option>
+                    <option value="Sistem Informasi">Sistem Informasi</option>
+                    <option value="Sains Data">Sains Data</option>
+                    <option value="Kearsipan (D4)">Kearsipan (D4)</option>
+                    <option value="Perpajakan (D3)">Perpajakan (D3)</option>
+                    <option value="Administrasi Publik (S1)">Administrasi Publik (S1)</option>
+                    <option value="Administrasi Bisnis (S1)">Administrasi Bisnis (S1)</option>
+                    <option value="Hukum (S1)">Hukum (S1)</option>
+                    <option value="Ilmu Pemerintahan (S1)">Ilmu Pemerintahan (S1)</option>
+                    <option value="Ilmu Komunikasi (S1)">Ilmu Komunikasi (S1)</option>
+                    <option value="Ilmu Perpustakaan (S1)">Ilmu Perpustakaan (S1)</option>
                     <!-- Tambahkan pilihan jurusan lainnya di sini -->
                 </select>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <label for="nomor_hp">Nomor HP:</label>
-                <input type="text" id="nomor_hp" name="nomor_hp" required oninput="validateNomorHP(this)">
+                <input type="text" id="nomor_hp" name="nomor_hp" maxlength="12" required oninput="validateNomorHP(this)">
             </div>
             
             <script>
