@@ -184,10 +184,27 @@
                 function validateNIK(input) {
                     // Remove any non-digit characters
                     input.value = input.value.replace(/\D/g, '');
-            
+
                     // Ensure the length does not exceed 16 characters
                     if (input.value.length > 16) {
                         input.value = input.value.slice(0, 16);
+                    }
+
+                    // Display error if NIK is not 16 characters
+                    const errorElementId = 'nikError'; // ID of the error message element
+                    let errorElement = document.getElementById(errorElementId);
+                    if (!errorElement) {
+                        // Create error message element if it doesn't exist
+                        errorElement = document.createElement('div');
+                        errorElement.id = errorElementId;
+                        errorElement.style.color = 'red';
+                        input.parentNode.appendChild(errorElement);
+                    }
+
+                    if (input.value.length < 16) {
+                        errorElement.textContent = 'NIK harus terdiri dari 16 karakter.';
+                    } else {
+                        errorElement.textContent = '';
                     }
                 }
             </script>            
@@ -208,11 +225,18 @@
                 function validateNomorHP(input) {
                     // Remove any non-digit characters
                     input.value = input.value.replace(/\D/g, '');
-            
-                    // Ensure the input starts with "08" or "628"
-                    if (!input.value.startsWith('08') && !input.value.startsWith('628')) {
-                        input.setCustomValidity('Nomor HP harus dimulai dengan 08 atau 628');
-                    } else {
+                    if (input.value.length > 12) {
+                        input.value = input.value.slice(0, 12);
+                    }
+                    // Ensure the input starts with "08" or "62"
+                    if (!input.value.startsWith('08') && !input.value.startsWith('62')) {
+                        input.setCustomValidity('Nomor HP harus dimulai dengan 08 atau 62');
+                    } 
+                    // Check the length of the input
+                    if (input.value.length < 11 || input.value.length > 12) {
+                        input.setCustomValidity('Nomor HP harus memiliki panjang 11 sampai 12 karakter');
+                    } 
+                    else {
                         input.setCustomValidity('');
                     }
                 }

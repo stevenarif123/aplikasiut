@@ -45,6 +45,7 @@ if (isset($_POST['submit'])) {
 
         if (mysqli_stmt_execute($stmt)) {
             $pesanstatus = "Data berhasil disimpan";
+            echo "<meta http-equiv=\"refresh\" content=\"3;url=sukses.php\">";
         } else {
             $pesanstatus = "Gagal menyimpan data: " . mysqli_error($koneksi);
         }
