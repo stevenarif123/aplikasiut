@@ -2,22 +2,16 @@
 header('Content-Type: application/json');
 
 // Koneksi ke database
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "datamahasiswa";
+require_once "../admin/koneksi.php";
 
-$conn = new mysqli($host, $username, $password, $database);
-if ($conn->connect_error) {
+if ($koneksi->connect_error) {
     $response = array(
         'success' => false,
-        'message' => "Koneksi gagal: " . $conn->connect_error
+        'message' => "Koneksi gagal: " . $koneksi->connect_error
     );
     echo json_encode($response);
     exit;
 }
-
-$daftar_jurusan = array("Teknik Informatika", "Sistem Informasi", "Manajemen Informatika", "Ilmu Komputer");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama_lengkap = $_POST["nama_lengkap"];
@@ -34,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO mabawebsite (nama_lengkap, tempat_lahir, tanggal_lahir, nama_ibu_kandung, nik, jurusan, nomor_hp, agama, jenis_kelamin, pesan)
             VALUES ('$nama_lengkap', '$tempat_lahir', '$tanggal_lahir', '$nama_ibu_kandung', '$nik', '$jurusan', '$nomor_hp', '$agama', '$jenis_kelamin', '$pesan')";
 
-    if ($conn->query($sql) === TRUE) {
+    if ($koneksi->query($sql) === TRUE) {
         $response = array(
             'success' => true,
             'message' => "Data berhasil disimpan"
@@ -42,12 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $response = array(
             'success' => false,
-            'message' => "Error: " . $sql . "<br>" . $conn->error
+            'message' => "Error: " . $sql . "<br>" . $koneksi->error
         );
     }
     echo json_encode($response);
     exit;
 }
 
-$conn->close();
+$koneksi->close();
 ?>

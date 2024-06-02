@@ -38,12 +38,15 @@
         }
 
         #form-daftar {
-            background-color: rgba(255, 255, 255, 0.9); /* Membuat form semi transparan */
+            background-color: rgba(240, 242, 245, 1); /* Membuat form semi transparan */
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 30px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
             max-width: 90%;
             margin: 0 auto; /* Agar form berada di tengah */
+        }
+        #tulisan-judul{
+            color: #0055D0;
         }
 
         @media (min-width: 640px) {
@@ -129,19 +132,19 @@
     </style>
 </head>
 <body>
-    <nav class="bg-white bg-opacity-50 py-3">
+    <nav class="bg-white bg-opacity-95 py-3">
         <div class="container mx-auto px-5 flex items-center justify-between">
-            <a class="text-primary font-bold text-lg" href="./">SALUT TANA TORAJA</a>
+            <a class="text-primary font-bold text-lg" href="../">SALUT TANA TORAJA</a>
             <button class="block lg:hidden text-gray-500 focus:outline-none" id="navbar-toggler">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
             <div class="hidden lg:flex lg:items-center lg:space-x-4" id="navbar-content">
-                <a class="text-gray-700 hover:text-primary" href="./">Home</a>
-                <a class="text-gray-700 hover:text-primary" href="resume.html">Pengumuman</a>
-                <a class="text-gray-700 hover:text-primary active" href="./pendaftaran">Daftar Mahasiswa Baru</a>
-                <a class="text-gray-700 hover:text-primary" href="contact.html">Contact</a>
+                <a class="text-gray-700 hover:text-primary" href="../">Home</a>
+                <a class="text-gray-700 hover:text-primary" href="../resume.html">Pengumuman</a>
+                <a class="text-gray-700 hover:text-primary active" href="../pendaftaran">Daftar Mahasiswa Baru</a>
+                <a class="text-gray-700 hover:text-primary" href="../contact.html">Contact</a>
             </div>
         </div>
     </nav>
@@ -154,29 +157,42 @@
     </script>
     
     <div class="background-image"></div>
+    <div class="bg-light rounded-4 py-5 px-4 px-md-5">
     <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12">
-        <h1 class="text-3xl font-bold mb-4 text-center text-blue">Formulir Pendaftaran Mahasiswa Baru</h1>
         <form id="form-daftar" action="proses.php" method="post">
+            <h3 id="tulisan-judul" class="text-1xl font-bold text-center text-blue">FORMULIR PENDAFTARAN MAHASISWA BARU</h1>
+            <h3 id="tulisan-judul" class="text-1xl font-bold text-center text-blue">SENTRA LAYANAN UNIVERSITAS TERBUKA</h1>
+            <h1 id="tulisan-judul" class="text-2xl font-bold mb-4 text-center text-blue">TANA TORAJA</h1>
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <label for="nama_lengkap">Nama Lengkap:</label>
-                <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap">
+                <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Masukkan Nama Lengkap">
             </div>
             <div class="mb-1 flex flex-wrap -mx-3">
                 <div class="w-1/2 px-3 mb-1">
-                    <label for="tempat_lahir">Tempat Lahir:</label>
-                    <input type="text" id="tempat_lahir" name="tempat_lahir" required>
+                    <input type="text" id="tempat_lahir" name="tempat_lahir" required placeholder="Tempat Lahir">
                 </div>
                 <div class="w-1/2 px-3 mb-1">
-                    <label for="tanggal_lahir">Tanggal Lahir:</label>
-                    <input type="date" id="tanggal_lahir" name="tanggal_lahir" required min="<?php echo date('Y-m-d', strtotime('-15 years')); ?>">
+                    <input type="date" id="tanggal_lahir" name="tanggal_lahir" required placeholder="Tanggal Lahir">
                 </div>
+                <script>
+                    // JavaScript to set the max date
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const dateInput = document.getElementById('tanggal_lahir');
+                        const maxDate = new Date(2010, 11, 31); // December 31, 2010
+                        const formattedMaxDate = maxDate.toISOString().split('T')[0];
+                        dateInput.max = formattedMaxDate;
+            
+                        // Set the minimum date dynamically to 15 years ago from today
+                        const today = new Date();
+                        const minDate = new Date(today.getFullYear() - 15, today.getMonth(), today.getDate());
+                        const formattedMinDate = minDate.toISOString().split('T')[0];
+                        dateInput.min = formattedMinDate;
+                    });
+                </script>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <label for="nama_ibu_kandung">Nama Ibu Kandung:</label>
-                <input type="text" id="nama_ibu_kandung" name="nama_ibu_kandung" required>
+                <input type="text" id="nama_ibu_kandung" name="nama_ibu_kandung" placeholder="Nama Ibu Kandung" required>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <label for="nik">NIK:</label>
                 <input type="text" id="nik" name="nik" required pattern="\d{16}" maxlength="16" oninput="validateNIK(this)" placeholder="Nomor Induk Kependudukan">
             </div>
             
@@ -209,7 +225,6 @@
                 }
             </script>            
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <label for="jurusan">Jurusan:</label>
                 <select id="jurusan" name="jurusan" required>
                     <option value="" disabled selected>Pilih Jurusan</option>
                     <option value="Manajemen">Manajemen</option>
@@ -251,8 +266,7 @@
                 </select>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <label for="nomor_hp">Nomor HP:</label>
-                <input type="text" id="nomor_hp" name="nomor_hp" maxlength="12" required oninput="validateNomorHP(this)">
+                <input type="text" id="nomor_hp" name="nomor_hp" required placeholder="Nomor HP/WA" oninput="validateNomorHP(this)">
             </div>
             
             <script>
@@ -265,18 +279,14 @@
                     // Ensure the input starts with "08" or "62"
                     if (!input.value.startsWith('08') && !input.value.startsWith('62')) {
                         input.setCustomValidity('Nomor HP harus dimulai dengan 08 atau 62');
-                    } 
-                    // Check the length of the input
-                    if (input.value.length < 11 || input.value.length > 12) {
+                    } else if (input.value.length < 11 || input.value.length > 12) {
                         input.setCustomValidity('Nomor HP harus memiliki panjang 11 sampai 12 karakter');
-                    } 
-                    else {
+                    } else {
                         input.setCustomValidity('');
                     }
                 }
             </script>            
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <label for="agama">Agama:</label>
                 <select id="agama" name="agama" required>
                     <option value="" disabled selected>Pilih Agama</option>
                     <option value="Islam">Islam</option>
@@ -288,7 +298,6 @@
                 </select>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <label for="jenis_kelamin">Jenis Kelamin:</label>
                 <select id="jenis_kelamin" name="jenis_kelamin" required>
                     <option value="" disabled selected>Pilih Jenis Kelamin</option>
                     <option value="Laki-laki">Laki-laki</option>
@@ -296,7 +305,6 @@
                 </select>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <label for="pesan">Pesan:</label>
                 <textarea id="pesan" name="pesan" placeholder="Masukkan pertanyaan disini"></textarea>
             </div>
             <div class="space-y-2">
@@ -317,9 +325,11 @@
         </form>
         <div id="pesan-status"></div>
     </div>
+</div>
     <div class="loading">
         <img src="loading.gif" alt="Loading..." />
     </div>
+
 
     <script>
         const submitBtn = document.getElementById('submit-btn');
@@ -383,6 +393,11 @@
             })
             .catch((error) => {
                 console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Terjadi kesalahan saat mengirim data.'
+                });
             });
         });
     </script>

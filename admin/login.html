@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .loading-spinner {
+            display: none;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message, .success-message {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body class="bg-purple-700 min-h-screen flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden flex w-3/4 max-w-4xl">
+        <div class="w-full md:w-1/2 p-8">
+            <div class="text-left font-bold text-2xl mb-4">
+                <span class="text-blue-500">Halo, </span>Selamat datang kembali di <span class="text-blue-500">SIMASA</span>
+            </div>
+            <form>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                        Username
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="username" id="username" placeholder="Username">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                        Password
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" name="password" id="password" type="password" placeholder="**********">
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <label class="block text-gray-500 text-sm">
+                        <input class="mr-2 leading-tight" type="checkbox">
+                        <span class="text-sm">Remember me</span>
+                    </label>
+                    <a class="inline-block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800" href="#">
+                        Forgot Password?
+                    </a>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" name="submit" onclick="submitForm()">
+                        Login
+                    </button>
+                    <div class="error-message" id="error-message"></div>
+                    <div class="success-message" id="success-message"></div>
+                    <div id="loading-spinner" class="loading-spinner"></div>
+                    <p class="mt-5 mb-3 text-muted">&copy; 2024</p>
+                </div>
+            </form>
+        </div>
+        <div class="hidden md:block md:w-1/2 bg-blue-500">
+            <img class="w-full h-full object-cover" src="path-to-your-image.png" alt="Background Image">
+        </div>
+    </div>
+    <script>
+        function submitForm() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var spinner = document.getElementById('loading-spinner');
+            var errorMessage = document.getElementById('error-message');
+            var successMessage = document.getElementById('success-message');
+
+            // Hide previous messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Show the loading spinner
+            spinner.style.display = 'block';
+
+            // Create a new FormData object
+            var formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+
+            // Send the form data using fetch API
+            fetch('login.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide the loading spinner
+                spinner.style.display = 'none';
+
+                // Process the response
+                if (data.status === 'success') {
+                    successMessage.textContent = data.message;
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = 'index.php';
+                    }, 2000);
+                } else {
+                    errorMessage.textContent = data.message;
+                    errorMessage.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                // Hide the loading spinner
+                spinner.style.display = 'none';
+
+                // Handle the error
+                errorMessage.textContent = 'An error occurred. Please try again.';
+                errorMessage.style.display = 'block';
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
