@@ -267,7 +267,7 @@ margin-bottom: 60px;
 }
 /*BTN START*/
 .btn_one {
-	background: #4d54fd;
+	background: #0055D0;
 	font-size: 15px;
 	padding: 15px 40px;
 	color:#fff;
@@ -296,7 +296,7 @@ margin-bottom: 60px;
   left: 0;
   right: 0;
   bottom: 0;
-  background: #282a74;
+  background: #FFCC00;
   border-radius: 100px;
   -webkit-transform: scaleY(0);
   transform: scaleY(0);
@@ -310,7 +310,7 @@ margin-bottom: 60px;
   transition-timing-function: ease-out;
 }
 .btn_one:hover, .btn_one:focus, .btn_one:active {
-  color: #fff;
+  color: #0055D0;
   border-radius:100px;
 }
 .btn_one:hover:before, .btn_one:focus:before, .btn_one:active:before {
@@ -402,9 +402,9 @@ margin-bottom: 60px;
 	background: #fff;
 }
 .btn_two:hover{
-	color: #fff;
+	color: #0055D0;
 	border: 2px solid #282a74;
-	background:#282a74;
+	background:#FFCC00;
 }
 /*END BTN THREE*/
 /*
@@ -500,9 +500,9 @@ color:#fff;
 	transition: all 0.5s ease 0s;
 }
 .top_menu_bg{
-background:#4d54fd;
-padding:10px 20px;
-border-radius:30px;
+background:#0055D0;
+padding:10px 15px;
+border-radius:20px;
 }
 .navbar-fixed {
     z-index: 999;
@@ -528,7 +528,7 @@ border-radius:30px;
 }
 }
 #navigation.navbar-fixed {
-	background:#4d54fd;
+	background:#0055D0;
 	margin-top:0px;
 	padding:0px;
 }
@@ -3254,7 +3254,7 @@ margin-bottom:60px;
 .section-top {
 	padding-top: 200px;
 	position: relative;
-	background: url(../images/banner/section-bg.jpg);
+	background: url(../images/banner/home.webp);
 	background-size: cover;
 	background-position: center;
 	padding-bottom: 120px;
