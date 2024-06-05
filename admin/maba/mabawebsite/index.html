@@ -36,6 +36,18 @@
     </div>
 
     <script>
+        function getGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+            if (hour < 12) {
+                return "pagi";
+            } else if (hour < 18) {
+                return "siang";
+            } else {
+                return "malam";
+            }
+        }
+
         $(document).ready(function() {
             // Fetch data from mabawebsite table
             $.ajax({
@@ -48,7 +60,9 @@
                     data.forEach(item => {
                         let status = item.processed ? "Telah di Proses" : "Belum di Proses";
                         let processButton = item.processed ? "disabled" : "";
-                        let waLink = "https://wa.me/62" + item.nomor_hp.substring(1);
+                        let greeting = getGreeting();
+                        let waMessage = `Halo, selamat ${greeting} saya Steven dari UT Tana Toraja ingin menyanyakan konfirmasi atas nama ${item.nama_lengkap} yang telah mengisi form pendaftaran online dan berencana mendaftar di Jurusan ${item.jurusan} di Universitas Terbuka. Apakah benar?`;
+                        let waLink = `https://wa.me/62${item.nomor_hp.substring(1)}?text=${encodeURIComponent(waMessage)}`;
 
                         tableContent += `
                             <tr class="text-center">
@@ -100,7 +114,6 @@
                 }
             });
         }
-
 
         function deleteData(id) {
             // Delete the data
