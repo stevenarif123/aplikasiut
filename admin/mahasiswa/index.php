@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
+  header("Location: ../login.php");
 }
 
 // Koneksi ke database
@@ -66,161 +66,118 @@ $row_total = mysqli_fetch_assoc($result_total);
 $total_data = $row_total['total'];
 
 ?>
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"s crossorigin="anonymous">
-  </head>
-  <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">SALUT TANA TORAJA</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="../dashboard.php">Dashboard</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="./index.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Mahasiswa
-          </a>
-          <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="./index.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="./tambah_data.php">Tambah Mahasiswa</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="../laporanbayar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Laporan Pembayaran
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../laporanbayar">Laporan Bayar</a></li>
-            <li><a class="dropdown-item" href="../laporanbayar/tambah_laporan.php">Tambah Laporan</a></li>
-            <li><a class="dropdown-item" href="../laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Mahasiswa Baru
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../maba/dashboard.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="../maba/tambah_data.php">Tambah Mahasiswa</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="../cekstatus/pencarian.php">Cek Status Mahasiswa</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link btn btn-warning text-dark fw-bold" href="logout.php">Keluar</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-    </nav>
-<?php if (count($mahasiswa) > 0) { ?>
-    <div class="container-sm mt-3">
-      <form action="" method="POST" class="mb-3">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Cari berdasarkan nama atau nim" name="keyword">
-          <button type="submit" class="btn btn-primary" name="search">Cari</button>
-        </div>
-      </form>
-    </div>
-    <div class="container-sm">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">No</th>
-            <th scope="col">NIM</th>
-            <th scope="col">Nama Lengkap</th>
-            <th scope="col">Email</th>
-            <th scope="col">Password</th>
-            <th scope="col">Status SIA</th>
-            <th scope="col">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $no = 1;
-          foreach ($mahasiswa as $mhs) {
-            ?>
-            <tr>
-              <th scope="row"><?php echo $no++; ?></th>
-              <td><?php echo $mhs['Nim']; ?></td>
-              <td><?php echo $mhs['NamaLengkap']; ?></td>
-              <td><?php echo $mhs['Email']; ?></td>
-              <td><?php echo $mhs['Password']; ?></td>
-              <td><?php echo $mhs['STATUS_INPUT_SIA']; ?></td>
-              <td>
-                <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-primary">Detail</a>
-                <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-warning">Edit</a>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Hapus
-                  </button>
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi Hapus</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+            <div id="content">
+                <?php if (count($mahasiswa) > 0) { ?>
+                    <form action="" method="POST" class="mb-3">
+                        <div class="flex">
+                            <input type="text" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Cari berdasarkan nama atau nim" name="keyword">
+                            <button type="submit" class="ml-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" name="search">Cari</button>
                         </div>
-                        <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus data ini?
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-danger">Hapus</a>
-                        </div>
-                      </div>
+                    </form>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white dark:bg-gray-800">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">No</th>
+                                    <th class="px-4 py-2">NIM</th>
+                                    <th class="px-4 py-2">Nama Lengkap</th>
+                                    <th class="px-4 py-2">Email</th>
+                                    <th class="px-4 py-2">Password</th>
+                                    <th class="px-4 py-2">Status SIA</th>
+                                    <th class="px-4 py-2">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $no = 1;
+                                foreach ($mahasiswa as $mhs) {
+                                    ?>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td class="px-4 py-2"><?php echo $no++; ?></td>
+                                        <td class="px-4 py-2"><?php echo $mhs['Nim']; ?></td>
+                                        <td class="px-4 py-2"><?php echo $mhs['NamaLengkap']; ?></td>
+                                        <td class="px-4 py-2"><?php echo $mhs['Email']; ?></td>
+                                        <td class="px-4 py-2"><?php echo $mhs['Password']; ?></td>
+                                        <td class="px-4 py-2"><?php echo $mhs['STATUS_INPUT_SIA']; ?></td>
+                                        <td class="px-4 py-2">
+                                            <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Detail</a>
+                                            <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500">Edit</a>
+                                            <button type="button" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700" data-modal-toggle="exampleModal">Hapus</button>
+                                            <div id="exampleModal" tabindex="-1" class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+                                                <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+                                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                        <div class="flex justify-end p-2">
+                                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="exampleModal">
+                                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        <div class="p-6 text-center">
+                                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda yakin ingin menghapus data ini?</h3>
+                                                            <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                                                Hapus
+                                                            </a>
+                                                            <button data-modal-toggle="exampleModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                                                Batal
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
-                  </div>
-              </td>
-            </tr>
-            <?php
-          }
-          ?>
-        </tbody>
-      </table>
+                    <nav aria-label="Page navigation example" class="mt-4">
+                        <ul class="inline-flex -space-x-px">
+                            <?php
+                            $jumlah_halaman = ceil($total_data / $jumlah_data_per_halaman);
+                            for ($i = 1; $i <= $jumlah_halaman; $i++) {
+                                if ($i == $halaman_saat_ini) {
+                                    $active = "bg-blue-500 text-white";
+                                } else {
+                                    $active = "bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700";
+                                }
+                                ?>
+                                <li>
+                                    <a href="mahasiswa.php?halaman=<?php echo $i; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>" class="px-3 py-2 leading-tight <?php echo $active; ?> border border-gray-300">
+                                        <?php echo $i; ?>
+                                    </a>
+                                </li>
+                                <?php
+                            }
+                            ?>
+                        </ul>
+                    </nav>
+                <?php
+                } else {
+                    ?>
+                    <div class="alert alert-warning" role="alert">
+                        Data tidak ditemukan
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
     </div>
-    <div class="container-sm">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <?php
-          $jumlah_halaman = ceil($total_data / $jumlah_data_per_halaman);
-          for ($i = 1; $i <= $jumlah_halaman; $i++) {
-            if ($i == $halaman_saat_ini) {
-              $active = "active";
-            } else {
-              $active = "";
-            }
-            ?>
-            <li class="page-item <?php echo $active; ?>"><a class="page-link" href="mahasiswa.php?halaman=<?php echo $i; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>"><?php echo $i; ?></a></li>
-            <?php
-          }
-          ?>
-        </ul>
-      </nav>
-    </div>
-    <?php
-  } else {
-    ?>
-    <div class="container-sm">
-      <div class="alert alert-warning" role="alert">
-        Data tidak ditemukan
-      </div>
-    </div>
-    <?php
-  }
-  ?>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+</body>
 </html>

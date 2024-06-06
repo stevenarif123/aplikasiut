@@ -247,137 +247,148 @@ $selectedJurusan = $mahasiswa['Jurusan'];
     </div>
   </div>
     </nav>
-<div class="container-sm mt-3">
-    <h2 class="mb-4">Edit Data Mahasiswa</h2>
-    <form action="edit_data.php?No=<?php echo $no; ?>" method="post">
-        <div class="mb-3">
-            <label for="nim" class="form-label">NIM</label>
-            <input type="text" class="form-control" name="Nim" id="nim" placeholder="041100000" value="<?php echo $mahasiswa['Nim']; ?>" required>
-        </div>
-        <div class="mb-3">
-            <label for="jalur_program" class="form-label">Jalur Program:</label>
-            <select class="form-select" name="JalurProgram" id="jalur_program" required>
-                <option value="RPL" <?php if ($mahasiswa['JalurProgram'] == "RPL") echo "selected"; ?>>RPL</option>
-                <option value="Reguler" <?php if ($mahasiswa['JalurProgram'] == "Reguler") echo "selected"; ?>>Reguler</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="nama_lengkap" class="form-label">Nama Lengkap:</label>
-            <input type="text" class="form-control" name="NamaLengkap" id="nama_lengkap" value="<?php echo $mahasiswa['NamaLengkap']; ?>" required>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="tempat_lahir" class="form-label">Tempat Lahir:</label>
-                <input type="text" class="form-control" name="TempatLahir" id="tempat_lahir" value="<?php echo $mahasiswa['TempatLahir']; ?>" required>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Data Mahasiswa</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="container mx-auto p-4">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Edit Data Mahasiswa</h2>
+        <form action="edit_data.php?No=<?php echo $no; ?>" method="post" class="space-y-4">
+            <div>
+                <label for="nim" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIM</label>
+                <input type="text" name="Nim" id="nim" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="041100000" value="<?php echo $mahasiswa['Nim']; ?>" required>
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
-                <input type="date" class="form-control" name="TanggalLahir" id="tanggal_lahir" value="<?php echo $mahasiswa['TanggalLahir']; ?>" required>
+            <div>
+                <label for="jalur_program" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jalur Program</label>
+                <select name="JalurProgram" id="jalur_program" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                    <option value="RPL" <?php if ($mahasiswa['JalurProgram'] == "RPL") echo "selected"; ?>>RPL</option>
+                    <option value="Reguler" <?php if ($mahasiswa['JalurProgram'] == "Reguler") echo "selected"; ?>>Reguler</option>
+                </select>
             </div>
-        </div>
-        <div class="mb-3">
-            <label for="nama_ibu_kandung" class="form-label">Nama Ibu Kandung:</label>
-            <input type="text" class="form-control" name="NamaIbuKandung" id="nama_ibu_kandung" value="<?php echo $mahasiswa['NamaIbuKandung']; ?>" required>
-        </div>
-        <div class="mb-3">
-            <label for="nik" class="form-label">NIK:</label>
-            <input type="text" class="form-control" name="NIK" id="nik" value="<?php echo $mahasiswa['NIK']; ?>" required>
-        </div>
-        <div class="mb-3">
-            <label for="jurusan" class="form-label">Jurusan:</label>
-            <select class="form-select" name="Jurusan" id="jurusan" required>
-                <?php foreach ($jurusan as $value => $label): ?>
-                    <option value="<?php echo $value; ?>" <?php if ($selectedJurusan == $value) echo "selected"; ?>>
-                        <?php echo $label; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="nomor_hp" class="form-label">Nomor HP:</label>
-            <input type="text" class="form-control" name="NomorHP" id="nomor_hp" value="<?php echo $mahasiswa['NomorHP']; ?>" required>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" name="Email" id="email" value="<?php echo $mahasiswa['Email']; ?>" required>
+            <div>
+                <label for="nama_lengkap" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Lengkap</label>
+                <input type="text" name="NamaLengkap" id="nama_lengkap" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['NamaLengkap']; ?>" required>
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" name="Password" id="password" value="<?php echo $mahasiswa['Password']; ?>" required>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="tempat_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tempat Lahir</label>
+                    <input type="text" name="TempatLahir" id="tempat_lahir" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['TempatLahir']; ?>" required>
+                </div>
+                <div>
+                    <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Lahir</label>
+                    <input type="date" name="TanggalLahir" id="tanggal_lahir" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['TanggalLahir']; ?>" required>
+                </div>
             </div>
-        </div>
-        <div class="mb-3">
-            <label for="agama" class="form-label">Agama:</label>
-            <select class="form-select" name="Agama" id="agama" required>
-                <?php foreach ($agama as $value => $label): ?>
-                    <option value="<?php echo $value; ?>" <?php if ($mahasiswa['Agama'] == $value) echo "selected"; ?>>
-                        <?php echo $label; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
-                <select class="form-select" name="JenisKelamin" id="jenis_kelamin" required>
-                    <?php foreach ($jenis_kelamin as $value => $label): ?>
-                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['JenisKelamin'] == $value) echo "selected"; ?>>
+            <div>
+                <label for="nama_ibu_kandung" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Ibu Kandung</label>
+                <input type="text" name="NamaIbuKandung" id="nama_ibu_kandung" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['NamaIbuKandung']; ?>" required>
+            </div>
+            <div>
+                <label for="nik" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK</label>
+                <input type="text" name="NIK" id="nik" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['NIK']; ?>" required>
+            </div>
+            <div>
+                <label for="jurusan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jurusan</label>
+                <select name="Jurusan" id="jurusan" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                    <?php foreach ($jurusan as $value => $label): ?>
+                        <option value="<?php echo $value; ?>" <?php if ($selectedJurusan == $value) echo "selected"; ?>>
                             <?php echo $label; ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="status_perkawinan" class="form-label">Status Perkawinan:</label>
-                <select class="form-select" name="StatusPerkawinan" id="status_perkawinan" required>
-                    <?php foreach ($status_perkawinan as $value => $label): ?>
-                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['StatusPerkawinan'] == $value) echo "selected"; ?>>
+            <div>
+                <label for="nomor_hp" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor HP</label>
+                <input type="text" name="NomorHP" id="nomor_hp" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['NomorHP']; ?>" required>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                    <input type="email" name="Email" id="email" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['Email']; ?>" required>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                    <input type="password" name="Password" id="password" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['Password']; ?>" required>
+                </div>
+            </div>
+            <div>
+                <label for="agama" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Agama</label>
+                <select name="Agama" id="agama" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                    <?php foreach ($agama as $value => $label): ?>
+                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['Agama'] == $value) echo "selected"; ?>>
                             <?php echo $label; ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
-        </div>
-        <div class="mb-3">
-            <label for="nomor_hp_alternatif" class="form-label">Nomor HP Alternatif:</label>
-            <input type="text" class="form-control" name="NomorHPAlternatif" id="nomor_hp_alternatif" value="<?php echo $mahasiswa['NomorHPAlternatif']; ?>">
-        </div>
-        <div class="mb-3">
-            <label for="nomor_ijazah" class="form-label">Nomor Ijazah:</label>
-            <input type="text" class="form-control" name="NomorIjazah" id="nomor_ijazah" value="<?php echo $mahasiswa['NomorIjazah']; ?>">
-        </div>
-        <div class="mb-3">
-            <label for="tahun_ijazah" class="form-label">Tahun Ijazah:</label>
-            <input type="text" class="form-control" name="TahunIjazah" id="tahun_ijazah" value="<?php echo $mahasiswa['TahunIjazah']; ?>">
-        </div>
-        <div class="mb-3">
-            <label for="nisn" class="form-label">NISN:</label>
-            <input type="text" class="form-control" name="NISN" id="nisn" value="<?php echo $mahasiswa['NISN']; ?>">
-        </div>
-        <div class="mb-3">
-            <label for="layanan_paket_semester" class="form-label">Layanan Paket Semester:</label>
-            <select name="LayananPaketSemester" id="layanan_paket_semester" class="form-select" required>
-                <?php foreach ($layanan_paket_semester as $value => $label): ?>
-                    <option value="<?php echo $value; ?>" <?php if ($mahasiswa['LayananPaketSemester'] == $value) echo "selected"; ?>>
-                        <?php echo $label; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="status_input_sia" class="form-label">Status Input Sia:</label>
-            <select name="STATUS_INPUT_SIA" id="status_input_sia" class="form-select" required>
-                <<?php foreach ($status_input_sia as $value => $label): ?>
-                    <option value="<?php echo $value; ?>" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == $value) echo "selected"; ?>>
-                        <?php echo $label; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
-    </form>
-</div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Kelamin</label>
+                    <select name="JenisKelamin" id="jenis_kelamin" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                        <?php foreach ($jenis_kelamin as $value => $label): ?>
+                            <option value="<?php echo $value; ?>" <?php if ($mahasiswa['JenisKelamin'] == $value) echo "selected"; ?>>
+                                <?php echo $label; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div>
+                    <label for="status_perkawinan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status Perkawinan</label>
+                    <select name="StatusPerkawinan" id="status_perkawinan" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                        <?php foreach ($status_perkawinan as $value => $label): ?>
+                            <option value="<?php echo $value; ?>" <?php if ($mahasiswa['StatusPerkawinan'] == $value) echo "selected"; ?>>
+                                <?php echo $label; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="nomor_hp_alternatif" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor HP Alternatif</label>
+                <input type="text" name="NomorHPAlternatif" id="nomor_hp_alternatif" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['NomorHPAlternatif']; ?>">
+            </div>
+            <div>
+                <label for="nomor_ijazah" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor Ijazah</label>
+                <input type="text" name="NomorIjazah" id="nomor_ijazah" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['NomorIjazah']; ?>">
+            </div>
+            <div>
+                <label for="tahun_ijazah" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tahun Ijazah</label>
+                <input type="text" name="TahunIjazah" id="tahun_ijazah" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['TahunIjazah']; ?>">
+            </div>
+            <div>
+                <label for="nisn" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NISN</label>
+                <input type="text" name="NISN" id="nisn" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo $mahasiswa['NISN']; ?>">
+            </div>
+            <div>
+                <label for="layanan_paket_semester" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Layanan Paket Semester</label>
+                <select name="LayananPaketSemester" id="layanan_paket_semester" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                    <?php foreach ($layanan_paket_semester as $value => $label): ?>
+                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['LayananPaketSemester'] == $value) echo "selected"; ?>>
+                            <?php echo $label; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label for="status_input_sia" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status Input Sia</label>
+                <select name="STATUS_INPUT_SIA" id="status_input_sia" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                    <?php foreach ($status_input_sia as $value => $label): ?>
+                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == $value) echo "selected"; ?>>
+                            <?php echo $label; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button type="submit" name="submit" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Simpan</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+</body>
 </html>
