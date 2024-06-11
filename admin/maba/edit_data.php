@@ -131,26 +131,6 @@ if (mysqli_stmt_execute($stmt)) {
 }
 }
 //debug
-
-
-$queryJurusan = "SELECT * FROM jurusan"; // Ganti 'daftar_jurusan' dengan nama tabel yang sesuai
-$resultJurusan = mysqli_query($koneksi, $queryJurusan);
-
-// Inisialisasi array untuk menyimpan daftar jurusan
-$daftarJurusan = array();
-
-// Periksa apakah query berhasil dieksekusi
-if ($result) {
-    // Loop untuk mengambil setiap baris hasil query dan menyimpannya dalam array
-    while ($row = mysqli_fetch_assoc($result)) {
-        $daftarJurusan[] = $row['nama_jurusan']; // Sesuaikan 'nama_jurusan' dengan nama kolom yang sesuai
-    }
-} else {
-    // Jika query gagal dieksekusi, tampilkan pesan error
-    echo "Error retrieving list of majors: " . mysqli_error($koneksi);
-}
-mysqli_close($koneksi);
-
 $agama = [
     "Islam" => "Islam",
     "Protestan" => "Protestan",
@@ -187,7 +167,18 @@ $status_input_sia = [
 ];
 
 $selectedJurusan = $mahasiswa['Jurusan'];
+$sql = "SELECT * FROM prodi_admisi";
+$result = $koneksi->query($sql);
 
+// Simpan data jurusan dalam array
+$daftarJurusan = array();
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $daftarJurusan[] = $row["nama_program_studi"];
+    }
+}
+mysqli_close($koneksi);
 ?>
 
 <!DOCTYPE html>
@@ -295,9 +286,9 @@ $selectedJurusan = $mahasiswa['Jurusan'];
             <div class="form-group">
                 <label for="jurusan" class="form-label">Jurusan:</label>
                 <select name="Jurusan" id="jurusan" class="form-control">
-                    <?php foreach ($daftarJurusan as $value => $label): ?>
-                        <option value="<?php echo $value; ?>" <?php if ($selectedJurusan == $value) echo "selected"; ?>>
-                            <?php echo $label; ?>
+                    <?php foreach ($daftarJurusan as $jurusan): ?>
+                        <option value="<?php echo $jurusan; ?>" <?php if ($selectedJurusan == $jurusan) echo "selected"; ?>>
+                            <?php echo $jurusan; ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
