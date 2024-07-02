@@ -201,7 +201,6 @@ $result = mysqli_query($koneksi, $query);
                     <a href="edit_laporan.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-success">Edit</a>
                     <a href="lihat_laporan.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-info">Lihat</a>
                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?php echo $row['id']; ?>">Hapus</button>
-
                     <!-- Modal -->
                     <div class="modal fade" id="modalHapus<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
                       <div class="modal-dialog">

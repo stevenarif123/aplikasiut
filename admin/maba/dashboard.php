@@ -3,11 +3,15 @@ if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
+  header("Location: ../login.php");
 }
 
 // Koneksi ke database
 require_once "../koneksi.php";
+
+if (!$koneksi) {
+  die("Koneksi gagal: " . mysqli_connect_error());
+}
 
 // Query untuk mendapatkan data user
 $username = $_SESSION['username'];
@@ -21,23 +25,34 @@ if (!$result) {
 
 // Inisialisasi variabel
 $keyword = "";
+$search_column = "";
 $mahasiswa = [];
 
 // Cek apakah form pencarian disubmit
 if (isset($_POST['search'])) {
   // Ambil keyword dari form
   $keyword = $_POST['keyword'];
+  $search_column = $_POST['search_column'];
 }
-  // Query untuk mencari data mahasiswa berdasarkan keyword
-  $query = "SELECT * FROM mahasiswabaru WHERE NamaLengkap LIKE '%$keyword%' OR Jurusan LIKE '%$keyword%' ORDER BY No DESC";
-  $result = mysqli_query($koneksi, $query);
-  if (!$result) {
-    die("Query gagal: " . mysqli_error($koneksi));
-  }
-  // Simpan hasil pencarian ke dalam array
-  while ($row = mysqli_fetch_assoc($result)) {
-    $mahasiswa[] = $row;
-  }
+
+// Query untuk mencari data mahasiswa berdasarkan keyword
+$query = "SELECT * FROM mahasiswabaru WHERE ";
+if (!empty($keyword) && !empty($search_column)) {
+  $query .= "$search_column LIKE '%$keyword%' ";
+} else {
+  $query .= "1 "; // Jika tidak ada keyword, tampilkan semua data
+}
+$query .= "ORDER BY No DESC";
+
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+  die("Query gagal: " . mysqli_error($koneksi));
+}
+
+// Simpan hasil pencarian ke dalam array
+while ($row = mysqli_fetch_assoc($result)) {
+  $mahasiswa[] = $row;
+}
 
 // Pagination
 $limit = isset($_POST['limit']) ? $_POST['limit'] : 10;
@@ -45,16 +60,25 @@ $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $start = ($page - 1) * (intval($limit) == 'all' ? count($mahasiswa) : intval($limit));
 $total_pages = ceil(count($mahasiswa) / (intval($limit) == 'all' ? 1 : intval($limit)));
 $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($mahasiswa) : intval($limit));
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Mahasiswa Baru</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
-  <style>
+     <!-- App favicon -->
+    <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
+
+		<!-- App css -->
+		<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+		<link href="../assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+
+		<link href="../assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+		<link href="../assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+
+		<!-- icons -->
+		<link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f8f9fa;
@@ -66,198 +90,184 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
       font-size: 2.5rem;
       color: #007bff;
     }
-    .btn-primary {
-      margin-right: 10px;
+    @media (max-width: 768px) {
+      .table-responsive {
+        overflow-x: auto;
+      }
     }
-    .table {
-      margin-top: 20px;
-    }
-    /* Tambahkan CSS untuk membuat tabel lebih fluid dan responsif */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    tr:hover {
-      background-color: #f1f1f1;
+    #toast {
+      transition: opacity 0.3s ease-in-out;
     }
   </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">SALUT TANA TORAJA</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="../dashboard.php">Dashboard</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="../mahasiswa.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Mahasiswa
-          </a>
-          <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="../laporanbayar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Laporan Pembayaran
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../laporanbayar">Laporan Bayar</a></li>
-            <li><a class="dropdown-item" href="../laporanbayar/tambah_laporan.php">Tambah Laporan</a></li>
-            <li><a class="dropdown-item" href="../laporanbayar/verifikasi_laporan.php">Verifikasi Laporan</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Mahasiswa Baru
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item active" href="../maba/dashboard.php">Daftar Mahasiswa</a></li>
-            <li><a class="dropdown-item" href="../maba/tambah_data.php">Tambah Mahasiswa</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="../cekstatus/pencarian.php">Cek Status Mahasiswa</a>
-        </li>
-        <!-- Tambahkan tombol log out di sini -->
-        <li class="nav-item">
-          <a class="nav-link btn btn-warning text-dark fw-bold" href="../logout.php">Keluar</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-secondary">
+  <!-- Kode navigasi disini -->
 </nav>
-  <div class="container-sm">
-    <h1 class="h1">Pengelolaan Calon Mahasiswa Baru</h1>
-    <h2 class="h2">Mahasiswa Baru dari Website</h2>
-    <a class="btn btn-primary" href="./mabawebsite/" role="button">Proses</a>
-    <form action="dashboard.php" method="post" class="mb-3">
-      <label for="keyword" class="form-label">Cari data mahasiswa:</label>
-      <div class="input-group">
-        <input type="text" name="keyword" id="keyword" class="form-control" value="<?php echo $keyword; ?>">
-        <button type="submit" name="search" class="btn btn-primary">Cari</button>
-      </div>
-      <label for="limit" class="form-label">Jumlah data per halaman:</label>
-      <select name="limit" id="limit" class="form-select">
-        <option value="10" <?php if ($limit == 10) echo "selected"; ?>>10</option>
-        <option value="25" <?php if ($limit == 25) echo "selected"; ?>>25</option>
-        <option value="100" <?php if ($limit == 100) echo "selected"; ?>>100</option>
-        <option value="all" <?php if ($limit == 'all') echo "selected"; ?>>Semua Data</option>
-      </select>
-      <br>
-      <button type="submit" class="btn btn-primary">Tampilkan</button>
-    </form>
 
-    <?php if (count($mahasiswa) > 0) { ?>
-      <div class="table-responsive"> <!-- Tambahkan class table-responsive untuk membuat tabel responsif -->
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Nama Lengkap</th>
-              <th>Tempat Lahir</th>
-              <th>Tanggal Lahir</th>
-              <th>Nama Ibu Kandung</th>
-              <th>NIK</th>
-              <th>Jalur Program</th>
-              <th>Jurusan</th>
-              <th>Nomor HP</th>
-              <th>Email</th>
-              <th>Password</th>
-              <th>Status Input SIA</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php $no = 1; foreach ($mahasiswa as $mhs) { ?>
-              <tr>
-                <td><?php echo $no++; ?></td>
-                <td><?php echo $mhs['NamaLengkap']; ?></td>
-                <td><?php echo $mhs['TempatLahir']; ?></td>
-                <td><?php echo $mhs['TanggalLahir']; ?></td>
-                <td><?php echo $mhs['NamaIbuKandung']; ?></td>
-                <td><?php echo $mhs['NIK']; ?></td>
-                <td><?php echo $mhs['JalurProgram']; ?></td>
-                <td><?php echo $mhs['Jurusan']; ?></td>
-                <td><?php echo $mhs['NomorHP']; ?></td>
-                <td><?php echo $mhs['Email']; ?></td>
-                <td><?php echo $mhs['Password']; ?></td>
-                <td><?php echo $mhs['STATUS_INPUT_SIA']; ?></td>
-                <td>
-                  <div class="btn-group" role="group">
-                    <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-info">Detail</a>
-                    <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-warning">Edit</a>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?php echo $mhs['No']; ?>">
-                      Hapus
+<div class="container mt-4">
+  <h1 class="mb-4">Pengelolaan Calon Mahasiswa Baru</h1>
+  <h2 class="mb-4">Mahasiswa Baru dari Website</h2>
+  <div class="d-flex mb-4">
+    <a href="./mabawebsite/" class="btn btn-primary me-2">Proses</a>
+    <a href="./tambah_data.php" class="btn btn-primary me-2">Tambah Data</a>
+    <a href="./push.php" class="btn btn-primary">Input Admisi</a>
+  </div>
+
+  <form action="dashboard.php" method="post" class="mb-4">
+    <div class="row mb-3">
+      <div class="col">
+        <label for="search_column" class="form-label fw-bold">Cari Berdasarkan:</label>
+        <select id="search_column" name="search_column" class="form-select">
+          <option value="NamaLengkap">Nama Lengkap</option>
+          <option value="Jurusan">Jurusan</option>
+          <option value="STATUS_INPUT_SIA">Status Input SIA</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="keyword" class="form-label fw-bold">Keyword:</label>
+        <input type="text" id="keyword" name="keyword" placeholder="Masukkan Keyword" class="form-control">
+      </div>
+      <div class="col align-self-end">
+        <button type="submit" name="search" class="btn btn-primary w-100">Cari</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <label for="limit" class="form-label fw-bold">Tampilkan:</label>
+        <select id="limit" name="limit" class="form-select">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="all">Semua</option>
+        </select>
+      </div>
+    </div>
+  </form>
+
+  <div id="toast" class="position-fixed top-0 end-0 bg-success text-white p-3 rounded shadow-lg transition-opacity opacity-0">
+    Teks berhasil disalin!
+  </div>
+
+  <?php if (isset($mahasiswa) && count($mahasiswa) > 0) { ?>
+    <div class="accordion" id="mahasiswaAccordion">
+      <?php $no = 1 + $start; foreach ($mahasiswa as $mhs) { ?>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-<?php echo $mhs['No']; ?>">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?php echo $mhs['No']; ?>" aria-expanded="true" aria-controls="collapse-<?php echo $mhs['No']; ?>">
+              <?php echo $no++; ?>. <?php echo htmlspecialchars($mhs['NamaLengkap']); ?> - <?php echo htmlspecialchars($mhs['Jurusan']); ?>
+            </button>
+          </h2>
+          <div id="collapse-<?php echo $mhs['No']; ?>" class="accordion-collapse collapse" aria-labelledby="heading-<?php echo $mhs['No']; ?>" data-bs-parent="#mahasiswaAccordion">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p>
+                    <strong>Nama Lengkap:</strong>
+                    <span><?php echo htmlspecialchars($mhs['NamaLengkap']); ?></span>
+                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['NamaLengkap'], ENT_QUOTES); ?>')" title="Salin nama lengkap">
+                      <i class="fas fa-copy"></i>
                     </button>
-                  </div>
-                  <!-- Modal Hapus -->
-                  <div class="modal fade" id="modalHapus<?php echo $mhs['No']; ?>" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus Data</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          Apakah Anda yakin ingin menghapus data ini?
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                          <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-danger">Hapus</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div>
-      <!-- Tambahkan Pagination di sini -->
-      <div class="pagination">
-        <ul class="pagination">
-          <?php if ($page > 1) : ?>
-            <li class="page-item">
-              <a class="page-link" href="?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>" class="btn btn-primary">Sebelumnya</a>
-            </li>
-          <?php endif; ?>
-          <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-            <li class="page-item">
-              <a class="page-link" href="?page=<?php echo $i; ?>&limit=<?php echo $limit; ?>" <?php if ($page == $i) echo "class='active'"; ?>><?php echo $i; ?></a>
-            </li>
-          <?php } ?>
-          <?php if ($page < $total_pages) : ?>
-            <li class="page-item">
-              <a class="page-link" href="?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>" class="btn btn-primary">Selanjutnya</a>
-            </li>
-          <?php endif; ?>
-        </ul>
-      </div>
-    <?php } else { ?>
-      <p>Data mahasiswa tidak ditemukan.</p>
-    <?php } ?>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    </body>
+                  </p>
+                  <p>
+                    <strong>Nomor HP:</strong>
+                    <span><?php echo htmlspecialchars($mhs['NomorHP']); ?></span>
+                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['NomorHP'], ENT_QUOTES); ?>')" title="Salin nomor HP">
+                      <i class="fas fa-copy"></i>
+                    </button>
+                  </p>
+                  <p>
+                    <strong>Email:</strong>
+                    <span><?php echo htmlspecialchars($mhs['Email']); ?></span>
+                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['Email'], ENT_QUOTES); ?>')" title="Salin email">
+                      <i class="fas fa-copy"></i>
+                    </button>
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <p>
+                    <strong>Password:</strong>
+                    <span><?php echo htmlspecialchars($mhs['Password']); ?></span>
+                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['Password'], ENT_QUOTES); ?>')" title="Salin password">
+                      <i class="fas fa-copy"></i>
+                    </button>
+                  </p>
+                  <p>
+                    <strong>Status Input SIA:</strong>
+                    <span><?php echo htmlspecialchars($mhs['STATUS_INPUT_SIA']); ?></span>
+                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['STATUS_INPUT_SIA'], ENT_QUOTES); ?>')" title="Salin status input SIA">
+                      <i class="fas fa-copy"></i>
+                    </button>
+                  </p>
+                </div>
+              </div>
+              <div class="mt-2">
+                <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-primary me-2">Detail Data</a>
+                <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-warning me-2">Edit</a>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete(<?php echo $mhs['No']; ?>)">Hapus</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <?php } ?>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+      <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+        <a href="?page=<?php echo $i; ?>&limit=<?php echo $limit; ?>&search_column=<?php echo $search_column; ?>&keyword=<?php echo $keyword; ?>" class="btn <?php echo $i == $page ? 'btn-primary' : 'btn-secondary'; ?> me-2"><?php echo $i; ?></a>
+      <?php } ?>
+    </div>
+
+  <?php } else { ?>
+    <p class="text-center py-4">Data mahasiswa tidak ditemukan.</p>
+  <?php } ?>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Efek klik untuk tombol salin
+  const copyButtons = document.querySelectorAll('.btn-link');
+  copyButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      this.classList.add('text-success');
+      setTimeout(() => {
+        this.classList.remove('text-success');
+      }, 300);
+    });
+  });
+});
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Teks berhasil disalin: ' + text);
+  }, (err) => {
+    showToast('Gagal menyalin teks', true);
+    console.error('Gagal menyalin teks: ', err);
+  });
+}
+
+function showToast(message, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.remove('opacity-0', 'bg-success', 'bg-danger');
+  toast.classList.add(isError ? 'bg-danger' : 'bg-success', 'opacity-100');
+
+  setTimeout(() => {
+    toast.classList.remove('opacity-100');
+    toast.classList.add('opacity-0');
+  }, 3000);
+}
+
+function confirmDelete(id) {
+  if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+    window.location.href = 'hapus_data_mahasiswa.php?No=' + id;
+  }
+}
+</script>
+
+</body>
 </html>
-
-

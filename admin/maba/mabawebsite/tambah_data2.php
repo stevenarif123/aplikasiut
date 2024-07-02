@@ -111,47 +111,17 @@ if (isset($_POST['submit'])) {
     $stmt->close();
 }
 
-$daftarJurusan = array(
-    "Manajemen",
-    "Ekonomi Pembangunan",
-    "Ekonomi Syariah",
-    "Akuntansi",
-    "Akuntansi Keuangan Publik",
-    "Pariwisata",
-    "Pendidikan Bahasa dan Sastra Indonesia",
-    "Pendidikan Bahasa Inggris",
-    "Pendidikan Biologi",
-    "Pendidikan Fisika",
-    "Pendidikan Kimia",
-    "Pendidikan Matematika",
-    "Pendidikan Ekonomi",
-    "Pendidikan Pancasila dan Kewarganegaraan",
-    "Teknologi Pendidikan",
-    "Pendidikan Guru Sekolah Dasar (PGSD)",
-    "Pendidikan Guru Pendidikan Anak Usia Dini (PGPAUD)",
-    "Program Pendidikan Profesi Guru (PPG)",
-    "Pendidikan Agama Islam (PAI)",
-    "Statistika",
-    "Matematika",
-    "Biologi",
-    "Teknologi Pangan",
-    "Agribisnis",
-    "Perencanaan Wilayah dan Kota",
-    "Sistem Informasi",
-    "Sains Data",
-    "Kearsipan (D4)",
-    "Perpajakan (D3)",
-    "Administrasi Publik (S1)",
-    "Administrasi Bisnis (S1)",
-    "Hukum (S1)",
-    "Ilmu Pemerintahan (S1)",
-    "Ilmu Komunikasi (S1)",
-    "Ilmu Perpustakaan (S1)",
-    "Sosiologi (S1)",
-    "Sastra Inggris (S1)",
-    "Perpajakan (S1)"
-);
+$sql = "SELECT * FROM prodi_admisi";
+$result = $koneksi->query($sql);
 
+// Simpan data jurusan dalam array
+$daftarJurusan = array();
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $daftarJurusan[] = $row["nama_program_studi"];
+    }
+}
 
 // Close the database connection
 $koneksi->close();

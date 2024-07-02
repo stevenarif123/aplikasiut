@@ -219,30 +219,35 @@
     document.addEventListener("DOMContentLoaded", function() {
         const form = document.getElementById("tambahMahasiswaForm");
         const jurusanSelect = document.getElementById("jurusan");
-        const jurusanList = [
-            "Manajemen", "Ekonomi Pembangunan", "Ekonomi Syariah", "Akuntansi", "Akuntansi Keuangan Publik", 
-            "Pariwisata", "Pendidikan Bahasa dan Sastra Indonesia", "Pendidikan Bahasa Inggris", "Pendidikan Biologi", 
-            "Pendidikan Fisika", "Pendidikan Kimia", "Pendidikan Matematika", "Pendidikan Ekonomi", 
-            "Pendidikan Pancasila dan Kewarganegaraan", "Teknologi Pendidikan", "Pendidikan Guru Sekolah Dasar (PGSD)", 
-            "Pendidikan Guru Pendidikan Anak Usia Dini (PGPAUD)", "Program Pendidikan Profesi Guru (PPG)", 
-            "Pendidikan Agama Islam (PAI)", "Statistika", "Matematika", "Biologi", "Teknologi Pangan", 
-            "Agribisnis", "Perencanaan Wilayah dan Kota", "Sistem Informasi", "Sains Data", "Kearsipan (D4)", 
-            "Perpajakan (D3)", "Administrasi Publik (S1)", "Administrasi Bisnis (S1)", "Hukum (S1)", 
-            "Ilmu Pemerintahan (S1)", "Ilmu Komunikasi (S1)", "Ilmu Perpustakaan (S1)", "Sosiologi (S1)", 
-            "Sastra Inggris (S1)", "Perpajakan (S1)"
-        ];
 
-        // Populate jurusan select options
-        jurusanList.forEach(jurusan => {
-            const option = document.createElement("option");
-            option.value = jurusan;
-            option.textContent = jurusan;
-            jurusanSelect.appendChild(option);
-        });
+        // Mengambil daftar jurusan dari file jurusan.php menggunakan AJAX
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const jurusanList = JSON.parse(xhr.responseText);
+                    populateJurusanSelect(jurusanList);
+                } else {
+                    console.error("Gagal mengambil daftar jurusan dari server.");
+                }
+            }
+        };
+        xhr.open("GET", "./api/jurusan.php", true);
+        xhr.send();
+
+        // Fungsi untuk mengisi dropdown jurusan dengan data dari server
+        function populateJurusanSelect(jurusanList) {
+            jurusanList.forEach(function(jurusan) {
+                const option = document.createElement("option");
+                option.value = jurusan;
+                option.text = jurusan;
+                jurusanSelect.appendChild(option);
+            });
+        }
 
         form.addEventListener("submit", async function(event) {
             event.preventDefault();
-            
+
             const formData = new FormData(form);
             const response = await fetch("api/tambah_data.php", {
                 method: "POST",
@@ -274,6 +279,5 @@
         });
     });
 </script>
-
 </body>
 </html>

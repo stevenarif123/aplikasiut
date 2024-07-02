@@ -89,13 +89,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $di_input_oleh, 
         $status_input_sia);
 
-    if ($stmt->execute()) {
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Execute failed: " . $stmt->error]);
-    }
-
-    $stmt->close();
-    $koneksi->close();
+        if ($stmt->execute()) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Execute failed: " . $stmt->error]);
+        }
 }
+
+$sql = "SELECT * FROM prodi_admisi";
+$result = $koneksi->query($sql);
+
+// Simpan data jurusan dalam array
+$daftarJurusan = array();
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $daftarJurusan[] = $row["nama_program_studi"];
+    }
+}
+
+// Close the database connection
+$koneksi->close();
 ?>
