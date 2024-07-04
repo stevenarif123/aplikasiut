@@ -250,36 +250,36 @@
 		<div class="container">
 			<div class="row">                
 				<div class="">
-					<div class="">
+					<div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12">
 						<form id="form-daftar" class="max-w-md mx-auto" action="proses.php" method="post">
 							<div class="mb-4">
-								<label for="nama_lengkap" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap</label>
+								<label for="nama_lengkap" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap<span style="color: red;">*</span></label>
 								<input type="text" id="nama_lengkap" name="nama_lengkap" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan Nama Lengkap">
 							</div>
 							<div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
-									<label for="tempat_lahir" class="block mb-2 text-sm font-medium text-gray-900">Tempat Lahir</label>
+									<label for="tempat_lahir" class="block mb-2 text-sm font-medium text-gray-900">Tempat Lahir<span style="color: red;">*</span></label>
 									<input type="text" id="tempat_lahir" name="tempat_lahir" required class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Tempat Lahir">
 								</div>
 								<div>
-									<label for="tanggal_lahir" class="block mb-2 text-sm font-medium text-gray-900">Tanggal Lahir</label>
+									<label for="tanggal_lahir" class="block mb-2 text-sm font-medium text-gray-900">Tanggal Lahir<span style="color: red;">*</span></label>
 									<input type="date" id="tanggal_lahir" name="tanggal_lahir" required class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Tanggal Lahir">
 								</div>
 							</div>
 							<div class="mb-4">
-								<label for="nama_ibu_kandung" class="block mb-2 text-sm font-medium text-gray-900">Nama Ibu Kandung</label>
+								<label for="nama_ibu_kandung" class="block mb-2 text-sm font-medium text-gray-900">Nama Ibu Kandung<span style="color: red;">*</span></label>
 								<input type="text" id="nama_ibu_kandung" name="nama_ibu_kandung" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Nama Ibu Kandung" required>
 							</div>
 							<div class="mb-4">
-								<label for="nik" class="block mb-2 text-sm font-medium text-gray-900">Nomor Induk Kependudukan</label>
+								<label for="nik" class="block mb-2 text-sm font-medium text-gray-900">Nomor Induk Kependudukan<span style="color: red;">*</span></label>
 								<input type="text" id="nik" name="nik" required pattern="\d{16}" maxlength="16" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" oninput="validateNIK(this)" placeholder="Nomor Induk Kependudukan">
 								<div id="nikError" class="text-red-500"></div>
 							</div>
 							<div class="mb-4">
-								<label for="jurusan" class="block mb-2 text-sm font-medium text-gray-900">Jurusan</label>
+								<label for="jurusan" class="block mb-2 text-sm font-medium text-gray-900">Jurusan<span style="color: red;">*</span></label>
 								<select id="jurusan" name="jurusan" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
 									<option value="" disabled selected>Pilih Jurusan</option>
-									<option value="" disabled selected>Pilih Jurusan</option>
+									<!-- Options here -->
 									<option value="Manajemen">Manajemen (S1)</option>
 									<option value="Ekonomi Pembangunan">Ekonomi Pembangunan (S1)</option>
 									<option value="Ekonomi Syariah">Ekonomi Syariah (S1)</option>
@@ -318,11 +318,11 @@
 								</select>
 							</div>
 							<div class="mb-4">
-								<label for="nomor_hp" class="block mb-2 text-sm font-medium text-gray-900">Nomor HP/WA</label>
+								<label for="nomor_hp" class="block mb-2 text-sm font-medium text-gray-900">Nomor HP/WA<span style="color: red;">*</span></label>
 								<input type="text" id="nomor_hp" name="nomor_hp" required class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Nomor HP/WA" oninput="validateNomorHP(this)">
 							</div>
 							<div class="mb-4">
-								<label for="agama" class="block mb-2 text-sm font-medium text-gray-900">Agama</label>
+								<label for="agama" class="block mb-2 text-sm font-medium text-gray-900">Agama<span style="color: red;">*</span></label>
 								<select id="agama" name="agama" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
 									<option value="" disabled selected>Pilih Agama</option>
 									<option value="Islam">Islam</option>
@@ -334,7 +334,7 @@
 								</select>
 							</div>
 							<div class="mb-4">
-								<label for="jenis_kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis Kelamin</label>
+								<label for="jenis_kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis Kelamin<span style="color: red;">*</span></label>
 								<select id="jenis_kelamin" name="jenis_kelamin" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
 									<option value="" disabled selected>Pilih Jenis Kelamin</option>
 									<option value="Laki-laki">Laki-laki</option>
@@ -342,13 +342,13 @@
 								</select>
 							</div>
 							<div class="mb-4">
-								<label for="pesan" class="block mb-2 text-sm font-medium text-gray-900">Pertanyaan</label>
+								<label for="pesan" class="block mb-2 text-sm font-medium text-gray-900">Pertanyaan<span style="color: red;">*</span></label>
 								<textarea id="pesan" name="pesan" class="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan pertanyaan disini"></textarea>
 							</div>
 							<div class="mb-4">
 								<label for="setuju" class="flex items-start">
 									<input type="checkbox" id="setuju" name="setuju" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded" required>
-									<span class="ml-2 text-sm font-medium text-gray-900">Saya menyetujui persyaratan dari SALUT Tana Toraja.</span>
+									<span class="ml-2 text-sm font-medium text-gray-900">Saya menyetujui persyaratan dari SALUT Tana Toraja<span style="color: red;">*</span></span>
 								</label>
 							</div>
 							<div class="flex justify-between mt-4">
@@ -357,127 +357,128 @@
 							</div>
 						</form>
 					</div>
-				</div><!--- END COL -->
-			</div><!--- END ROW -->
-		</div><!--- END CONTAINER -->
-	</section>
-	<!-- END LOGIN AND REGISTER -->
-		
-	<script>
-		document.addEventListener('DOMContentLoaded', (event) => {
-			const dateInput = document.getElementById('tanggal_lahir');
-			const maxDate = new Date(2010, 11, 31); // December 31, 2010
-			const formattedMaxDate = maxDate.toISOString().split('T')[0];
-			dateInput.max = formattedMaxDate;
-		});
-	
-		function validateNIK(input) {
-			input.value = input.value.replace(/\D/g, '');
-			if (input.value.length > 16) {
-				input.value = input.value.slice(0, 16);
-			}
-			const errorElement = document.getElementById('nikError');
-			if (input.value.length < 16) {
-				errorElement.textContent = 'NIK harus terdiri dari 16 karakter.';
-			} else {
-				errorElement.textContent = '';
-			}
-		}
-	
-		function validateNomorHP(input) {
-			input.value = input.value.replace(/\D/g, '');
-			if (input.value.length > 12) {
-				input.value = input.value.slice(0, 12);
-			}
-			if (!input.value.startsWith('08') && !input.value.startsWith('62')) {
-				input.setCustomValidity('Nomor HP harus dimulai dengan 08 atau 62');
-			} else if (input.value.length < 11 || input.value.length > 12) {
-				input.setCustomValidity('Nomor HP harus memiliki panjang 11 sampai 12 karakter');
-			} else {
-				input.setCustomValidity('');
-			}
-		}
-	
-		const submitBtn = document.getElementById('submit-btn');
-		const setujuCheckbox = document.getElementById('setuju');
-		const form = document.getElementById('form-daftar');
-	
-		setujuCheckbox.addEventListener('change', function() {
-			submitBtn.disabled = !this.checked;
-		});
-	
-		submitBtn.addEventListener('click', function(event) {
-			event.preventDefault(); // Prevent standard form submission
-	
-			// Manual validation
-			const requiredFields = ['nama_lengkap', 'tempat_lahir', 'tanggal_lahir', 'nama_ibu_kandung', 'nik', 'jurusan', 'nomor_hp', 'agama', 'jenis_kelamin'];
-			let isValid = true;
-	
-			requiredFields.forEach(fieldId => {
-				const field = document.getElementById(fieldId);
-				if (!field.value) {
-					isValid = false;
-					field.classList.add('border-red-500');
-				} else {
-					field.classList.remove('border-red-500');
-				}
-			});
-	
-			if (!isValid) {
-				Swal.fire({
-					icon: 'error',
-					title: 'Gagal',
-					text: 'Mohon lengkapi semua field yang wajib diisi.'
-				});
-				return;
-			}
-	
-			const formData = new FormData(form);
-	
-			fetch('proses.php', {
-				method: 'POST',
-				body: formData
-			})
-			.then(response => response.text())  // Use text() instead of json()
-			.then(responseText => {
-				try {
-					const data = JSON.parse(responseText);
-					if (data.success) {
-						Swal.fire({
-							icon: 'success',
-							title: 'Sukses',
-							text: data.message
-						}).then(() => {
-							form.reset();
-							submitBtn.disabled = true;
-						});
-					} else {
-						Swal.fire({
-							icon: 'error',
-							title: 'Gagal',
-							text: data.message
-						});
-					}
-				} catch (error) {
-					console.error('Error parsing JSON:', error);
-					// If parsing fails, it means the response wasn't JSON
-					Swal.fire({
-						icon: 'error',
-						title: 'Gagal',
-						text: 'Terjadi kesalahan saat mengirim data. Silakan coba lagi nanti.'
-					});
-				}
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-				Swal.fire({
-					icon: 'error',
-					title: 'Gagal',
-					text: 'Terjadi kesalahan saat mengirim data.'
-				});
-			});
-		});
-	</script>
+					
+<script>
+	document.addEventListener('DOMContentLoaded', (event) => {
+    const dateInput = document.getElementById('tanggal_lahir');
+    const maxDate = new Date(2010, 11, 31); // December 31, 2010
+    const formattedMaxDate = maxDate.toISOString().split('T')[0];
+    dateInput.max = formattedMaxDate;
+});
+
+function validateNIK(input) {
+    input.value = input.value.replace(/\D/g, '');
+    if (input.value.length > 16) {
+        input.value = input.value.slice(0, 16);
+    }
+    const errorElement = document.getElementById('nikError');
+    if (input.value.length < 16) {
+        errorElement.textContent = 'NIK harus terdiri dari 16 karakter.';
+        input.classList.add('border-red-500');
+    } else {
+        errorElement.textContent = '';
+        input.classList.remove('border-red-500');
+    }
+}
+
+function validateNomorHP(input) {
+    input.value = input.value.replace(/\D/g, '');
+    if (input.value.length > 12) {
+        input.value = input.value.slice(0, 12);
+    }
+    if (!input.value.startsWith('08') && !input.value.startsWith('62')) {
+        input.setCustomValidity('Nomor HP harus dimulai dengan 08 atau 62');
+        input.classList.add('border-red-500');
+    } else if (input.value.length < 11 || input.value.length > 12) {
+        input.setCustomValidity('Nomor HP harus memiliki panjang 11 sampai 12 karakter');
+        input.classList.add('border-red-500');
+    } else {
+        input.setCustomValidity('');
+        input.classList.remove('border-red-500');
+    }
+}
+
+const submitBtn = document.getElementById('submit-btn');
+const setujuCheckbox = document.getElementById('setuju');
+const form = document.getElementById('form-daftar');
+
+setujuCheckbox.addEventListener('change', function() {
+    submitBtn.disabled = !this.checked;
+});
+
+submitBtn.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent standard form submission
+
+    // Manual validation
+    const requiredFields = ['nama_lengkap', 'tempat_lahir', 'tanggal_lahir', 'nama_ibu_kandung', 'nik', 'jurusan', 'nomor_hp', 'agama', 'jenis_kelamin'];
+    let isValid = true;
+
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (!field.value) {
+            isValid = false;
+            field.classList.add('border-red-500');
+        } else {
+            field.classList.remove('border-red-500');
+        }
+    });
+
+    if (!isValid) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: 'Mohon lengkapi semua field yang wajib diisi.'
+        });
+        return;
+    }
+
+    const formData = new FormData(form);
+
+    fetch('proses.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())  // Use text() instead of json()
+    .then(responseText => {
+        try {
+            const data = JSON.parse(responseText);
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: data.message
+                }).then(() => {
+                    form.reset();
+                    submitBtn.disabled = true;
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: data.message
+                });
+            }
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            // If parsing fails, it means the response wasn't JSON
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: 'Terjadi kesalahan saat mengirim data. Silakan coba lagi nanti.'
+            });
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: 'Terjadi kesalahan saat mengirim data.'
+        });
+    });
+});
+
+</script>			
 	<!-- START FOOTER -->
 	<div class="footer section-padding">
 		<div class="container">				
