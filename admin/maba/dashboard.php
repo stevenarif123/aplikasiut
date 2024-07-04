@@ -4,6 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 if (!isset($_SESSION['username'])) {
   header("Location: ../login.php");
+  exit;
 }
 
 // Koneksi ke database
@@ -25,15 +26,12 @@ if (!$result) {
 
 // Inisialisasi variabel
 $keyword = "";
-$search_column = "";
+$search_column = "NamaLengkap";  // Default search column
 $mahasiswa = [];
 
-// Cek apakah form pencarian disubmit
-if (isset($_POST['search'])) {
-  // Ambil keyword dari form
-  $keyword = $_POST['keyword'];
-  $search_column = $_POST['search_column'];
-}
+// Cek apakah ada keyword dari request
+$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+$search_column = isset($_GET['search_column']) ? $_GET['search_column'] : '';
 
 // Query untuk mencari data mahasiswa berdasarkan keyword
 $query = "SELECT * FROM mahasiswabaru WHERE ";
@@ -60,25 +58,93 @@ $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $start = ($page - 1) * (intval($limit) == 'all' ? count($mahasiswa) : intval($limit));
 $total_pages = ceil(count($mahasiswa) / (intval($limit) == 'all' ? 1 : intval($limit)));
 $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($mahasiswa) : intval($limit));
+
+if (isset($_GET['ajax'])) {
+  include './api/results_partial.php';
+  exit;
+}
+?>
+<?php
+// Session status check
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+if (!isset($_SESSION['username'])) {
+  header("Location: ../login.php");
+  exit;
+}
+
+// Connect to the database
+require_once "../koneksi.php";
+
+// Check for connection error
+if (!$koneksi) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+
+// Check get admin data
+$username = $_SESSION['username'];
+$query = "SELECT * FROM admin WHERE username='$username'";
+
+$result = mysqli_query($koneksi, $query);
+$user = mysqli_fetch_assoc($result);
+if (!$result) {
+  die("Query gagal: " . mysqli_error($koneksi));
+}
+
+// Inisialisasi variabel
+$keyword = "";
+$search_column = "NamaLengkap";  // Default search column
+$mahasiswa = [];
+
+// Cek apakah ada keyword dari request
+$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+$search_column = isset($_GET['search_column']) ? $_GET['search_column'] : '';
+
+// Query untuk mencari data mahasiswa berdasarkan keyword
+$query = "SELECT * FROM mahasiswabaru WHERE ";
+if (!empty($keyword) && !empty($search_column)) {
+  $query .= "$search_column LIKE '%" . mysqli_real_escape_string($koneksi, $keyword) . "%' ";
+} else {
+  $query .= "1 "; // Jika tidak ada keyword, tampilkan semua data
+}
+$query .= "ORDER BY No DESC";
+
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+  die("Query gagal: " . mysqli_error($koneksi));
+}
+
+// Simpan hasil pencarian ke dalam array
+while ($row = mysqli_fetch_assoc($result)) {
+  $mahasiswa[] = $row;
+}
+
+// Pagination
+$limit = isset($_POST['limit']) ? $_POST['limit'] : 10;
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$start = ($page - 1) * (intval($limit) == 'all' ? count($mahasiswa) : intval($limit));
+$total_pages = ceil(count($mahasiswa) / (intval($limit) == 'all' ? 1 : intval($limit)));
+$mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($mahasiswa) : intval($limit));
+
+if (isset($_GET['ajax'])) {
+  include './api/results_partial.php';
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Mahasiswa Baru</title>
-     <!-- App favicon -->
-    <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
-
-		<!-- App css -->
-		<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-		<link href="../assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
-
-		<link href="../assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-		<link href="../assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
-
-		<!-- icons -->
-		<link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <style>
+  <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="../assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+  <!-- <link href="../assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" /> -->
+  <!-- <link href="../assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" /> -->
+  <link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f8f9fa;
@@ -97,14 +163,50 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
     }
     #toast {
       transition: opacity 0.3s ease-in-out;
+      right: 1rem;
+      top: 1rem;
+      position: fixed;
+      opacity: 0;
+    }
+    .editable-field {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .editable-field input, 
+    .editable-field select {
+      width: 100px;
+    }
+    .edit-mode {
+      display: none;
+    }
+    .save-button {
+      margin-left: 10px;
+      display: none;
+    }
+    .save-button.active {
+      display: inline-block;
+    }
+    .edit-icon, .copy-icon {
+      cursor: pointer;
+      margin-left: 5px;
+    }
+    .edit-mode.active {
+      display: inline-block;
+      margin-left: 5px;
+    }
+    .accordion-body .edit-mode,
+    .accordion-body .edit-mode input,
+    .accordion-body .edit-mode select, 
+    .accordion-body .edit-mode span {
+      display: none;
     }
   </style>
 </head>
 <body>
+<div id="toast" class="bg-success text-white p-3 rounded shadow-lg opacity-0" style="position: fixed; top: 1rem; right: 1rem;"></div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-secondary">
   <!-- Kode navigasi disini -->
 </nav>
-
 <div class="container mt-4">
   <h1 class="mb-4">Pengelolaan Calon Mahasiswa Baru</h1>
   <h2 class="mb-4">Mahasiswa Baru dari Website</h2>
@@ -114,11 +216,11 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
     <a href="./push.php" class="btn btn-primary">Input Admisi</a>
   </div>
 
-  <form action="dashboard.php" method="post" class="mb-4">
+  <form id="searchForm" action="dashboard.php" method="get" class="mb-4">
     <div class="row mb-3">
       <div class="col">
         <label for="search_column" class="form-label fw-bold">Cari Berdasarkan:</label>
-        <select id="search_column" name="search_column" class="form-select">
+        <select id="search_column" name="search_column" class="form-control">
           <option value="NamaLengkap">Nama Lengkap</option>
           <option value="Jurusan">Jurusan</option>
           <option value="STATUS_INPUT_SIA">Status Input SIA</option>
@@ -126,17 +228,16 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
       </div>
       <div class="col">
         <label for="keyword" class="form-label fw-bold">Keyword:</label>
-        <input type="text" id="keyword" name="keyword" placeholder="Masukkan Keyword" class="form-control">
+        <input type="text" id="keyword" name="keyword" placeholder="Masukkan Keyword" class="form-control" onkeyup="updateResults()">
       </div>
       <div class="col align-self-end">
-        <button type="submit" name="search" class="btn btn-primary w-100">Cari</button>
+        <button type="submit" name="search" class="btn btn-primary w-100 d-none">Cari</button>
       </div>
     </div>
-
     <div class="row">
       <div class="col-2">
         <label for="limit" class="form-label fw-bold">Tampilkan:</label>
-        <select id="limit" name="limit" class="form-select">
+        <select id="limit" name="limit" class="form-control">
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
@@ -145,128 +246,210 @@ $mahasiswa = array_slice($mahasiswa, $start, intval($limit) == 'all' ? count($ma
       </div>
     </div>
   </form>
-
-  <div id="toast" class="position-fixed top-0 end-0 bg-success text-white p-3 rounded shadow-lg transition-opacity opacity-0">
-    Teks berhasil disalin!
-  </div>
-
-  <?php if (isset($mahasiswa) && count($mahasiswa) > 0) { ?>
-    <div class="accordion" id="mahasiswaAccordion">
-      <?php $no = 1 + $start; foreach ($mahasiswa as $mhs) { ?>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="heading-<?php echo $mhs['No']; ?>">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?php echo $mhs['No']; ?>" aria-expanded="true" aria-controls="collapse-<?php echo $mhs['No']; ?>">
-              <?php echo $no++; ?>. <?php echo htmlspecialchars($mhs['NamaLengkap']); ?> - <?php echo htmlspecialchars($mhs['Jurusan']); ?>
-            </button>
-          </h2>
-          <div id="collapse-<?php echo $mhs['No']; ?>" class="accordion-collapse collapse" aria-labelledby="heading-<?php echo $mhs['No']; ?>" data-bs-parent="#mahasiswaAccordion">
-            <div class="accordion-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <p>
-                    <strong>Nama Lengkap:</strong>
-                    <span><?php echo htmlspecialchars($mhs['NamaLengkap']); ?></span>
-                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['NamaLengkap'], ENT_QUOTES); ?>')" title="Salin nama lengkap">
-                      <i class="fas fa-copy"></i>
-                    </button>
-                  </p>
-                  <p>
-                    <strong>Nomor HP:</strong>
-                    <span><?php echo htmlspecialchars($mhs['NomorHP']); ?></span>
-                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['NomorHP'], ENT_QUOTES); ?>')" title="Salin nomor HP">
-                      <i class="fas fa-copy"></i>
-                    </button>
-                  </p>
-                  <p>
-                    <strong>Email:</strong>
-                    <span><?php echo htmlspecialchars($mhs['Email']); ?></span>
-                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['Email'], ENT_QUOTES); ?>')" title="Salin email">
-                      <i class="fas fa-copy"></i>
-                    </button>
-                  </p>
-                </div>
-                <div class="col-md-6">
-                  <p>
-                    <strong>Password:</strong>
-                    <span><?php echo htmlspecialchars($mhs['Password']); ?></span>
-                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['Password'], ENT_QUOTES); ?>')" title="Salin password">
-                      <i class="fas fa-copy"></i>
-                    </button>
-                  </p>
-                  <p>
-                    <strong>Status Input SIA:</strong>
-                    <span><?php echo htmlspecialchars($mhs['STATUS_INPUT_SIA']); ?></span>
-                    <button class="btn btn-sm btn-link text-primary p-0" onclick="copyToClipboard('<?php echo htmlspecialchars($mhs['STATUS_INPUT_SIA'], ENT_QUOTES); ?>')" title="Salin status input SIA">
-                      <i class="fas fa-copy"></i>
-                    </button>
-                  </p>
-                </div>
-              </div>
-              <div class="mt-2">
-                <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-primary me-2">Detail Data</a>
-                <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-warning me-2">Edit</a>
-                <button type="button" class="btn btn-danger" onclick="confirmDelete(<?php echo $mhs['No']; ?>)">Hapus</button>
-              </div>
-            </div>
-          </div>
+    <!-- Edit modal content -->
+<!-- Edit modal content -->
+<div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="text-center mt-2 mb-4">
+          <h5>Edit Data</h5>
         </div>
-      <?php } ?>
-    </div>
 
-    <!-- Pagination -->
-    <div class="d-flex justify-content-center mt-4">
-      <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-        <a href="?page=<?php echo $i; ?>&limit=<?php echo $limit; ?>&search_column=<?php echo $search_column; ?>&keyword=<?php echo $keyword; ?>" class="btn <?php echo $i == $page ? 'btn-primary' : 'btn-secondary'; ?> me-2"><?php echo $i; ?></a>
-      <?php } ?>
-    </div>
+        <form id="editForm" class="px-3">
+          <input type="hidden" id="edit-no">
 
-  <?php } else { ?>
-    <p class="text-center py-4">Data mahasiswa tidak ditemukan.</p>
-  <?php } ?>
+          <div class="form-group">
+            <label for="edit-namalengkap">Nama Lengkap</label>
+            <input class="form-control" type="text" id="edit-namalengkap" required>
+          </div>
 
+          <div class="form-group">
+            <label for="edit-nomorhp">Nomor HP</label>
+            <input class="form-control" type="text" id="edit-nomorhp" required>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-email">Email</label>
+            <input class="form-control" type="email" id="edit-email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-password">Password</label>
+            <input class="form-control" type="text" id="edit-password" required>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-statussia">Status Input SIA</label>
+            <select class="form-control" id="edit-statussia" required>
+              <option value="Belum Input Admisi">Belum Input Admisi</option>
+              <option value="Pengajuan Admisi">Pengajuan Admisi</option>
+              <option value="Ditolak">Ditolak</option>
+            </select>
+          </div>
+
+          <div class="form-group text-center">
+            <button class="btn btn-primary" type="submit">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+  <div id="results">
+    <?php include './api/results_partial.php'; ?>
+  </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Efek klik untuk tombol salin
-  const copyButtons = document.querySelectorAll('.btn-link');
+  updateCopyButtons();
+  updateAccordion();
+});
+
+function updateCopyButtons() {
+  const copyButtons = document.querySelectorAll('.copy-icon');
   copyButtons.forEach(button => {
     button.addEventListener('click', function() {
-      this.classList.add('text-success');
-      setTimeout(() => {
-        this.classList.remove('text-success');
-      }, 300);
+      const textToCopy = this.previousElementSibling.textContent.trim();
+      copyToClipboard(textToCopy);
     });
   });
-});
+}
 
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
-    showToast('Teks berhasil disalin: ' + text);
-  }, (err) => {
+    showToast('Teks berhasil disalin!');
+  }).catch((err) => {
     showToast('Gagal menyalin teks', true);
     console.error('Gagal menyalin teks: ', err);
   });
 }
 
-function showToast(message, isError = false) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.classList.remove('opacity-0', 'bg-success', 'bg-danger');
-  toast.classList.add(isError ? 'bg-danger' : 'bg-success', 'opacity-100');
-
-  setTimeout(() => {
-    toast.classList.remove('opacity-100');
-    toast.classList.add('opacity-0');
-  }, 3000);
-}
-
-function confirmDelete(id) {
+function confirmDelete(no) {
   if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-    window.location.href = 'hapus_data_mahasiswa.php?No=' + id;
+    window.location.href = 'hapus_data_mahasiswa.php?No=' + no;
   }
 }
+
+function updateResults() {
+  const keyword = document.getElementById('keyword').value;
+  const search_column = document.getElementById('search_column').value;
+  const limit = document.getElementById('limit').value;
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `dashboard.php?ajax=1&keyword=${keyword}&search_column=${search_column}&limit=${limit}`, true);
+  xhr.onload = function () {
+    if (this.status === 200) {
+      document.getElementById('results').innerHTML = this.responseText;
+      updateCopyButtons();
+      updateAccordion();
+    }
+  };
+  xhr.send();
+}
+
+$(document).ready(function() {
+  updateCopyButtons(); // Make sure to call this to initialize the copy buttons
+
+  // Trigger modal with data
+  $(document).on('click', '.edit-btn', function() {
+    var no = $(this).data('no');
+    var namalengkap = $(this).data('namalengkap');
+    var nomorhp = $(this).data('nomorhp');
+    var email = $(this).data('email');
+    var password = $(this).data('password');
+    var statussia = $(this).data('statussia');
+    
+    $('#edit-no').val(no);
+    $('#edit-namalengkap').val(namalengkap);
+    $('#edit-nomorhp').val(nomorhp);
+    $('#edit-email').val(email);
+    $('#edit-password').val(password);
+    $('#edit-statussia').val(statussia);
+  });
+
+  // Handle form submission
+  $('#editForm').on('submit', function(e) {
+    e.preventDefault();
+
+    var no = $('#edit-no').val();
+    var namalengkap = $('#edit-namalengkap').val();
+    var nomorhp = $('#edit-nomorhp').val();
+    var email = $('#edit-email').val();
+    var password = $('#edit-password').val();
+    var statussia = $('#edit-statussia').val();
+
+    saveData(no, namalengkap, nomorhp, email, password, statussia);
+  });
+
+  $(document).on('click', '.copy-icon', function() {
+    var textToCopy = $(this).siblings('span').text().trim();
+    copyToClipboard(textToCopy);
+  });
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Teks berhasil disalin!');
+    }).catch((err) => {
+      showToast('Gagal menyalin teks', true);
+      console.error('Gagal menyalin teks: ', err);
+    });
+  }
+
+  function saveData(no, namalengkap, nomorhp, email, password, statussia) {
+    const data = {
+      No: no,
+      NamaLengkap: namalengkap,
+      NomorHP: nomorhp,
+      Email: email,
+      Password: password,
+      STATUS_INPUT_SIA: statussia
+    };
+
+    $.ajax({
+      url: 'simpan_data.php',
+      method: 'POST',
+      data: data,
+      success: function(response) {
+        if (response === 'success') {
+          showToast('Data berhasil disimpan!');
+          $('#editModal').modal('hide');
+          // Perbarui nilai di tampilan
+          $(`span.nama[data-id="${no}"]`).text(namalengkap);
+          $(`span.nomor-hp[data-id="${no}"]`).text(nomorhp);
+          $(`span.email[data-id="${no}"]`).text(email);
+          $(`span.password[data-id="${no}"]`).text(password);
+          $(`span.status-sia[data-id="${no}"]`).text(statussia);
+        } else {
+          showToast('Gagal menyimpan data: ' + response, true);
+        }
+      },
+      error: function() {
+        showToast('Gagal menyimpan data', true);
+      }
+    });
+  }
+
+  function showToast(message, isError = false) {
+    const toast = $('#toast');
+    toast.text(message);
+    toast.removeClass('opacity-0 bg-success bg-danger');
+    toast.addClass(isError ? 'bg-danger' : 'bg-success');
+    toast.addClass('opacity-100');
+
+    setTimeout(() => {
+      toast.removeClass('opacity-100');
+      toast.addClass('opacity-0');
+    }, 3000);
+  }
+});
+
 </script>
 
 </body>

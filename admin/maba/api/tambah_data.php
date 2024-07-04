@@ -40,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $layanan_paket_semester = $koneksi->real_escape_string(trim($_POST['LayananPaketSemester']));
     $di_input_oleh = $koneksi->real_escape_string(trim($user['nama_lengkap']));
     $status_input_sia = $koneksi->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
+    $ukuranbaju = $koneksi->real_escape_string(trim($_POST['UkuranBaju']));
 
     $stmt = $koneksi->prepare("INSERT INTO mahasiswabaru ( 
         JalurProgram, 
@@ -61,7 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         NISN, 
         LayananPaketSemester, 
         DiInputOleh, 
-        STATUS_INPUT_SIA) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        STATUS_INPUT_SIA,
+        UkuranBaju) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         echo json_encode(["success" => false, "message" => "Prepare failed: " . $koneksi->error]);
         exit;
@@ -87,7 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $nisn, 
         $layanan_paket_semester, 
         $di_input_oleh, 
-        $status_input_sia);
+        $status_input_sia,
+        $ukuranbaju);
 
         if ($stmt->execute()) {
             echo json_encode(["success" => true]);

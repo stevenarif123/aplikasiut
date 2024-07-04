@@ -2,18 +2,21 @@
 // Session status check
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
-  }
+}
 
 if (!isset($_SESSION['username'])) {
     header("Location: ../login.php");
     exit;
-  }
+}
+
 // Connect to the database
 require_once "../koneksi.php";
+
 // Check for connection error
 if (!$koneksi) {
     die("Connection failed: " . mysqli_connect_error());
 }
+
 // Check get admin data
 $username = $_SESSION['username'];
 $query = "SELECT * FROM admin WHERE username='$username'";
@@ -41,6 +44,7 @@ if (!$result) {
 
 $mahasiswa = mysqli_fetch_assoc($result);
 date_default_timezone_set("Asia/Singapore");
+
 // Check if form is submitted
 if (isset($_POST['submit'])) {
     // Sanitize and validate input data
@@ -53,7 +57,7 @@ if (isset($_POST['submit'])) {
     $jurusan = filter_input(INPUT_POST, 'Jurusan', FILTER_SANITIZE_STRING);
     $nomor_hp = filter_input(INPUT_POST, 'NomorHP', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'Email', FILTER_SANITIZE_EMAIL);
-    $password = filter_input(INPUT_POST, 'Password', FILTER_SANITIZE_EMAIL);
+    $password = filter_input(INPUT_POST, 'Password', FILTER_SANITIZE_STRING);
     $agama = filter_input(INPUT_POST, 'Agama', FILTER_SANITIZE_STRING);
     $jenis_kelamin = filter_input(INPUT_POST, 'JenisKelamin', FILTER_SANITIZE_STRING);
     $status_perkawinan = filter_input(INPUT_POST, 'StatusPerkawinan', FILTER_SANITIZE_STRING);
@@ -66,70 +70,92 @@ if (isset($_POST['submit'])) {
     $di_edit_pada = date("Y-m-d H:i:s");
     $status_input_sia = filter_input(INPUT_POST, 'STATUS_INPUT_SIA', FILTER_SANITIZE_STRING);
 
+    // Escape all input data using mysqli_real_escape_string()
+    $jalur_program = mysqli_real_escape_string($koneksi, $jalur_program);
+    $nama_lengkap = mysqli_real_escape_string($koneksi, $nama_lengkap);
+    $tempat_lahir = mysqli_real_escape_string($koneksi, $tempat_lahir);
+    $tanggal_lahir = mysqli_real_escape_string($koneksi, $tanggal_lahir);
+    $nama_ibu_kandung = mysqli_real_escape_string($koneksi, $nama_ibu_kandung);
+    $nik = mysqli_real_escape_string($koneksi, $nik);
+    $jurusan = mysqli_real_escape_string($koneksi, $jurusan);
+    $nomor_hp = mysqli_real_escape_string($koneksi, $nomor_hp);
+    $email = mysqli_real_escape_string($koneksi, $email);
+    $password = mysqli_real_escape_string($koneksi, $password);
+    $agama = mysqli_real_escape_string($koneksi, $agama);
+    $jenis_kelamin = mysqli_real_escape_string($koneksi, $jenis_kelamin);
+    $status_perkawinan = mysqli_real_escape_string($koneksi, $status_perkawinan);
+    $nomor_hp_alternatif = mysqli_real_escape_string($koneksi, $nomor_hp_alternatif);
+    $nomor_ijazah = mysqli_real_escape_string($koneksi, $nomor_ijazah);
+    $tahun_ijazah = mysqli_real_escape_string($koneksi, $tahun_ijazah);
+    $nisn = mysqli_real_escape_string($koneksi, $nisn);
+    $layanan_paket_semester = mysqli_real_escape_string($koneksi, $layanan_paket_semester);
+    $di_input_oleh = mysqli_real_escape_string($koneksi, $di_input_oleh);
+    $di_edit_pada = mysqli_real_escape_string($koneksi, $di_edit_pada);
+    $status_input_sia = mysqli_real_escape_string($koneksi, $status_input_sia);
+
+    // Prepare UPDATE query with placeholders
+    $updateQuery = "UPDATE mahasiswabaru SET 
+        JalurProgram = ?, 
+        NamaLengkap = ?, 
+        TempatLahir = ?, 
+        TanggalLahir = ?, 
+        NamaIbuKandung = ?, 
+        NIK = ?, 
+        Jurusan = ?, 
+        NomorHP = ?, 
+        Email = ?, 
+        Password = ?, 
+        Agama = ?, 
+        JenisKelamin = ?, 
+        StatusPerkawinan = ?, 
+        NomorHPAlternatif = ?, 
+        NomorIjazah = ?, 
+        TahunIjazah = ?, 
+        NISN = ?, 
+        LayananPaketSemester = ?, 
+        DiInputOleh = ?, 
+        DiEditPada = ?, 
+        STATUS_INPUT_SIA = ?
+        WHERE No = ?";
+
+    // Prepare statement
+    $stmt = mysqli_prepare($koneksi, $updateQuery);
+
     // Bind parameters
-// Prepare UPDATE query with placeholders
-$updateQuery = "UPDATE mahasiswabaru SET 
-    JalurProgram = ?, 
-    NamaLengkap = ?, 
-    TempatLahir = ?, 
-    TanggalLahir = ?, 
-    NamaIbuKandung = ?, 
-    NIK = ?, 
-    Jurusan = ?, 
-    NomorHP = ?, 
-    Email = ?, 
-    Password = ?, 
-    Agama = ?, 
-    JenisKelamin = ?, 
-    StatusPerkawinan = ?, 
-    NomorHPAlternatif = ?, 
-    NomorIjazah = ?, 
-    TahunIjazah = ?, 
-    NISN = ?, 
-    LayananPaketSemester = ?, 
-    DiInputOleh = ?, 
-    DiEditPada = ?, 
-    STATUS_INPUT_SIA = ?
-    WHERE No = ?";
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssi",
+        $jalur_program,
+        $nama_lengkap,
+        $tempat_lahir,
+        $tanggal_lahir,
+        $nama_ibu_kandung,
+        $nik,
+        $jurusan,
+        $nomor_hp,
+        $email,
+        $password,
+        $agama,
+        $jenis_kelamin,
+        $status_perkawinan,
+        $nomor_hp_alternatif,
+        $nomor_ijazah,
+        $tahun_ijazah,
+        $nisn,
+        $layanan_paket_semester,
+        $di_input_oleh,
+        $di_edit_pada,
+        $status_input_sia,
+        $no // No digunakan sebagai parameter terakhir
+    );
 
-// Prepare statement
-$stmt = mysqli_prepare($koneksi, $updateQuery);
-
-// Bind parameters
-mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssi",
-    $jalur_program,
-    $nama_lengkap,
-    $tempat_lahir,
-    $tanggal_lahir,
-    $nama_ibu_kandung,
-    $nik,
-    $jurusan,
-    $nomor_hp,
-    $email,
-    $password,
-    $agama,
-    $jenis_kelamin,
-    $status_perkawinan,
-    $nomor_hp_alternatif,
-    $nomor_ijazah,
-    $tahun_ijazah,
-    $nisn,
-    $layanan_paket_semester,
-    $di_input_oleh,
-    $di_edit_pada,
-    $status_input_sia,
-    $no // No digunakan sebagai parameter terakhir
-);
-
-// Execute update
-if (mysqli_stmt_execute($stmt)) {
-    header("Location: dashboard.php");
-    //var_dump (mysqli_stmt_execute($stmt)) ;
-    exit;
-} else {
-    echo "Error updating data: " . mysqli_error($koneksi);
+    // Execute update
+    if (mysqli_stmt_execute($stmt)) {
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        echo "Error updating data: " . mysqli_error($koneksi);
+    }
 }
-}
+
 //debug
 $agama = [
     "Islam" => "Islam",
@@ -180,7 +206,6 @@ if ($result->num_rows > 0) {
 }
 mysqli_close($koneksi);
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -254,7 +279,7 @@ mysqli_close($koneksi);
 </nav>
     <div class="container mt-5">
         <h1 class="mb-4">Edit Data Mahasiswa</h1>
-        <p>Admin, <?php echo $user['nama_lengkap']; ?>!</p>
+        <p>Admin, <?php echo htmlspecialchars($user['nama_lengkap'], ENT_QUOTES, 'UTF-8'); ?>!</p>
         <form action="edit_data.php?No=<?php echo $no; ?>" method="post">
             <div class="form-group">
                 <label for="jalur_program" class="form-label">Jalur Program:</label>
@@ -265,11 +290,11 @@ mysqli_close($koneksi);
             </div>
             <div class="form-group">
                 <label for="nama_lengkap" class="form-label">Nama Lengkap:</label>
-                <input type="text" name="NamaLengkap" id="nama_lengkap" value="<?php echo $mahasiswa['NamaLengkap']; ?>" class="form-control">
+                <input type="text" name="NamaLengkap" id="nama_lengkap" value="<?php echo stripslashes($mahasiswa['NamaLengkap']); ?>" class="form-control">
             </div>
             <div class="form-group">
                 <label for="tempat_lahir" class="form-label">Tempat Lahir:</label>
-                <input type="text" name="TempatLahir" id="tempat_lahir" value="<?php echo $mahasiswa['TempatLahir']; ?>" class="form-control">
+                <input type="text" name="TempatLahir" id="tempat_lahir" value="<?php echo stripslashes($mahasiswa['TempatLahir']); ?>" class="form-control">
             </div>
             <div class="form-group">
                 <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
@@ -277,29 +302,29 @@ mysqli_close($koneksi);
             </div>
             <div class="form-group">
                 <label for="nama_ibu_kandung" class="form-label">Nama Ibu Kandung:</label>
-                <input type="text" name="NamaIbuKandung" id="nama_ibu_kandung" value="<?php echo $mahasiswa['NamaIbuKandung']; ?>" class="form-control">
+                <input type="text" name="NamaIbuKandung" id="nama_ibu_kandung" value="<?php echo stripslashes($mahasiswa['NamaIbuKandung']); ?>" class="form-control">
             </div>
             <div class="form-group">
                 <label for="nik" class="form-label">NIK:</label>
-                <input type="text" name="NIK" id="nik" value="<?php echo $mahasiswa['NIK']; ?>" class="form-control">
+                <input type="text" name="NIK" id="nik" value="<?php echo stripslashes($mahasiswa['NIK']); ?>" class="form-control">
             </div>
             <div class="form-group">
                 <label for="jurusan" class="form-label">Jurusan:</label>
                 <select name="Jurusan" id="jurusan" class="form-control">
                     <?php foreach ($daftarJurusan as $jurusan): ?>
-                        <option value="<?php echo $jurusan; ?>" <?php if ($selectedJurusan == $jurusan) echo "selected"; ?>>
-                            <?php echo $jurusan; ?>
+                        <option value="<?php echo htmlspecialchars($jurusan, ENT_QUOTES, 'UTF-8'); ?>" <?php if ($selectedJurusan == $jurusan) echo "selected"; ?>>
+                            <?php echo htmlspecialchars($jurusan, ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group">
                 <label for="NomorHP" class="form-label">Nomor HP:</label>
-                <input type="text" name="NomorHP" id="nomor_hp" value="<?php echo $mahasiswa['NomorHP']; ?>" class="form-control">
+                <input type="text" name="NomorHP" id="nomor_hp" value="<?php echo stripslashes($mahasiswa['NomorHP']); ?>" class="form-control">
             </div>
             <div class="form-group">
                 <label for="Email" class="form-label">Email:</label>
-                <input type="email" name="Email" id="email" value="<?php echo $mahasiswa['Email']; ?>" class="form-control">
+                <input type="email" name="Email" id="email" value="<?php echo stripslashes($mahasiswa['Email']); ?>" class="form-control">
             </div>
             <div class="form-group">
                 <label for="Password" class="form-label">Password:</label>
@@ -309,8 +334,8 @@ mysqli_close($koneksi);
                 <label for="agama" class="form-label">Agama:</label>
                 <select name="Agama" id="agama" class="form-control">
                     <?php foreach ($agama as $value => $label): ?>
-                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['Agama'] == $value) echo "selected"; ?>>
-                            <?php echo $label; ?>
+                        <option value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>" <?php if ($mahasiswa['Agama'] == $value) echo "selected"; ?>>
+                            <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -319,8 +344,8 @@ mysqli_close($koneksi);
                 <label for="JenisKelamin" class="form-label">Jenis Kelamin:</label>
                 <select name="JenisKelamin" id="jenis_kelamin" class="form-control">
                     <?php foreach ($jenis_kelamin as $value => $label): ?>
-                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['JenisKelamin'] == $value) echo "selected"; ?>>
-                            <?php echo $label; ?>
+                        <option value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>" <?php if ($mahasiswa['JenisKelamin'] == $value) echo "selected"; ?>>
+                            <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -329,53 +354,53 @@ mysqli_close($koneksi);
                 <label for="StatusPerkawinan" class="form-label">Status Perkawinan:</label>
                 <select name="StatusPerkawinan" id="status_perkawinan" class="form-select">
                     <?php foreach ($status_perkawinan as $value => $label): ?>
-                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['StatusPerkawinan'] == $value) echo "selected"; ?>>
-                            <?php echo $label; ?>
+                        <option value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>" <?php if ($mahasiswa['StatusPerkawinan'] == $value) echo "selected"; ?>>
+                            <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="NomorHPAlternatif" class="form-label">Nomor HP Alternatif:</label>
-                <input type="text" name="NomorHPAlternatif" id="nomor_hp_alternatif" value="<?php echo $mahasiswa['NomorHPAlternatif']; ?>" class="form-control">
+                <input type="text" name="NomorHPAlternatif" id="nomor_hp_alternatif" value="<?php echo stripslashes($mahasiswa['NomorHPAlternatif']); ?>" class="form-control">
             </div>
             <div class="mb-3">
                 <label for="NomorIjazah" class="form-label">Nomor Ijazah:</label>
-                <input type="text" name="NomorIjazah" id="nomor_ijazah" value="<?php echo $mahasiswa['NomorIjazah']; ?>" class="form-control">
+                <input type="text" name="NomorIjazah" id="nomor_ijazah" value="<?php echo stripslashes($mahasiswa['NomorIjazah']); ?>" class="form-control">
             </div>
             <div class="mb-3">
                 <label for="TahunIjazah" class="form-label">Tahun Ijazah:</label>
-                <input type="text" name="TahunIjazah" id="tahun_ijazah" value="<?php echo $mahasiswa['TahunIjazah']; ?>" class="form-control">
+                <input type="text" name="TahunIjazah" id="tahun_ijazah" value="<?php echo stripslashes($mahasiswa['TahunIjazah']); ?>" class="form-control">
             </div>
             <div class="mb-3">
                 <label for="NISN" class="form-label">NISN:</label>
-                <input type="text" name="NISN" id="nisn" value="<?php echo $mahasiswa['NISN']; ?>" class="form-control">
+                <input type="text" name="NISN" id="nisn" value="<?php echo stripslashes($mahasiswa['NISN']); ?>" class="form-control">
             </div>
             <div class="mb-3">
                 <label for="LayananPaketSemester" class="form-label">Layanan Paket Semester:</label>
                 <select name="LayananPaketSemester" id="layanan_paket_semester" class="form-select">
                     <?php foreach ($layanan_paket_semester as $value => $label): ?>
-                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['LayananPaketSemester'] == $value) echo "selected"; ?>>
-                            <?php echo $label; ?>
+                        <option value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>" <?php if ($mahasiswa['LayananPaketSemester'] == $value) echo "selected"; ?>>
+                            <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="mb-3">
-                <label for="DiInputOleh" class="form-label">Di Input Oleh: <?php echo $mahasiswa['DiInputOleh']; ?></label>
+                <label for="DiInputOleh" class="form-label">Di Input Oleh: <?php echo stripslashes($mahasiswa['DiInputOleh']); ?></label>
             </div>
             <div class="mb-3">
-                <label for="DiInputPada" class="form-label">Di Input Pada: <?php echo $mahasiswa['DiInputPada']; ?></label>
+                <label for="DiInputPada" class="form-label">Di Input Pada: <?php echo stripslashes($mahasiswa['DiInputPada']); ?></label>
             </div>
             <div class="mb-3">
-                <label for="DiInputPada" class="form-label">Terakhir di Edit Pada: <?php echo $mahasiswa['DiEditPada']; ?></label>
+                <label for="DiInputPada" class="form-label">Terakhir di Edit Pada: <?php echo stripslashes($mahasiswa['DiEditPada']); ?></label>
             </div>
             <div class="mb-3">
                 <label for="STATUS_INPUT_SIA" class="form-label">Status Input SIA:</label>
                 <select name="STATUS_INPUT_SIA" id="STATUS_INPUT_SIA" class="form-select">
                     <?php foreach ($status_input_sia as $value => $label): ?>
-                        <option value="<?php echo $value; ?>" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == $value) echo "selected"; ?>>
-                            <?php echo $label; ?>
+                        <option value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>" <?php if ($mahasiswa['STATUS_INPUT_SIA'] == $value) echo "selected"; ?>>
+                            <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -386,5 +411,4 @@ mysqli_close($koneksi);
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
-</html>
 </html>
