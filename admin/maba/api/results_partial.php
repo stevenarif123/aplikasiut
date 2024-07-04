@@ -5,7 +5,7 @@
         <div class="card-header" id="heading-<?php echo $mhs['No']; ?>">
           <h2 class="mb-0">
             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-<?php echo $mhs['No']; ?>" aria-expanded="true" aria-controls="collapse-<?php echo $mhs['No']; ?>">
-              <?php echo $no++; ?>. <span class="nama" data-id="<?php echo $mhs['No']; ?>"><?php echo htmlspecialchars(stripslashes($mhs['NamaLengkap']), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></span> - <span class="jurusan"><?php echo htmlspecialchars(stripslashes($mhs['Jurusan']), ENT_QUOTES, 'UTF-8'); ?></span>
+              <?php echo $no++; ?>. <span class="nama" data-id="<?php echo $mhs['No']; ?>"><?php echo stripslashes($mhs['NamaLengkap']); ?></span> - <span class="jurusan"><?php echo stripslashes($mhs['Jurusan']); ?></span>
             </button>
           </h2>
         </div>
@@ -15,29 +15,29 @@
               <div class="col-md-6">
                 <p>
                   <strong>Nama Lengkap:</strong>
-                  <span class="nama" data-id="<?php echo $mhs['No']; ?>"><?php echo htmlspecialchars(stripslashes($mhs['NamaLengkap']), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></span>
+                  <span class="nama" data-id="<?php echo $mhs['No']; ?>"><?php echo stripslashes($mhs['NamaLengkap']); ?></span>
                   <i class="fas fa-copy copy-icon"></i>
                 </p>
                 <p>
                   <strong>Nomor HP:</strong>
-                  <span class="nomor-hp" data-id="<?php echo $mhs['No']; ?>"><?php echo htmlspecialchars(stripslashes($mhs['NomorHP']), ENT_QUOTES, 'UTF-8'); ?></span>
+                  <span class="nomor-hp" data-id="<?php echo $mhs['No']; ?>"><?php echo stripslashes($mhs['NomorHP']); ?></span>
                   <i class="fas fa-copy copy-icon"></i>
                 </p>
                 <p>
                   <strong>Email:</strong>
-                  <span class="email" data-id="<?php echo $mhs['No']; ?>"><?php echo htmlspecialchars(stripslashes($mhs['Email']), ENT_QUOTES, 'UTF-8'); ?></span>
+                  <span class="email" data-id="<?php echo $mhs['No']; ?>"><?php echo stripslashes($mhs['Email']); ?></span>
                   <i class="fas fa-copy copy-icon"></i>
                 </p>
               </div>
               <div class="col-md-6">
                 <p>
                   <strong>Password:</strong>
-                  <span class="password" data-id="<?php echo $mhs['No']; ?>"><?php echo htmlspecialchars(stripslashes($mhs['Password']), ENT_QUOTES, 'UTF-8'); ?></span>
+                  <span class="password" data-id="<?php echo $mhs['No']; ?>"><?php echo stripslashes($mhs['Password']); ?></span>
                   <i class="fas fa-copy copy-icon"></i>
                 </p>
                 <p>
                   <strong>Status Input SIA:</strong>
-                  <span class="status-sia" data-id="<?php echo $mhs['No']; ?>"><?php echo htmlspecialchars(stripslashes($mhs['STATUS_INPUT_SIA']), ENT_QUOTES, 'UTF-8'); ?></span>
+                  <span class="status-sia" data-id="<?php echo $mhs['No']; ?>"><?php echo stripslashes($mhs['STATUS_INPUT_SIA']); ?></span>
                   <i class="fas fa-copy copy-icon"></i>
                 </p>
               </div>
@@ -45,11 +45,11 @@
             <div class="mt-2">
               <button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editModal"
                 data-no="<?php echo $mhs['No']; ?>"
-                data-namalengkap="<?php echo htmlspecialchars(stripslashes($mhs['NamaLengkap']), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"
-                data-nomorhp="<?php echo htmlspecialchars(stripslashes($mhs['NomorHP']), ENT_QUOTES, 'UTF-8'); ?>"
-                data-email="<?php echo htmlspecialchars(stripslashes($mhs['Email']), ENT_QUOTES, 'UTF-8'); ?>"
-                data-password="<?php echo htmlspecialchars(stripslashes($mhs['Password']), ENT_QUOTES, 'UTF-8'); ?>"
-                data-statussia="<?php echo htmlspecialchars(stripslashes($mhs['STATUS_INPUT_SIA']), ENT_QUOTES, 'UTF-8'); ?>">
+                data-namalengkap="<?php echo stripslashes($mhs['NamaLengkap']); ?>"
+                data-nomorhp="<?php echo stripslashes($mhs['NomorHP']); ?>"
+                data-email="<?php echo stripslashes($mhs['Email']); ?>"
+                data-password="<?php echo stripslashes($mhs['Password']); ?>"
+                data-statussia="<?php echo stripslashes($mhs['STATUS_INPUT_SIA']); ?>">
                 Edit
               </button>
               <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-primary me-2">Detail Data</a>
