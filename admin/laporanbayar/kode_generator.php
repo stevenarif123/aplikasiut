@@ -17,7 +17,7 @@ function generateKodeLaporan($jenis_pembayaran) {
     // Mendapatkan kode jenis pembayaran dari array
     if (isset($kodeJenisPembayaran[$jenis_pembayaran])) {
         $kodeJenis = $kodeJenisPembayaran[$jenis_pembayaran];
-        $query = "SELECT KodeLaporan FROM laporanuangmasuk WHERE KodeLaporan LIKE '$kodeJenis%' ORDER BY id DESC LIMIT 1";
+        $query = "SELECT KodeLaporan FROM laporanuangmasuk20242 WHERE KodeLaporan LIKE '$kodeJenis%' ORDER BY id DESC LIMIT 1";
         $result = mysqli_query($koneksi, $query);
 
         if ($result) {

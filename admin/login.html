@@ -88,7 +88,7 @@
             var password = document.getElementById('password').value;
             var spinner = document.getElementById('loading-spinner');
             var errorMessage = document.getElementById('error-message');
-            var successMessage = document.getElementById('success-message');
+            var successMessage = document.getElementById('Flog-message');
 
             // Hide previous messages
             errorMessage.style.display = 'none';
@@ -103,7 +103,7 @@
             formData.append('password', password);
 
             // Send the form data using fetch API
-            fetch('login.php', {
+            fetch('login_process.php', {
                 method: 'POST',
                 body: formData
             })
