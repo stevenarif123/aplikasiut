@@ -1,5 +1,5 @@
 <?php
-require_once '../../koneksi.php';  // Ensure this path is correct
+include '../../koneksi.php';  // Ensure this path is correct
 include '../kode_generator.php';   // Include the code generator
 
 $nim = $_POST['nim'];
@@ -27,30 +27,38 @@ if ($stmt->execute()) {
 }
 
 function updateBalance($koneksi, $nim, $nama, $jumlah_tagihan) {
-    // Condition to handle whether NIM or name is available
+    // Determine whether to use NIM or name based on availability
     $condition = !empty($nim) ? "Nim = ?" : "NamaMahasiswa = ?";
     $identifier = !empty($nim) ? $nim : $nama;
 
-    // Get current total bill and payment
-    $sql = "SELECT TotalTagihan, TotalPembayaran FROM saldo WHERE $condition";
+    // Prepare to fetch current total bill and payment
+    $sql = "SELECT TotalTagihan, TotalPembayaran FROM saldo20242 WHERE $condition";
     $stmt = $koneksi->prepare($sql);
+    if (!$stmt) {
+        die('Prepare failed: ' . $koneksi->error);
+    }
     $stmt->bind_param("s", $identifier);
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        die('Execute failed: ' . $stmt->error);
+    }
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
 
-    // Calculate new total bill
+    // Calculate new total bill and new balance
     $newTotalBill = $data['TotalTagihan'] + $jumlah_tagihan;
-    $saldo = $data['TotalPembayaran'] - $newTotalBill;
+    $newBalance = $data['TotalPembayaran'] - $newTotalBill;
 
-    // Update the saldo table
+    // Prepare to update the saldo table
     $sql = "UPDATE saldo SET TotalTagihan = ?, Saldo = ? WHERE $condition";
     $stmt = $koneksi->prepare($sql);
-    $stmt->bind_param("dds", $newTotalBill, $saldo, $identifier);
+    if (!$stmt) {
+        die('Prepare failed: ' . $koneksi->error);
+    }
+    $stmt->bind_param("dds", $newTotalBill, $newBalance, $identifier);
     if ($stmt->execute()) {
-        echo " Saldo berhasil diperbarui";
+        echo "Saldo berhasil diperbarui";
     } else {
-        echo " Error saat memperbarui saldo: " . $stmt->error;
+        echo "Error saat memperbarui saldo: " . $stmt->error;
     }
 }
 ?>
