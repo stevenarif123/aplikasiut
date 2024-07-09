@@ -6,7 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Convert date to the required format dd/mm/yyyy
     $dataMahasiswa['tanggalLahirMahasiswa'] = date('d/m/Y', strtotime($dataMahasiswa['tanggalLahirMahasiswa']));
 
-    function pushDataToApi($dataMahasiswa) {
+    function pushDataToApi($dataMahasiswa)
+    {
         $url = 'https://api-sia.ut.ac.id/backend-sia/api/graphql';
 
         $query = '
@@ -115,7 +116,7 @@ if ($result === false) {
 
 $mahasiswaData = [];
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         $mahasiswaData[] = [
             "id" => $row["No"],
             "email" => $row["Email"],
@@ -145,6 +146,7 @@ $koneksi->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -152,6 +154,7 @@ $koneksi->close();
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.1/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://unpkg.com/flowbite@1.0.4/dist/flowbite.min.css" rel="stylesheet" />
 </head>
+
 <body class="p-8">
     <h1 class="text-2xl font-bold mb-4">Proses Data Mahasiswa Baru</h1>
     <button id="startButton" class="px-4 py-2 bg-blue-600 text-white rounded">Mulai Proses Semua</button>
@@ -176,7 +179,10 @@ $koneksi->close();
             try {
                 return JSON.parse(result); // Attempt to parse the JSON response
             } catch (error) {
-                return { error: "Invalid JSON response", details: result }; // Return error details if JSON parsing fails
+                return {
+                    error: "Invalid JSON response",
+                    details: result
+                }; // Return error details if JSON parsing fails
             }
         }
 
@@ -246,7 +252,10 @@ $koneksi->close();
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({id, status})
+                body: JSON.stringify({
+                    id,
+                    status
+                })
             });
 
             return await response.json();
@@ -264,4 +273,5 @@ $koneksi->close();
 
     <script src="https://unpkg.com/flowbite@1.0.4/dist/flowbite.js"></script>
 </body>
+
 </html>

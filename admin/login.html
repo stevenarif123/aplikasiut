@@ -88,11 +88,15 @@
             var password = document.getElementById('password').value;
             var spinner = document.getElementById('loading-spinner');
             var errorMessage = document.getElementById('error-message');
-            var successMessage = document.getElementById('Flog-message');
+            var successMessage = document.getElementById('success-message'); // Corrected ID
 
             // Hide previous messages
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+            if (successMessage) { 
+                successMessage.style.display = 'none';
+            }
 
             // Show the loading spinner
             spinner.style.display = 'block';
@@ -103,7 +107,7 @@
             formData.append('password', password);
 
             // Send the form data using fetch API
-            fetch('login_process.php', {
+            fetch('login.php', {
                 method: 'POST',
                 body: formData
             })
@@ -114,14 +118,18 @@
 
                 // Process the response
                 if (data.status === 'success') {
-                    successMessage.textContent = data.message;
-                    successMessage.style.display = 'block';
-                    setTimeout(() => {
-                        window.location.href = 'index.php';
-                    }, 2000);
+                    if (successMessage) { // Check if the element exists
+                        successMessage.textContent = data.message;
+                        successMessage.style.display = 'block';
+                        setTimeout(() => {
+                            window.location.href = 'index.php';
+                        }, 2000);
+                    }
                 } else {
-                    errorMessage.textContent = data.message;
-                    errorMessage.style.display = 'block';
+                    if (errorMessage) { // Check if the element exists
+                        errorMessage.textContent = data.message;
+                        errorMessage.style.display = 'block';
+                    }
                 }
             })
             .catch(error => {
@@ -129,8 +137,10 @@
                 spinner.style.display = 'none';
 
                 // Handle the error
-                errorMessage.textContent = 'An error occurred. Please try again.';
-                errorMessage.style.display = 'block';
+                if (errorMessage) { // Check if the element exists
+                    errorMessage.textContent = 'An error occurred. Please try again.';
+                    errorMessage.style.display = 'block';
+                }
                 console.error('Error:', error);
             });
         }

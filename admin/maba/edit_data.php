@@ -280,7 +280,7 @@ $selectedJurusan = $mahasiswa['Jurusan'];
     </nav>
     <div class="container mt-5 jrkctn">
         <div class="box-form">
-            <h1 class="mb-4">Edit Data Mahasiswa</h1>
+            <h1 class="text-center mb-4 text-2xl jrk">Edit Data Mahasiswa</h1>
             <p>Admin, <?php echo htmlspecialchars($user['nama_lengkap'], ENT_QUOTES, 'UTF-8'); ?>!</p>
             <form action="edit_data.php?No=<?php echo $no; ?>" method="post">
                 <div class="center grid gap-4 jrk">
@@ -413,15 +413,15 @@ $selectedJurusan = $mahasiswa['Jurusan'];
                             <label Name="form-check-label" for="layanan_paket_semester_non_sipas">NON SIPAS</label>
                         </div>
                     </div>
-                    <div>
-                        <label for="DiInputOleh" class="form-label">Di Input Oleh: <?php echo $mahasiswa['DiInputOleh']; ?></label>
-                    </div>
-                    <div>
-                        <label for="DiInputPada" class="form-label">Di Input Pada: <?php echo $mahasiswa['DiInputPada']; ?></label>
-                    </div>
-                    <div>
-                        <label for="DiEditPada" class="form-label">Terakhir di Edit Pada: <?php echo $mahasiswa['DiEditPada']; ?></label>
-                    </div>
+                    <div class="card mb-3" style="max-width: 540px;">
+    <div class="card-body">
+        <h5 class="card-title">Informasi Input</h5>
+        <p class="card-text"><strong>Di Input Oleh:</strong> <?php echo $mahasiswa['DiInputOleh']; ?></p>
+        <p class="card-text"><strong>Di Input Pada:</strong> <?php echo $mahasiswa['DiInputPada']; ?></p>
+        <p class="card-text"><strong>Terakhir di Edit Pada:</strong> <?php echo $mahasiswa['DiEditPada']; ?></p>
+    </div>
+</div>
+
                     <div class="mb-3">
                         <label for="STATUS_INPUT_SIA" class="form-label">Status Input SIA:</label>
                         <select name="STATUS_INPUT_SIA" id="STATUS_INPUT_SIA" class="form-select">
