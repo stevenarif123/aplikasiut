@@ -1,6 +1,6 @@
 <?php
-include '../../koneksi.php';  // Ensure this path is correct
-include '../kode_generator.php';   // Include the code generator
+require_once '../../koneksi.php';  // Ensure this path is correct
+require_once '../kode_generator.php';   // Include the code generator
 
 $nim = $_POST['nim'];
 $nama = $_POST['nama'];
@@ -27,38 +27,47 @@ if ($stmt->execute()) {
 }
 
 function updateBalance($koneksi, $nim, $nama, $jumlah_tagihan) {
-    // Determine whether to use NIM or name based on availability
     $condition = !empty($nim) ? "Nim = ?" : "NamaMahasiswa = ?";
     $identifier = !empty($nim) ? $nim : $nama;
 
-    // Prepare to fetch current total bill and payment
     $sql = "SELECT TotalTagihan, TotalPembayaran FROM saldo20242 WHERE $condition";
     $stmt = $koneksi->prepare($sql);
     if (!$stmt) {
         die('Prepare failed: ' . $koneksi->error);
     }
     $stmt->bind_param("s", $identifier);
-    if (!$stmt->execute()) {
-        die('Execute failed: ' . $stmt->error);
-    }
+    $stmt->execute();
     $result = $stmt->get_result();
-    $data = $result->fetch_assoc();
 
-    // Calculate new total bill and new balance
-    $newTotalBill = $data['TotalTagihan'] + $jumlah_tagihan;
-    $newBalance = $data['TotalPembayaran'] - $newTotalBill;
+    if ($data = $result->fetch_assoc()) {
+        // Existing data found, update it
+        $newTotalBill = $data['TotalTagihan'] + $jumlah_tagihan;
+        $newBalance = $data['TotalPembayaran'] - $newTotalBill;
 
-    // Prepare to update the saldo table
-    $sql = "UPDATE saldo SET TotalTagihan = ?, Saldo = ? WHERE $condition";
-    $stmt = $koneksi->prepare($sql);
-    if (!$stmt) {
-        die('Prepare failed: ' . $koneksi->error);
-    }
-    $stmt->bind_param("dds", $newTotalBill, $newBalance, $identifier);
-    if ($stmt->execute()) {
-        echo "Saldo berhasil diperbarui";
+        $sql = "UPDATE saldo SET TotalTagihan = ?, Saldo = ? WHERE $condition";
+        $stmt = $koneksi->prepare($sql);
+        if (!$stmt) {
+            die('Prepare failed: ' . $koneksi->error);
+        }
+        $stmt->bind_param("dds", $newTotalBill, $newBalance, $identifier);
+        if ($stmt->execute()) {
+            echo "Saldo berhasil diperbarui";
+        } else {
+            echo "Error saat memperbarui saldo: " . $stmt->error;
+        }
     } else {
-        echo "Error saat memperbarui saldo: " . $stmt->error;
+        // No existing data, insert new record
+        $sql = "INSERT INTO saldo (Nim, NamaMahasiswa, TotalTagihan, TotalPembayaran, Saldo) VALUES (?, ?, ?, 0, -?)";
+        $stmt = $koneksi->prepare($sql);
+        if (!$stmt) {
+            die('Prepare failed: ' . $koneksi->error);
+        }
+        $stmt->bind_param("sssd", $nim, $nama, $jumlah_tagihan, $jumlah_tagihan);
+        if ($stmt->execute()) {
+            echo "New saldo record created successfully";
+        } else {
+            echo "Error saat menambahkan saldo baru: " . $stmt->error;
+        }
     }
 }
 ?>
