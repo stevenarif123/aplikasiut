@@ -42,7 +42,7 @@
                 </p>
                 <p>
                   <strong>Status Pembayaran:</strong>
-                  <span class="status-pembayaran" data-id="<?php echo $mhs['No']; ?>" data-nim="<?php echo isset($mhs['Nim']) ? $mhs['Nim'] : ''; ?>" data-nama="<?php echo stripslashes($mhs['NamaLengkap']); ?>">Loading...</span>
+                  <span class="status-pembayaran" data-id="<?php echo isset($mhs['Nim']) ? $mhs['Nim'] : $mhs['NamaLengkap']; ?>" data-nim="<?php echo isset($mhs['Nim']) ? $mhs['Nim'] : ''; ?>" data-nama="<?php echo stripslashes($mhs['NamaLengkap']); ?>">Loading...</span>
                 </p>
               </div>
             </div>
@@ -73,3 +73,8 @@
 <?php } else { ?>
   <p class="text-center py-4">Data mahasiswa tidak ditemukan.</p>
 <?php } ?>
+<script>
+    $(document).ready(function() {
+        updateStatusPembayaran(); // Pastikan untuk memanggil fungsi ini setelah konten dimuat
+    });
+</script>

@@ -6,50 +6,29 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 if (!isset($_SESSION['username'])) {
     header("Location: ../login.php");
-}
-// Function to generate report code
-function generateKodeLaporan() {
-    global $koneksi; // Make the database connection available inside the function
-
-    // Get the last report code from the database
-    $query = "SELECT KodeLaporan FROM laporanuangmasuk ORDER BY id DESC LIMIT 1";
-    $result = mysqli_query($koneksi, $query);
-
-    if ($result) {
-        $row = mysqli_fetch_assoc($result);
-        if ($row) {
-            $lastKode = $row['KodeLaporan'];
-
-            // Process to generate new report code here
-            // Example: Increment the numeric part of the code
-            $numericPart = substr($lastKode, 2);
-            $newNumericPart = str_pad(intval($numericPart) + 1, 4, '0', STR_PAD_LEFT);
-            $newKode = "BA" . $newNumericPart;
-
-            return $newKode;
-        } else {
-            // If no previous data, return the initial code
-            return "BA0001";
-        }
-    } else {
-        // If error fetching data, return the initial code
-        return "BA0001";
-    }
+    exit;
 }
 
 // Initialize variables
 $hasilPencarian = null;
 
-// If form is submitted (POST request)
+// If form is submitted (GET request)
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
     $nama_mahasiswa = trim($_GET['cari_mahasiswa']); // Trim whitespace
 
     // Assuming your database is case-insensitive:
     $nama_mahasiswa = strtolower($nama_mahasiswa); // Convert to lowercase
 
-    // Query to search for mahasiswa (modified)
-    $query = "SELECT * FROM mahasiswa WHERE NamaLengkap LIKE '%$nama_mahasiswa%' OR Nim = '$nama_mahasiswa' ORDER BY No DESC";
-    $hasilPencarian = mysqli_query($koneksi, $query);
+    // Query to search for mahasiswa in saldo20242 table
+    $query = "SELECT Nim, NamaMahasiswa, TotalTagihan, TotalPembayaran, Saldo, isLunas 
+              FROM saldo20242 
+              WHERE LOWER(NamaMahasiswa) LIKE ? OR LOWER(Nim) LIKE ? 
+              ORDER BY NamaMahasiswa DESC";
+    $stmt = $koneksi->prepare($query);
+    $searchParam = "%$nama_mahasiswa%";
+    $stmt->bind_param("ss", $searchParam, $searchParam);
+    $stmt->execute();
+    $hasilPencarian = $stmt->get_result();
 }
 ?>
 <!DOCTYPE html>
@@ -77,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
             Mahasiswa
           </a>
           <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
+            <li><a class="dropdown-item" href="../mahasiswa.php">Daftar Mahasiswa</a></li>
             <li><a class="dropdown-item" href="../tambah_data.php">Tambah Mahasiswa</a></li>
           </ul>
         </li>
@@ -125,7 +104,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
                 <tr>
                     <th>NIM</th>
                     <th>Nama Mahasiswa</th>
-                    <th>Jurusan</th>
+                    <th>Total Tagihan</th>
+                    <th>Total Pembayaran</th>
+                    <th>Saldo</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -134,18 +116,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
                 if ($hasilPencarian && mysqli_num_rows($hasilPencarian) > 0) {
                     // Display the table with search results
                     while ($row = mysqli_fetch_assoc($hasilPencarian)) {
+                        $status = $row['isLunas'] == 1 ? 'Lunas' : 'Belum Lunas';
+                        $statusColor = $row['isLunas'] == 1 ? 'text-success' : 'text-danger';
                         echo '<tr>
                                   <td>' . $row['Nim'] . '</td>
-                                  <td>' . $row['NamaLengkap'] . '</td>
-                                  <td>' . $row['Jurusan'] . '</td>
+                                  <td>' . $row['NamaMahasiswa'] . '</td>
+                                  <td>' . $row['TotalTagihan'] . '</td>
+                                  <td>' . $row['TotalPembayaran'] . '</td>
+                                  <td>' . $row['Saldo'] . '</td>
+                                  <td class="' . $statusColor . '">' . $status . '</td>
                                   <td>
-                                      <a href="penambahan.php?nim=' . $row['Nim'] . '&nama=' . urlencode($row['NamaLengkap']) . '&jurusan=' . urlencode($row['Jurusan']) . '" class="btn btn-success">Tambah Laporan Bayar</a>
+                                      <a href="penambahan.php?nim=' . $row['Nim'] . '&nama=' . urlencode($row['NamaMahasiswa']) . '" class="btn btn-success">Tambah Laporan Bayar</a>
                                   </td>
                               </tr>';
                     }
                 } else {
                     // Display a message if no results are found
-                    echo "<p>Data mahasiswa tidak ditemukan.</p>";
+                    echo "<tr><td colspan='7'>Data mahasiswa tidak ditemukan.</td></tr>";
                 }
                 ?>
             </tbody>

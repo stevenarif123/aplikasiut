@@ -1016,22 +1016,22 @@ if (isset($_GET['ajax'])) {
     }
 
     function updateResults() {
-        const keyword = document.getElementById('keyword').value;
-        const search_column = document.getElementById('search_column').value;
-        const limit = document.getElementById('limit').value;
+    const keyword = document.getElementById('keyword').value;
+    const search_column = document.getElementById('search_column').value;
+    const limit = document.getElementById('limit').value;
 
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `dashboard.php?ajax=1&keyword=${keyword}&search_column=${search_column}&limit=${limit}`, true);
-        xhr.onload = function() {
-            if (this.status === 200) {
-                document.getElementById('results').innerHTML = this.responseText;
-                updateCopyButtons();
-                updateAccordion();
-                updateStatusPembayaran();
-            }
-        };
-        xhr.send();
-    }
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `dashboard.php?ajax=1&keyword=${keyword}&search_column=${search_column}&limit=${limit}`, true);
+    xhr.onload = function() {
+        if (this.status === 200) {
+            document.getElementById('results').innerHTML = this.responseText;
+            updateCopyButtons();
+            updateAccordion();
+            updateStatusPembayaran(); // Tambahkan ini untuk memperbarui status pembayaran setelah konten dimuat
+        }
+    };
+    xhr.send();
+}
 
     $(document).ready(function() {
         updateCopyButtons(); // Make sure to call this to initialize the copy buttons
@@ -1041,7 +1041,7 @@ if (isset($_GET['ajax'])) {
             var no = $(this).data('no');
 
             $.ajax({
-                url: 'api/ambil_data_mahasiswa.php', // Pastikan path ini benar
+                url: 'ambil_data_mahasiswa.php', // Pastikan path ini benar
                 method: 'POST',
                 data: {
                     No: no
@@ -1097,7 +1097,7 @@ if (isset($_GET['ajax'])) {
             };
 
             $.ajax({
-                url: 'api/simpan_data.php',
+                url: 'simpan_data.php',
                 method: 'POST',
                 data: data,
                 success: function(response) {
@@ -1140,7 +1140,6 @@ if (isset($_GET['ajax'])) {
             data: {
                 identifier: identifier
             },
-            
             success: function(response) {
                 var saldoData;
                 try {
@@ -1150,22 +1149,18 @@ if (isset($_GET['ajax'])) {
                     console.log("Raw response:", response); // Tambahkan ini untuk menampilkan respons mentah
                     return;
                 }
-                var statusPembayaranElement = $('.status-pembayaran[data-id="' + nim + '"]');
+                var statusPembayaranElement = $('.status-pembayaran[data-id="' + identifier + '"]');
                 if (saldoData && !saldoData.error) {
-                    var statusColor = saldoData.Status === 'Lunas' ? 'text-success' : 'text-danger';
-                    statusPembayaranElement.html(`
-                        <p>Total Tagihan: ${saldoData.TotalTagihan}</p>
-                        <p>Total Pembayaran: ${saldoData.TotalPembayaran}</p>
-                        <p>Saldo: ${saldoData.Saldo}</p>
-                        <p class="${statusColor}">Status: ${saldoData.Status}</p>
-                    `);
+                    var statusText = saldoData.isLunas ? 'Lunas' : 'Belum Lunas';
+                    var statusColor = saldoData.isLunas ? 'text-success' : 'text-danger';
+                    statusPembayaranElement.html(`<p class="${statusColor}"> ${statusText}</p>`);
                 } else {
                     statusPembayaranElement.html('<p>Data saldo tidak ditemukan</p>');
                 }
             },
             error: function(xhr, status, error) {
                 console.error("AJAX error:", status, error);
-                $('.status-pembayaran[data-id="' + nim + '"]').html('<p>Terjadi kesalahan saat mengambil data saldo</p>');
+                $('.status-pembayaran[data-id="' + identifier + '"]').html('<p>Terjadi kesalahan saat mengambil data saldo</p>');
             }
         });
     });
@@ -1174,6 +1169,7 @@ if (isset($_GET['ajax'])) {
 $(document).ready(function() {
     updateStatusPembayaran(); // Pastikan untuk memanggil fungsi ini setelah dokumen siap
 });
+
 
     });
 </script>

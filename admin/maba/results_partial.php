@@ -40,6 +40,10 @@
                   <span class="status-sia" data-id="<?php echo $mhs['No']; ?>"><?php echo stripslashes($mhs['STATUS_INPUT_SIA']); ?></span>
                   <i class="fas fa-copy copy-icon"></i>
                 </p>
+                <p>
+                  <strong>Status Pembayaran:</strong>
+                  <span class="status-pembayaran" data-id="<?php echo isset($mhs['Nim']) ? $mhs['Nim'] : $mhs['NamaLengkap']; ?>" data-nim="<?php echo isset($mhs['Nim']) ? $mhs['Nim'] : ''; ?>" data-nama="<?php echo stripslashes($mhs['NamaLengkap']); ?>">Loading...</span>
+                </p>
               </div>
             </div>
             <div class="mt-2">
