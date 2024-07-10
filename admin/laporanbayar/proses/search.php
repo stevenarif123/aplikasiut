@@ -2,10 +2,19 @@
 include '../../koneksi.php'; // Sesuaikan dengan path file konfigurasi database
 
 $query = $_GET['query'];
-$sql = "SELECT No, Nim, NamaLengkap, Jurusan FROM mahasiswa WHERE Nim LIKE ? OR NamaLengkap LIKE ?";
-$stmt = $koneksi->prepare($sql);
 $searchTerm = "%$query%";
-$stmt->bind_param("ss", $searchTerm, $searchTerm);
+
+// Query untuk mahasiswa yang sudah ada NIM
+$sql1 = "SELECT No, Nim, NamaLengkap, Jurusan FROM mahasiswa WHERE Nim LIKE ? OR NamaLengkap LIKE ?";
+
+// Query untuk mahasiswa baru yang belum ada NIM
+$sql2 = "SELECT No, '' AS Nim, NamaLengkap, Jurusan FROM mahasiswabaru20242 WHERE NamaLengkap LIKE ?";
+
+// Menggabungkan kedua query dengan UNION
+$sql = "($sql1) UNION ($sql2)";
+
+$stmt = $koneksi->prepare($sql);
+$stmt->bind_param("sss", $searchTerm, $searchTerm, $searchTerm);
 $stmt->execute();
 $result = $stmt->get_result();
 

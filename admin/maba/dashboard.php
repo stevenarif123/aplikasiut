@@ -36,7 +36,7 @@ $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 $search_column = isset($_GET['search_column']) ? $_GET['search_column'] : '';
 
 // Query untuk mencari data mahasiswa berdasarkan keyword
-$query = "SELECT * FROM mahasiswabaru WHERE ";
+$query = "SELECT * FROM mahasiswabaru20242 WHERE ";
 if (!empty($keyword) && !empty($search_column)) {
   $query .= "$search_column LIKE '%" . mysqli_real_escape_string($koneksi, $keyword) . "%' ";
 } else {

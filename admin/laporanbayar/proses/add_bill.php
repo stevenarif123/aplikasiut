@@ -44,7 +44,7 @@ function updateBalance($koneksi, $nim, $nama, $jumlah_tagihan) {
         $newTotalBill = $data['TotalTagihan'] + $jumlah_tagihan;
         $newBalance = $data['TotalPembayaran'] - $newTotalBill;
 
-        $sql = "UPDATE saldo SET TotalTagihan = ?, Saldo = ? WHERE $condition";
+        $sql = "UPDATE saldo20242 SET TotalTagihan = ?, Saldo = ? WHERE $condition";
         $stmt = $koneksi->prepare($sql);
         if (!$stmt) {
             die('Prepare failed: ' . $koneksi->error);
@@ -57,7 +57,7 @@ function updateBalance($koneksi, $nim, $nama, $jumlah_tagihan) {
         }
     } else {
         // No existing data, insert new record
-        $sql = "INSERT INTO saldo (Nim, NamaMahasiswa, TotalTagihan, TotalPembayaran, Saldo) VALUES (?, ?, ?, 0, -?)";
+        $sql = "INSERT INTO saldo20242 (Nim, NamaMahasiswa, TotalTagihan, TotalPembayaran, Saldo) VALUES (?, ?, ?, 0, -?)";
         $stmt = $koneksi->prepare($sql);
         if (!$stmt) {
             die('Prepare failed: ' . $koneksi->error);

@@ -11,7 +11,7 @@ $password = $_POST['Password'];
 $statusSIA = $_POST['STATUS_INPUT_SIA'];
 
 // Siapkan query menggunakan prepared statement untuk mencegah SQL Injection
-$stmt = $koneksi->prepare("UPDATE mahasiswabaru SET NamaLengkap = ?, NomorHP = ?, Email = ?, Password = ?, STATUS_INPUT_SIA = ? WHERE No = ?");
+$stmt = $koneksi->prepare("UPDATE mahasiswabaru20242 SET NamaLengkap = ?, NomorHP = ?, Email = ?, Password = ?, STATUS_INPUT_SIA = ? WHERE No = ?");
 $stmt->bind_param("sssssi", $namaLengkap, $nomorHP, $email, $password, $statusSIA, $no);
 
 // Jalankan query
