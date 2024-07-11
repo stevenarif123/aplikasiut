@@ -15,15 +15,21 @@ if (empty($identifier)) {
 $sql = "SELECT Nim, NamaMahasiswa, TotalTagihan, TotalPembayaran, (TotalPembayaran - TotalTagihan) AS Saldo, isLunas 
         FROM saldo20242 
         WHERE Nim = ? OR NamaMahasiswa = ?";
-$stmt = $koneksi->prepare($sql);
-$stmt->bind_param("ss", $identifier, $identifier);
-$stmt->execute();
-$result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
-    $data = $result->fetch_assoc();
-    echo json_encode($data);
+if ($stmt = $koneksi->prepare($sql)) {
+    $stmt->bind_param("ss", $identifier, $identifier);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $data = $result->fetch_assoc();
+        echo json_encode($data);
+    } else {
+        echo json_encode(['error' => 'No data found']);
+    }
+
+    $stmt->close();
 } else {
-    echo json_encode(['error' => 'No data found']);
+    echo json_encode(['error' => 'Prepare failed: ' . $koneksi->error]);
 }
 ?>

@@ -1,6 +1,7 @@
 <?php
 // Include database connection file
-require_once "koneksi.php";
+require_once "../koneksi.php";
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -25,10 +26,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
               WHERE LOWER(NamaMahasiswa) LIKE ? OR LOWER(Nim) LIKE ? 
               ORDER BY NamaMahasiswa DESC";
     $stmt = $koneksi->prepare($query);
+    if (!$stmt) {
+        die('Prepare failed: ' . $koneksi->error);
+    }
     $searchParam = "%$nama_mahasiswa%";
     $stmt->bind_param("ss", $searchParam, $searchParam);
     $stmt->execute();
     $hasilPencarian = $stmt->get_result();
+    if (!$hasilPencarian) {
+        die('Execute failed: ' . $stmt->error);
+    }
 }
 ?>
 <!DOCTYPE html>

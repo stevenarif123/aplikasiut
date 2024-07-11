@@ -4,12 +4,12 @@ if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
+  header("Location: ../login.php");
 }
 // Mengambil data admin
 $admin = $_SESSION['username'];
 // Menghubungkan ke database
-require_once 'koneksi.php';
+require_once '../koneksi.php';
 
 // Mengatur jumlah data per halaman
 $dataPerPage = 10;
@@ -21,7 +21,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($currentPage - 1) * $dataPerPage;
 
 // Menyiapkan query dasar
-$query = "SELECT * FROM laporanuangmasuk WHERE 1=1";
+$query = "SELECT * FROM laporanuangmasuk20242 WHERE 1=1";
 
 // Menambahkan filter berdasarkan rentang tanggal
 if (isset($_GET['tanggal_awal']) && isset($_GET['tanggal_akhir'])) {

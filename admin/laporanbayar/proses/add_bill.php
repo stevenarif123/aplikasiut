@@ -2,12 +2,22 @@
 require_once '../../koneksi.php';  // Ensure this path is correct
 require_once '../kode_generator.php';   // Include the code generator
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['username'])) {
+    header("Location: ../login.php");
+    exit;
+}
+
+$admin = $_SESSION['username'];
+
 $nim = $_POST['nim'];
 $nama = $_POST['nama'];
 $jurusan = $_POST['jurusan'];
-$jenis_bayar = $_POST['jenis_bayar'];
+// $jenis_bayar = $_POST['jenis_bayar'];
+$jenis_bayar = isset($_POST['jenis_bayar']) ? $_POST['jenis_bayar'] : '';
 $jumlah_tagihan = $_POST['jumlah_tagihan'];
-$admin = $_POST['admin'];
 
 // Generate a unique report code based on the payment type
 $kode_laporan = generateKodeLaporan($jenis_bayar);
@@ -16,7 +26,7 @@ $kode_laporan = generateKodeLaporan($jenis_bayar);
 $sql = "INSERT INTO tagihan20242 (Nim, NamaMahasiswa, KodeLaporan, Jurusan, JenisBayar, TotalBayar, TanggalInput, Admin, isMaba, CatatanKhusus, isLunas)
         VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, 0, '', 0)";
 $stmt = $koneksi->prepare($sql);
-$stmt->bind_param("sssssds", $nim, $nama, $kode_laporan, $jurusan, $jenis_bayar, $jumlah_tagihan, $admin);
+$stmt->bind_param("sssssss", $nim, $nama, $kode_laporan, $jurusan, $jenis_bayar, $jumlah_tagihan, $admin);
 
 if ($stmt->execute()) {
     echo "Tagihan berhasil ditambahkan";
@@ -25,7 +35,7 @@ if ($stmt->execute()) {
 } else {
     echo "Terjadi kesalahan: " . $stmt->error;
 }
-
+$jenis_bayar = array("SPP", "Almamater", "Pokjar", "Admisi");
 function updateBalance($koneksi, $nim, $nama, $jumlah_tagihan) {
     $condition = !empty($nim) ? "Nim = ?" : "NamaMahasiswa = ?";
     $identifier = !empty($nim) ? $nim : $nama;
