@@ -17,16 +17,6 @@ $jurusan = $_GET['jurusan'] ?? '';
 $jenis_pembayaran = "Pembayaran";
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penambahan Laporan Pembayaran</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-</head>
-<body>
-<div class="container mt-5">
     <h1 class="mb-4">Penambahan Laporan Pembayaran</h1>
     <form action="proses_penambahan.php" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="admin" value="<?php echo $_SESSION['username']; ?>">
@@ -76,6 +66,3 @@ document.getElementById('metode_bayar').addEventListener('change', function() {
     }
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-</body>
-</html>
