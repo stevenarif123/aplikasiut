@@ -1,6 +1,6 @@
 <?php
 // Include database connection file
-require_once "koneksi.php";
+require_once "../koneksi.php";
 
 // Function to generate report code
 function generateKodeLaporan($jenis_pembayaran) {

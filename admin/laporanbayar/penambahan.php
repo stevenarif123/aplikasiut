@@ -1,6 +1,6 @@
 <?php
 require_once "../koneksi.php";
-require_once "kode_generator.php";
+require_once "kode_generatorlaporan.php";
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -10,9 +10,9 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
+
 $nim = $_GET['nim'] ?? '';
 $nama = urldecode($_GET['nama'] ?? '');
-$jurusan = $_GET['jurusan'] ?? '';
 
 $jenis_pembayaran = "Pembayaran";
 ?>
@@ -28,10 +28,6 @@ $jenis_pembayaran = "Pembayaran";
         <div class="mb-3">
             <label for="nama_mahasiswa" class="form-label">Nama Mahasiswa</label>
             <input type="text" class="form-control" id="nama_mahasiswa" name="nama_mahasiswa" value="<?php echo $nama; ?>" readonly>
-        </div>
-        <div class="mb-3">
-            <label for="jurusan" class="form-label">Jurusan</label>
-            <input type="text" class="form-control" id="jurusan" name="jurusan" value="<?php echo $jurusan; ?>" readonly>
         </div>
         <div class="mb-3">
             <label for="jumlah_bayar" class="form-label">Jumlah Bayar</label>

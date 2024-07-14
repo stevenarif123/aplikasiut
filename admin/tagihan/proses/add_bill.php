@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 if (!isset($_SESSION['username'])) {
-    header("Location: ../login.php");
+    header("Location: ../../login.php");
     exit;
 }
 
@@ -27,7 +27,7 @@ $sql = "INSERT INTO tagihan20242 (Nim, NamaMahasiswa, KodeLaporan, Jurusan, Jeni
         VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, 0, '', 0)";
 $stmt = $koneksi->prepare($sql);
 $stmt->bind_param("sssssss", $nim, $nama, $kode_laporan, $jurusan, $jenis_bayar, $jumlah_tagihan, $admin);
-
+  
 if ($stmt->execute()) {
     echo "Tagihan berhasil ditambahkan";
     // Update the balance using both NIM and name
@@ -66,13 +66,14 @@ function updateBalance($koneksi, $nim, $nama, $jumlah_tagihan) {
             echo "Error saat memperbarui saldo: " . $stmt->error;
         }
     } else {
+        $jurusan = $_POST['jurusan'];
         // No existing data, insert new record
-        $sql = "INSERT INTO saldo20242 (Nim, NamaMahasiswa, TotalTagihan, TotalPembayaran, Saldo) VALUES (?, ?, ?, 0, -?)";
+        $sql = "INSERT INTO saldo20242 (Nim, NamaMahasiswa, Jurusan, TotalTagihan, TotalPembayaran, Saldo) VALUES (?, ?, ?, ?, 0, -?)";
         $stmt = $koneksi->prepare($sql);
         if (!$stmt) {
             die('Prepare failed: ' . $koneksi->error);
         }
-        $stmt->bind_param("sssd", $nim, $nama, $jumlah_tagihan, $jumlah_tagihan);
+        $stmt->bind_param("sssds", $nim, $nama, $jurusan, $jumlah_tagihan, $jumlah_tagihan);
         if ($stmt->execute()) {
             echo "New saldo record created successfully";
         } else {

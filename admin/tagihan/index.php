@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Laporan Bayar | Daftar Pengajuan Laporan Pembayaran</title>
+    <title>Tagihan | Daftar Pengajuan Laporan Pembayaran</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Coderthemes" name="author" />
@@ -212,7 +212,7 @@
                         <li>
                             <a href="#sidebarmhs" data-toggle="collapse">
                                 <i data-feather="users"></i>
-                                <span>Mahasiswa</span>
+                                <span> Mahasiswa </span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <div class="collapse" id="sidebarmhs">
@@ -248,13 +248,13 @@
                         <li>
                             <a href="#sidebarlapkeu" data-toggle="collapse">
                                 <i class="icon-credit-card"></i>
-                                <span>Pembayaran</span>
+                                <span> Pembayaran </span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <div class="collapse" id="sidebarlapkeu">
                                 <ul class="nav-second-level">
                                     <li>
-                                        <a href="./">Laporan Bayar</a>
+                                        <a href="../laporanbayar/">Laporan Bayar</a>
                                     </li>
                                     <li>
                                         <a href="../tagihan/">Tagihan</a>
@@ -317,12 +317,9 @@
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">SALUT TATOR</a></li>
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
-                                    <li class="breadcrumb-item active">Laporan Bayar</li>
+                                    <li class="breadcrumb-item active">Dashboard</li>
                                 </ol>
                             </div>
-                            <h1 class="mt-4">Laporan Uang Masuk</h1>
-                            <a href="#tambah_laporan" class="btn btn-primary waves-effect waves-light mb-3">Tambah Laporan</a>
-                            <!-- Pemberitahuan laporan yang belum diverifikasi -->
                             <div id="content" class="container">
                                 <!-- Konten akan dimuat di sini -->
                             </div>
@@ -762,15 +759,15 @@
     <!-- App js -->
     <script src="../assets/js/app.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             // Function to load content based on hash
-            function loadContent(){
+            function loadContent() {
                 var hash = window.location.hash.substring(1);
                 $('#content').empty(); // Kosongkan konten sebelum memuat konten baru
-                if(hash) {
+                if (hash) {
                     $('#content').load(hash + '.php');
                 } else {
-                    $('#content').load('daftar_laporan.php');
+                    $('#content').load('tagihan.php');
                 }
             }
 
@@ -781,26 +778,8 @@
             $(window).on('hashchange', function() {
                 loadContent();
             });
-
             // AJAX search for mahasiswa
-            $(document).on('submit', '#search-form', function(event) {
-                event.preventDefault();
-                var searchQuery = $('input[name="cari_mahasiswa"]').val();
-                $.ajax({
-                    url: 'tambah_laporan.php',
-                    type: 'GET',
-                    data: { cari_mahasiswa: searchQuery },
-                    success: function(data) {
-                        $('#content').html(data);
-                    }
-                });
-            });
             $(document).on('click', '.btn-penambahan', function(event) {
-                event.preventDefault();
-                var url = $(this).attr('href');
-                $('#content').load(url);
-            });
-            $(document).on('click', '.btn-edit_laporan', function(event) {
                 event.preventDefault();
                 var url = $(this).attr('href');
                 $('#content').load(url);

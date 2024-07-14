@@ -27,7 +27,9 @@ $query = "SELECT * FROM laporanuangmasuk20242 WHERE 1=1";
 if (isset($_GET['tanggal_awal']) && isset($_GET['tanggal_akhir'])) {
     $tanggal_awal = $_GET['tanggal_awal'];
     $tanggal_akhir = $_GET['tanggal_akhir'];
-    $query .= " AND TanggalInput BETWEEN '$tanggal_awal' AND '$tanggal_akhir'";
+    if (!empty($tanggal_awal) && !empty($tanggal_akhir)) {
+        $query .= " AND TanggalInput BETWEEN '$tanggal_awal' AND '$tanggal_akhir'";
+    }
 }
 
 // Menambahkan filter berdasarkan nama dan NIM (jika diperlukan)
@@ -40,7 +42,6 @@ if (isset($_GET['nim']) && !empty($_GET['nim'])) {
     $query .= " AND Nim LIKE '%$nim%'";
 }
 
-
 // Menambahkan filter untuk laporan yang belum diverifikasi
 $query .= " AND isVerifikasi = 0 AND Admin = '$admin'";
 
@@ -52,44 +53,51 @@ $totalData = mysqli_num_rows($result);
 $query .= " LIMIT $offset, $dataPerPage";
 $result = mysqli_query($koneksi, $query);
 
+function formatRupiah($angka) {
+    return 'Rp ' . number_format($angka, 0, ',', '.');
+}
+
 ?>
-<?php if ($totalData > 0): ?>
-                            <div class="alert alert-warning" role="alert">
-                                Terdapat <b><?php echo $totalData; ?></b> laporan yang belum diverifikasi.
-                            </div>
-                            <?php endif; ?>
-    <!-- Form filter -->
-    <form method="get" class="mb-4">
-    <div class="row g-3 align-items-center">
-        <div class="col-auto">
-            <label for="tanggalAwal" class="col-form-label">Tanggal Awal:</label>
-        </div>
-        <div class="col-auto">
-            <input type="date" name="tanggal_awal" id="tanggalAwal" class="form-control">
-        </div>
-        <div class="col-auto">
-            <label for="tanggalAkhir" class="col-form-label">Tanggal Akhir:</label>
-        </div>
-        <div class="col-auto">
-            <input type="date" name="tanggal_akhir" id="tanggalAkhir" class="form-control">
-        </div>
-        <div class="col-auto">
-            <label for="nama" class="col-form-label">Nama Mahasiswa:</label>
-        </div>
-        <div class="col-auto">
-            <input type="text" name="nama" id="nama" class="form-control">
-        </div>
-        <div class="col-auto">
-            <label for="nim" class="col-form-label">NIM Mahasiswa:</label>
-        </div>
-        <div class="col-auto">
-            <input type="text" name="nim" id="nim" class="form-control">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-secondary">Filter</button>
-        </div>
+
+    <h1 class="mb-4">Laporan Pembayaran</h1>
+    <?php if ($totalData > 0): ?>
+    <div class="alert alert-warning" role="alert">
+        Terdapat <b><?php echo $totalData; ?></b> laporan yang belum diverifikasi.
     </div>
-</form>
+    <?php endif; ?>
+    
+    <!-- Form filter -->
+    <form method="get" class="mb-4 jrk flexbox">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <label for="tanggalAwal" class="col-form-label">Tanggal Awal:</label>
+            </div>
+            <div class="col-auto">
+                <input type="date" name="tanggal_awal" id="tanggalAwal" class="form-control">
+            </div>
+            <div class="col-auto">
+                <label for="tanggalAkhir" class="col-form-label">Tanggal Akhir:</label>
+            </div>
+            <div class="col-auto">
+                <input type="date" name="tanggal_akhir" id="tanggalAkhir" class="form-control">
+            </div>
+            <div class="col-auto">
+                <label for="nama" class="col-form-label">Nama Mahasiswa:</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" name="nama" id="nama" class="form-control">
+            </div>
+            <div class="col-auto">
+                <label for="nim" class="col-form-label">NIM Mahasiswa:</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" name="nim" id="nim" class="form-control">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-secondary">Filter</button>
+            </div>
+        </div>
+    </form>
 
     <!-- Tabel laporan -->
     <table class="table">
@@ -113,9 +121,9 @@ $result = mysqli_query($koneksi, $query);
                 <td><?php echo $row['TanggalInput']; ?></td>
                 <td><?php echo $row['NamaMahasiswa']; ?></td>
                 <td><?php echo $row['Nim']; ?></td>
-                <td><?php echo $row['Total']; ?></td>
+                <td><?php echo formatRupiah($row['JumlahBayar']); ?></td>
                 <td>
-                    <a href="edit_laporan.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-success">Edit</a>
+                    <a href="edit_laporan.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-success btn-edit_laporan">Edit</a>
                     <a href="lihat_laporan.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-info">Lihat</a>
                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?php echo $row['id']; ?>">Hapus</button>
                     <!-- Modal -->

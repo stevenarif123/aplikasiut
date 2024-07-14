@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
     $nama_mahasiswa = strtolower($nama_mahasiswa); // Convert to lowercase
 
     // Query to search for mahasiswa in saldo20242 table
-    $query = "SELECT Nim, NamaMahasiswa, TotalTagihan, TotalPembayaran, Saldo, isLunas 
+    $query = "SELECT Nim, NamaMahasiswa, Jurusan, TotalTagihan, TotalPembayaran, Saldo, isLunas 
               FROM saldo20242 
               WHERE LOWER(NamaMahasiswa) LIKE ? OR LOWER(Nim) LIKE ? 
               ORDER BY NamaMahasiswa DESC";
@@ -51,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
         <tr>
             <th>NIM</th>
             <th>Nama Mahasiswa</th>
+            <th>Jurusan</th>
             <th>Total Tagihan</th>
             <th>Total Pembayaran</th>
             <th>Saldo</th>
@@ -68,6 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['cari_mahasiswa'])) {
                 echo '<tr>
                           <td>' . $row['Nim'] . '</td>
                           <td>' . $row['NamaMahasiswa'] . '</td>
+                          <td>' . $row['Jurusan'] . '</td>
                           <td>' . $row['TotalTagihan'] . '</td>
                           <td>' . $row['TotalPembayaran'] . '</td>
                           <td>' . $row['Saldo'] . '</td>
