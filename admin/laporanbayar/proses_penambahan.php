@@ -68,13 +68,24 @@ if ($stmt->execute()) {
         $newBalance = $newTotalPayment - $data['TotalTagihan'];
         $isLunas = $newBalance >= 0 ? 1 : 0;
 
-        $sql = "UPDATE saldo20242 SET TotalPembayaran = ?, Saldo = ?, isLunas = ? WHERE Nim = ? OR NamaMahasiswa = ?";
-        $stmt = $koneksi->prepare($sql);
-        if (!$stmt) {
-            echo "<script>alert('Prepare failed: " . $koneksi->error . "'); window.location.href='tambah_laporan.php';</script>";
-            exit;
+        if (!empty($nim)) {
+            $sql = "UPDATE saldo20242 SET TotalPembayaran = ?, Saldo = ?, isLunas = ? WHERE Nim = ? AND NamaMahasiswa = ?";
+            $stmt = $koneksi->prepare($sql);
+            if (!$stmt) {
+                echo "<script>alert('Prepare failed: " . $koneksi->error . "'); window.location.href='tambah_laporan.php';</script>";
+                exit;
+            }
+            $stmt->bind_param("disss", $newTotalPayment, $newBalance, $isLunas, $nim, $nama);
+        } else {
+            $sql = "UPDATE saldo20242 SET TotalPembayaran = ?, Saldo = ?, isLunas = ? WHERE NamaMahasiswa = ?";
+            $stmt = $koneksi->prepare($sql);
+            if (!$stmt) {
+                echo "<script>alert('Prepare failed: " . $koneksi->error . "'); window.location.href='tambah_laporan.php';</script>";
+                exit;
+            }
+            $stmt->bind_param("diss", $newTotalPayment, $newBalance, $isLunas, $nama);
         }
-        $stmt->bind_param("disss", $newTotalPayment, $newBalance, $isLunas, $nim, $nama);
+
         if ($stmt->execute()) {
             echo "<script>alert('Pembayaran berhasil ditambahkan dan saldo berhasil diperbarui'); window.location.href='index.php';</script>";
         } else {
