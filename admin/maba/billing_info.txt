@@ -1,0 +1,188 @@
+Nama Lengkap: ALFRIDA OSE' PALAYUKAN
+Nobilling: 20241241084823050411
+NAC: 241084823
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241084823050411","nac":"241084823"}}}
+
+Nama Lengkap: Esra Yeni Palangiran 
+Nobilling: 20241241091279050411
+NAC: 241091279
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091279050411","nac":"241091279"}}}
+
+Nama Lengkap: AGUS PASANDE
+Nobilling: 20241241091351050411
+NAC: 241091351
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091351050411","nac":"241091351"}}}
+
+Nama Lengkap: AGUSTINA TOMBE'
+Nobilling: 20241241091359050411
+NAC: 241091359
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091359050411","nac":"241091359"}}}
+
+Nama Lengkap: DESI NATALIA
+Nobilling: No token
+NAC: No token
+
+Nama Lengkap: YESIVA AGNES PUTRI
+Nobilling: 20241241075089050411
+NAC: 241075089
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241075089050411","nac":"241075089"}}}
+
+Nama Lengkap: HOUDYA DONITA
+Nobilling: 20241241091360050411
+NAC: 241091360
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091360050411","nac":"241091360"}}}
+
+Nama Lengkap: INDIYANI PAELONGAN
+Nobilling: 20241241091269050411
+NAC: 241091269
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091269050411","nac":"241091269"}}}
+
+Nama Lengkap: INDRIYANI KOMBONG
+Nobilling: 20241241091255050411
+NAC: 241091255
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091255050411","nac":"241091255"}}}
+
+Nama Lengkap: OKTAVIANI LOLOBUNGA'
+Nobilling: 20241241091363050411
+NAC: 241091363
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091363050411","nac":"241091363"}}}
+
+Nama Lengkap: SELVIANI PADANG
+Nobilling: 20241241091361050411
+NAC: 241091361
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091361050411","nac":"241091361"}}}
+
+Nama Lengkap: VIRGIE NOVITA GANI
+Nobilling: 20241241089917050411
+NAC: 241089917
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241089917050411","nac":"241089917"}}}
+
+Nama Lengkap: SRI EDRYENSI LIMBONG PADANG
+Nobilling: 20241241091294050411
+NAC: 241091294
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241091294050411","nac":"241091294"}}}
+
+Nama Lengkap: RISMA PAEMBONAN
+Nobilling: No token
+NAC: No token
+
+Nama Lengkap: ASTRIA
+Nobilling: No token
+NAC: No token
+
+Nama Lengkap: BENYAMIN KADEU'
+Nobilling: No token
+NAC: No token
+
+Nama Lengkap: EKY
+Nobilling: 20241241166844050411
+NAC: 241166844
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166844050411","nac":"241166844"}}}
+
+Nama Lengkap: EMA MARKUS PASANG
+Nobilling: No token
+NAC: No token
+
+Nama Lengkap: FENNYWATY
+Nobilling: 20241241166840050411
+NAC: 241166840
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166840050411","nac":"241166840"}}}
+
+Nama Lengkap: GALIS BOREAN
+Nobilling: 20241241166227050411
+NAC: 241166227
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166227050411","nac":"241166227"}}}
+
+Nama Lengkap: GIDEON MAREA
+Nobilling: 20241241166841050411
+NAC: 241166841
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166841050411","nac":"241166841"}}}
+
+Nama Lengkap: JUNARDI SALEPPA
+Nobilling: 20241241166842050411
+NAC: 241166842
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166842050411","nac":"241166842"}}}
+
+Nama Lengkap: KRISTINA ENNING
+Nobilling: 20241241166838050411
+NAC: 241166838
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166838050411","nac":"241166838"}}}
+
+Nama Lengkap: MARGARINA TIKU ARUNGBONE
+Nobilling: 20241241166836050411
+NAC: 241166836
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166836050411","nac":"241166836"}}}
+
+Nama Lengkap: NOVIANTI TANDI KALA'
+Nobilling: No token
+NAC: No token
+
+Nama Lengkap: OKTAVINA TA'BI PADANG
+Nobilling: 20241241166845050411
+NAC: 241166845
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166845050411","nac":"241166845"}}}
+
+Nama Lengkap: RIMA BATARA RANDA
+Nobilling: 20241241166846050411
+NAC: 241166846
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166846050411","nac":"241166846"}}}
+
+Nama Lengkap: RISMAYANTI
+Nobilling: 20241241166847050411
+NAC: 241166847
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166847050411","nac":"241166847"}}}
+
+Nama Lengkap: SEIN
+Nobilling: 20241241166837050411
+NAC: 241166837
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166837050411","nac":"241166837"}}}
+
+Nama Lengkap: SRI ASTUTI
+Nobilling: 20241241166839050411
+NAC: 241166839
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166839050411","nac":"241166839"}}}
+
+Nama Lengkap: YULIANA BANNE KADANG
+Nobilling: 20241241166843050411
+NAC: 241166843
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20241241166843050411","nac":"241166843"}}}
+
+Nama Lengkap: EVOKMAR LIKU MANGAYUK
+Nobilling: 20232232057129050411
+NAC: 232057129
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20232232057129050411","nac":"232057129"}}}
+
+Nama Lengkap: IMELDA BURARA'
+Nobilling: 20232232130034050411
+NAC: 232130034
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20232232130034050411","nac":"232130034"}}}
+
+Nama Lengkap: ANGREANI PATINARAN
+Nobilling: 20232232136012050411
+NAC: 232136012
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20232232136012050411","nac":"232136012"}}}
+
+Nama Lengkap: RUBEN PANGLOLI
+Nobilling: 20232232136015050411
+NAC: 232136015
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20232232136015050411","nac":"232136015"}}}
+
+Nama Lengkap: SUSSA
+Nobilling: 20232232136018050411
+NAC: 232136018
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20232232136018050411","nac":"232136018"}}}
+
+Nama Lengkap: DEFRI PONGSAPAN
+Nobilling: 20232232143619050411
+NAC: 232143619
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20232232143619050411","nac":"232143619"}}}
+
+Nama Lengkap: RISMA BOROTODING
+Nobilling: 20232232150455050411
+NAC: 232150455
+Response JSON: {"data":{"getBillingAdmisi":{"nobilling":"20232232150455050411","nac":"232150455"}}}
+
+Nama Lengkap: MARTINA RAMA'
+Nobilling: No token
+NAC: No token
+

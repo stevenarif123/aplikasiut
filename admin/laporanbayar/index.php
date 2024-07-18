@@ -762,51 +762,56 @@
     <!-- App js -->
     <script src="../assets/js/app.min.js"></script>
     <script>
-        $(document).ready(function(){
-            // Function to load content based on hash
-            function loadContent(){
-                var hash = window.location.hash.substring(1);
-                $('#content').empty(); // Kosongkan konten sebelum memuat konten baru
-                if(hash) {
-                    $('#content').load(hash + '.php');
-                } else {
-                    $('#content').load('daftar_laporan.php');
-                }
+<script>
+    $(document).ready(function(){
+        // Function to load content based on hash and search parameters
+        function loadContent(){
+            var hash = window.location.hash.substring(1);
+            var searchParams = window.location.search;
+            $('#content').empty(); // Kosongkan konten sebelum memuat konten baru
+            if(hash) {
+                $('#content').load(hash + '.php' + searchParams);
+            } else {
+                $('#content').load('daftar_laporan.php' + searchParams);
             }
+        }
 
-            // Load content based on current hash
+        // Load content based on current hash
+        loadContent();
+
+        // Load content when hash changes
+        $(window).on('hashchange', function() {
             loadContent();
-
-            // Load content when hash changes
-            $(window).on('hashchange', function() {
-                loadContent();
-            });
-
-            // AJAX search for mahasiswa
-            $(document).on('submit', '#search-form', function(event) {
-                event.preventDefault();
-                var searchQuery = $('input[name="cari_mahasiswa"]').val();
-                $.ajax({
-                    url: 'tambah_laporan.php',
-                    type: 'GET',
-                    data: { cari_mahasiswa: searchQuery },
-                    success: function(data) {
-                        $('#content').html(data);
-                    }
-                });
-            });
-            $(document).on('click', '.btn-penambahan', function(event) {
-                event.preventDefault();
-                var url = $(this).attr('href');
-                $('#content').load(url);
-            });
-            $(document).on('click', '.btn-edit_laporan', function(event) {
-                event.preventDefault();
-                var url = $(this).attr('href');
-                $('#content').load(url);
-            });
         });
-    </script>
+
+        // Filter form submission
+        $(document).on('submit', 'form', function(event) {
+            event.preventDefault();
+            var form = $(this);
+            var params = form.serialize();
+            window.history.pushState({}, '', '?' + params);
+            loadContent();
+        });
+
+        // Pagination handling
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            var url = new URL($(this).attr('href'));
+            var params = new URLSearchParams(url.search);
+            window.history.pushState({}, '', '?' + params.toString());
+            loadContent();
+        });
+
+        // Load form for adding or editing laporan
+        $(document).on('click', '.btn-penambahan, .btn-edit_laporan', function(event) {
+            event.preventDefault();
+            var url = $(this).attr('href');
+            $('#content').load(url + window.location.search);
+        });
+    });
+</script>
+
+
 </body>
 
 <!-- Mirrored from coderthemes.com/ubold/layouts/default/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Sep 2020 17:26:43 GMT -->
