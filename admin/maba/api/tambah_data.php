@@ -41,8 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $di_input_oleh = $koneksi->real_escape_string(trim($user['nama_lengkap']));
     $status_input_sia = $koneksi->real_escape_string(trim($_POST['STATUS_INPUT_SIA']));
     $ukuranbaju = $koneksi->real_escape_string(trim($_POST['UkuranBaju']));
+    $di_input_pada = date('Y-m-d H:i:s'); // Add current timestamp for DiInputPada
+    $di_edit_pada = date('Y-m-d H:i:s'); // Set current timestamp for DiEditPada
 
-    $stmt = $koneksi->prepare("INSERT INTO mahasiswabaru ( 
+    $stmt = $koneksi->prepare("INSERT INTO mahasiswabaru20242 ( 
         JalurProgram, 
         NamaLengkap, 
         TempatLahir, 
@@ -62,14 +64,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         NISN, 
         LayananPaketSemester, 
         DiInputOleh, 
+        DiInputPada,
+        DiEditPada,
         STATUS_INPUT_SIA,
-        UkuranBaju) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        UkuranBaju) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         echo json_encode(["success" => false, "message" => "Prepare failed: " . $koneksi->error]);
         exit;
     }
 
-    $stmt->bind_param("ssssssssssssssssssss", 
+    $stmt->bind_param("sssssssssssssssssssssss", 
         $jalur_program, 
         $nama_lengkap, 
         $tempat_lahir, 
@@ -89,14 +93,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $nisn, 
         $layanan_paket_semester, 
         $di_input_oleh, 
+        $di_input_pada, 
+        $di_edit_pada, 
         $status_input_sia,
         $ukuranbaju);
 
-        if ($stmt->execute()) {
-            echo json_encode(["success" => true]);
-        } else {
-            echo json_encode(["success" => false, "message" => "Execute failed: " . $stmt->error]);
-        }
+    if ($stmt->execute()) {
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Execute failed: " . $stmt->error]);
+    }
 }
 
 $sql = "SELECT * FROM prodi_admisi";

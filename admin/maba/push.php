@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         email: $email,
                         name: $name,
                         password: $password,
-                        passwordConfirmation: $password,
+                        passwordConfirmation: $passwordConfirmation,
                         tanggalLahirMahasiswa: $tanggalLahirMahasiswa,
                         tempatLahirMahasiswa: $tempatLahirMahasiswa,
                         namaIbuKandung: $namaIbuKandung,
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         require_once "../koneksi.php";
 
-        $stmt = $koneksi->prepare("UPDATE mahasiswabaru SET STATUS_INPUT_SIA = 'Input Admisi' WHERE No = ?");
+        $stmt = $koneksi->prepare("UPDATE mahasiswabaru20242 SET STATUS_INPUT_SIA = 'Input Admisi' WHERE No = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->close();
@@ -105,7 +105,7 @@ if ($koneksi->connect_error) {
 }
 
 $sql = "SELECT mb.*, pa.id_prodi
-        FROM mahasiswabaru mb 
+        FROM mahasiswabaru20242 mb 
         JOIN prodi_admisi pa ON mb.jurusan = pa.nama_program_studi
         WHERE mb.STATUS_INPUT_SIA = 'Belum Terdaftar'";
 $result = $koneksi->query($sql);
@@ -151,20 +151,51 @@ $koneksi->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proses Data Mahasiswa Baru</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.1/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/flowbite@1.0.4/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body class="p-8">
-    <h1 class="text-2xl font-bold mb-4">Proses Data Mahasiswa Baru</h1>
-    <button id="startButton" class="px-4 py-2 bg-blue-600 text-white rounded">Mulai Proses Semua</button>
+<body class="p-4">
+    <div class="container mt-4">
+        <h1 class="text-2xl font-bold mb-4">Proses Data Mahasiswa Baru</h1>
+        <button id="startButton" class="btn btn-primary mb-4">Mulai Proses Semua</button>
 
-    <ul id="statusList" class="mt-4 space-y-2"></ul>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                    <th>Hasil</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($mahasiswaData as $data) : ?>
+                    <tr data-id="<?php echo $data['id']; ?>">
+                        <td><?php echo $data['name']; ?></td>
+                        <td><?php echo $data['email']; ?></td>
+                        <td><span class="badge badge-secondary status">Pending</span></td>
+                        <td>
+                            <button class="btn btn-success btn-sm process-button">Proses</button>
+                        </td>
+                        <td>
+                            <pre class="response-details bg-light p-2 rounded"></pre>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <div class="progress mt-4" style="height: 25px;">
+            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+    </div>
 
     <script>
         const mahasiswaData = <?php echo json_encode($mahasiswaData); ?>;
-        const statusList = document.getElementById('statusList');
         const startButton = document.getElementById('startButton');
+        const progressBar = document.getElementById('progressBar');
+        const tableBody = document.querySelector('tbody');
 
         async function pushDataToApi(data) {
             const response = await fetch('push.php', {
@@ -186,63 +217,41 @@ $koneksi->close();
             }
         }
 
-        function createStatusItem(data, isProcessing = false) {
-            const statusItem = document.createElement('li');
-            statusItem.className = 'p-4 border rounded bg-white shadow-sm flex flex-col space-y-2';
-            const info = document.createElement('span');
-            info.textContent = `${data.name} (${data.email})`;
-            const status = document.createElement('span');
-            status.className = 'badge';
-            status.textContent = isProcessing ? 'Processing...' : 'Pending';
+        async function processSingleData(data, row) {
+            const status = row.querySelector('.status');
+            const processButton = row.querySelector('.process-button');
+            const responseDetails = row.querySelector('.response-details');
 
-            if (isProcessing) {
-                status.className += ' text-yellow-600';
-                const spinner = document.createElement('div');
-                spinner.className = 'spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full border-yellow-600 border-t-transparent';
-                statusItem.appendChild(spinner);
-            } else {
-                status.className += ' text-gray-500';
-            }
+            status.textContent = 'Processing...';
+            status.classList.replace('badge-secondary', 'badge-warning');
+            processButton.disabled = true;
 
-            const processButton = document.createElement('button');
-            processButton.textContent = "Proses";
-            processButton.className = 'px-2 py-1 bg-green-500 text-white rounded';
-            processButton.addEventListener('click', async () => {
-                processButton.disabled = true;
-                const response = await processSingleData(data);
-                processButton.disabled = false;
-            });
-
-            statusItem.appendChild(info);
-            statusItem.appendChild(status);
-            statusItem.appendChild(processButton);
-
-            return statusItem;
-        }
-
-        async function processSingleData(data) {
-            const listItem = createStatusItem(data, true);
-            statusList.appendChild(listItem);
             const response = await pushDataToApi(data);
-            listItem.querySelector('.spinner-border').remove();
-            listItem.querySelector('.badge').textContent = response.data && response.data.registerNewUser ? 'Success' : 'Failed';
-            listItem.querySelector('.badge').className = response.data && response.data.registerNewUser ? 'badge text-green-600' : 'badge text-red-600';
 
-            const responseDetails = document.createElement('pre');
-            responseDetails.textContent = JSON.stringify(response, null, 2);
-            responseDetails.className = 'mt-2 p-2 bg-gray-100 rounded text-sm';
-            listItem.appendChild(responseDetails);
+            status.textContent = response.data && response.data.registerNewUser && response.data.registerNewUser.message.includes("Anda Berhasil melakukan pendaftaran akun") ? 'Success' : 'Failed';
+            status.classList.replace('badge-warning', response.data && response.data.registerNewUser ? 'badge-success' : 'badge-danger');
 
-            if (response.data && response.data.registerNewUser) {
+            if (response.data && response.data.registerNewUser && response.data.registerNewUser.id) {
                 updateStatusInputSIA(data.id, 'Input Admisi');
             }
+
+            responseDetails.textContent = JSON.stringify(response, null, 2);
         }
 
         async function processStudentData() {
             startButton.disabled = true;
+            let completed = 0;
+
             for (const data of mahasiswaData) {
-                await processSingleData(data);
+                const row = document.querySelector(`tr[data-id='${data.id}']`);
+                await processSingleData(data, row);
+                completed++;
+                const progress = Math.round((completed / mahasiswaData.length) * 100);
+                progressBar.style.width = `${progress}%`;
+                progressBar.setAttribute('aria-valuenow', progress);
+                progressBar.textContent = `${progress}%`;
             }
+
             startButton.disabled = false;
         }
 
@@ -263,15 +272,19 @@ $koneksi->close();
 
         startButton.addEventListener('click', processStudentData);
 
-        document.addEventListener('DOMContentLoaded', () => {
-            mahasiswaData.forEach(data => {
-                const listItem = createStatusItem(data);
-                statusList.appendChild(listItem);
+        document.querySelectorAll('.process-button').forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const row = event.target.closest('tr');
+                const id = row.getAttribute('data-id');
+                const data = mahasiswaData.find(item => item.id == id);
+                await processSingleData(data, row);
             });
         });
     </script>
 
-    <script src="https://unpkg.com/flowbite@1.0.4/dist/flowbite.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

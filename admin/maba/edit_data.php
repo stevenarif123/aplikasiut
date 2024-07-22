@@ -31,7 +31,7 @@ if (!$result) {
 $no = $_GET['No'];
 
 // Prepare and execute query to fetch student data
-$query = "SELECT * FROM mahasiswabaru WHERE No = ?";
+$query = "SELECT * FROM mahasiswabaru20242 WHERE No = ?";
 $stmt = mysqli_prepare($koneksi, $query);
 mysqli_stmt_bind_param($stmt, "i", $no);
 mysqli_stmt_execute($stmt);
@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
     $ukuranbaju = $_POST['UkuranBaju'];
 
     // Prepare UPDATE query with placeholders
-    $updateQuery = "UPDATE mahasiswabaru SET 
+    $updateQuery = "UPDATE mahasiswabaru20242 SET 
         JalurProgram = ?, 
         NamaLengkap = ?, 
         TempatLahir = ?, 
