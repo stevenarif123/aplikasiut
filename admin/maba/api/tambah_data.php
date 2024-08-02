@@ -1,5 +1,6 @@
 <?php
 require_once "../../koneksi.php";
+require_once "../kode_generator.php"; // Include the code generator
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -18,6 +19,8 @@ if (!$result) {
     echo json_encode(["success" => false, "message" => "Query gagal: " . mysqli_error($koneksi)]);
     exit;
 }
+
+$response = ["success" => false, "message" => ""];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $jalur_program = $koneksi->real_escape_string(trim($_POST['JalurProgram']));
@@ -69,7 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         STATUS_INPUT_SIA,
         UkuranBaju) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
-        echo json_encode(["success" => false, "message" => "Prepare failed: " . $koneksi->error]);
+        $response["message"] = "Prepare failed: " . $koneksi->error;
+        echo json_encode($response);
         exit;
     }
 
@@ -99,11 +103,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ukuranbaju);
 
     if ($stmt->execute()) {
-        echo json_encode(["success" => true]);
+        $response["success"] = true;
+
+        // Tambahkan logika untuk menambahkan tagihan otomatis
+        $jenis_bayar = 'Admisi';
+        if ($jalur_program === 'Reguler') {
+            $total_bayar = 200000;
+        } elseif ($jalur_program === 'RPL') {
+            $total_bayar = 600000;
+        } else {
+            $total_bayar = 0;  // Jika jalur program tidak sesuai
+        }
+
+        if ($total_bayar > 0) {
+            $kode_laporan = generateKodeLaporan($jenis_bayar);
+
+            $stmtTagihan = $koneksi->prepare("INSERT INTO tagihan20242 (Nim, NamaMahasiswa, KodeLaporan, Jurusan, JenisBayar, TotalBayar, TanggalInput, Admin, isMaba, CatatanKhusus, isLunas)
+                VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, 1, '', 0)");
+            if (!$stmtTagihan) {
+                $response["success"] = false;
+                $response["message"] = "Prepare failed: " . $koneksi->error;
+                echo json_encode($response);
+                exit;
+            }
+
+            $stmtTagihan->bind_param("sssssis", $nik, $nama_lengkap, $kode_laporan, $jurusan, $jenis_bayar, $total_bayar, $di_input_oleh);
+
+            if ($stmtTagihan->execute()) {
+                $response["success"] = true;
+                $response["message"] = "Tagihan berhasil ditambahkan";
+            } else {
+                $response["success"] = false;
+                $response["message"] = "Execute failed: " . $stmtTagihan->error;
+            }
+        }
     } else {
-        echo json_encode(["success" => false, "message" => "Execute failed: " . $stmt->error]);
+        $response["message"] = "Execute failed: " . $stmt->error;
     }
 }
+
+echo json_encode($response);
 
 $sql = "SELECT * FROM prodi_admisi";
 $result = $koneksi->query($sql);

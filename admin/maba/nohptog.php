@@ -2,72 +2,105 @@
 
 require_once("../koneksi.php");
 
-// Konfigurasi Google Contacts API
-$client_id = "YOUR_CLIENT_ID";
-$client_secret = "YOUR_CLIENT_SECRET";
-$redirect_uri = "YOUR_REDIRECT_URI";
-
-// Buat Google Client
-$client = new Google_Client();
-$client->setApplicationName("My Contact App");
-$client->setClientId($client_id);
-$client->setClientSecret($client_secret);
-$client->setRedirectUri($redirect_uri);
-$client->setScopes(Google_Service_People::CONTACTS_READWRITE);
-
-// Arahkan pengguna ke halaman otorisasi jika diperlukan
-if (!isset($_SESSION['access_token'])) {
-  $authUrl = $client->createAuthUrl();
-  header('Location: ' . $authUrl);
-  exit;
-} else {
-  $client->setAccessToken($_SESSION['access_token']);
-}
-
-// Periksa jika token akses telah kedaluwarsa
-if ($client->isAccessTokenExpired()) {
-  $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-  $_SESSION['access_token'] = $client->getAccessToken();
-}
-
-// Buat layanan Google Contacts
-$service = new Google_Service_People($client);
+// Mulai sesi
+session_start();
 
 // Ambil data mahasiswa dari database
-$sql = "SELECT * FROM mahasiswa";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM mahasiswabaru20242";
+$result = $koneksi->query($sql);
 
-// Proses data mahasiswa dan tambahkan ke Google Contacts
+// Nama file CSV
+$csvFile = 'contacts.csv';
+
+// Buka file CSV untuk ditulis
+$fileHandle = fopen($csvFile, 'w');
+
+// Tulis header CSV sesuai dengan format Google Contacts
+$header = [
+    'Name', 'First Name', 'Middle Name', 'Last Name', 'Yomi Name', 'Phonetic First Name', 
+    'Phonetic Middle Name', 'Phonetic Last Name', 'Name Prefix', 'Name Suffix', 'Nickname', 
+    'File As', 'Organization Name', 'Organization Title', 'Organization Department', 'Birthday', 
+    'Gender', 'Location', 'Billing Information', 'Directory Server', 'Mileage', 'Occupation', 
+    'Hobby', 'Sensitivity', 'Priority', 'Notes', 'Language', 'Photo', 'Group Membership', 
+    'E-mail 1 - Type', 'E-mail 1 - Value', 'Phone 1 - Type', 'Phone 1 - Value', 'Phone 2 - Type', 
+    'Phone 2 - Value', 'Address 1 - Type', 'Address 1 - Formatted', 'Address 1 - Street', 
+    'Address 1 - City', 'Address 1 - PO Box', 'Address 1 - Region', 'Address 1 - Postal Code', 
+    'Address 1 - Country', 'Address 1 - Extended Address', 'Website 1 - Type', 'Website 1 - Value'
+];
+fputcsv($fileHandle, $header);
+
+// Proses data mahasiswa dan tuliskan ke file CSV
 if ($result->num_rows > 0) {
-  while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
+        // Format nama sesuai permintaan: 24.2 JURUSAN - Nama Mahasiswa
+        $namaLengkap = $row["NamaLengkap"];
+        $jurusan = strtoupper($row["Jurusan"]);
+        $namaFormatted = "CAMABA 24.2 $jurusan - " . ucwords($namaLengkap);
 
-    // Format nama sesuai permintaan
-    $namaLengkap = $row["NamaLengkap"];
-    $jurusan = strtoupper($row["Jurusan"]);
-    $namaFormatted = "$jurusan - " . ucwords($namaLengkap);
+        // Siapkan data untuk setiap kontak
+        $contactData = [
+            $namaFormatted, // Name
+            '', // First Name
+            '', // Middle Name
+            '', // Last Name
+            '', // Yomi Name
+            '', // Phonetic First Name
+            '', // Phonetic Middle Name
+            '', // Phonetic Last Name
+            '', // Name Prefix
+            '', // Name Suffix
+            '', // Nickname
+            '', // File As
+            '', // Organization Name
+            '', // Organization Title
+            '', // Organization Department
+            '', // Birthday
+            '', // Gender
+            '', // Location
+            '', // Billing Information
+            '', // Directory Server
+            '', // Mileage
+            '', // Occupation
+            '', // Hobby
+            '', // Sensitivity
+            '', // Priority
+            '', // Notes
+            '', // Language
+            '', // Photo
+            '', // Group Membership
+            '', // E-mail 1 - Type
+            '', // E-mail 1 - Value
+            'Mobile', // Phone 1 - Type
+            $row["NomorHP"], // Phone 1 - Value
+            '', // Phone 2 - Type
+            '', // Phone 2 - Value
+            '', // Address 1 - Type
+            '', // Address 1 - Formatted
+            '', // Address 1 - Street
+            '', // Address 1 - City
+            '', // Address 1 - PO Box
+            '', // Address 1 - Region
+            '', // Address 1 - Postal Code
+            '', // Address 1 - Country
+            '', // Address 1 - Extended Address
+            '', // Website 1 - Type
+            '', // Website 1 - Value
+        ];
 
-    // Buat objek kontak baru
-    $contact = new Google_Service_People_Person();
-      
-    
-    // Tambahkan nomor telepon
-    $phoneNumber = new Google_Service_People_PersonPhoneNumber();
-    $phoneNumber->setValue($row["NomorHP"]);
-    $phoneNumber->setType("mobile");
-    $contact->setPhoneNumbers(array($phoneNumber));
+        // Tulis data kontak ke file CSV
+        fputcsv($fileHandle, $contactData);
+    }
 
-    // Tambahkan kontak ke Google Contacts
-    $response = $service->people->createContact($contact);
-
-    // Tampilkan pesan berhasil
-    echo "Kontak " . $namaFormatted . " berhasil ditambahkan.\n";
-  }
+    echo "Data berhasil diekspor ke $csvFile.\n";
 } else {
-  // Tampilkan pesan jika tidak ada data
-  echo "Tidak ada data mahasiswa yang ditemukan.";
+    // Tampilkan pesan jika tidak ada data
+    echo "Tidak ada data mahasiswa yang ditemukan.";
 }
 
+// Tutup file CSV
+fclose($fileHandle);
+
 // Tutup koneksi ke database
-$conn->close();
+$koneksi->close();
 
 ?>
