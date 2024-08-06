@@ -105,37 +105,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->execute()) {
         $response["success"] = true;
 
-        // Tambahkan logika untuk menambahkan tagihan otomatis
-        $jenis_bayar = 'Admisi';
+        // Tambahkan logika untuk menambahkan data ke tabel catatan_bayarmaba20242
         if ($jalur_program === 'Reguler') {
-            $total_bayar = 200000;
+            $admisi = 200000;
         } elseif ($jalur_program === 'RPL') {
-            $total_bayar = 600000;
+            $admisi = 600000;
         } else {
-            $total_bayar = 0;  // Jika jalur program tidak sesuai
+            $admisi = 0;  // Jika jalur program tidak sesuai
         }
 
-        if ($total_bayar > 0) {
-            $kode_laporan = generateKodeLaporan($jenis_bayar);
+        $stmtCatatan = $koneksi->prepare("INSERT INTO catatan_bayarmaba20242 (nama_lengkap, jalur_program, jurusan, admisi, almamater, salut, spp, total_bayar, jumlah_pembayaran, sisa, status_admisi, status_pembayaran) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if (!$stmtCatatan) {
+            $response["success"] = false;
+            $response["message"] = "Prepare failed: " . $koneksi->error;
+            echo json_encode($response);
+            exit;
+        }
 
-            $stmtTagihan = $koneksi->prepare("INSERT INTO tagihan20242 (Nim, NamaMahasiswa, KodeLaporan, Jurusan, JenisBayar, TotalBayar, TanggalInput, Admin, isMaba, CatatanKhusus, isLunas)
-                VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, 1, '', 0)");
-            if (!$stmtTagihan) {
-                $response["success"] = false;
-                $response["message"] = "Prepare failed: " . $koneksi->error;
-                echo json_encode($response);
-                exit;
-            }
+        // Nilai default untuk almamater, salut, spp, total_bayar, jumlah_pembayaran, sisa, status_admisi, status_pembayaran
+        $almamater = 200000;
+        $salut = 350000;
+        $spp = 0;
+        $total_bayar = $almamater + $salut + $spp;
+        $jumlah_pembayaran = 0;
+        $sisa = $total_bayar;
+        $status_admisi = 'belum lunas';
+        $status_pembayaran = 'belum ada data';
 
-            $stmtTagihan->bind_param("sssssis", $nik, $nama_lengkap, $kode_laporan, $jurusan, $jenis_bayar, $total_bayar, $di_input_oleh);
+        $stmtCatatan->bind_param("ssssssssssss", $nama_lengkap, $jalur_program, $jurusan, $admisi, $almamater, $salut, $spp, $total_bayar, $jumlah_pembayaran, $sisa, $status_admisi, $status_pembayaran);
 
-            if ($stmtTagihan->execute()) {
-                $response["success"] = true;
-                $response["message"] = "Tagihan berhasil ditambahkan";
-            } else {
-                $response["success"] = false;
-                $response["message"] = "Execute failed: " . $stmtTagihan->error;
-            }
+        if ($stmtCatatan->execute()) {
+            $response["success"] = true;
+            $response["message"] = "Data mahasiswa dan catatan pembayaran berhasil ditambahkan";
+        } else {
+            $response["success"] = false;
+            $response["message"] = "Execute failed: " . $stmtCatatan->error;
         }
     } else {
         $response["message"] = "Execute failed: " . $stmt->error;
