@@ -22,12 +22,51 @@ if (!empty($ids)) {
 <head>
     <title>Print Data Terpilih</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        @media print {
+            @page {
+                size: landscape;
+                margin: 1cm;
+            }
+
+            body {
+                font-size: 12px;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                padding: 8px;
+                border: 1px solid #dee2e6;
+                text-align: left;
+                vertical-align: top;
+            }
+
+            thead th {
+                background-color: #343a40;
+                color: white;
+            }
+
+            .text-right {
+                text-align: right;
+            }
+        }
+    </style>
 </head>
 <body onload="window.print()">
 <div class="container mt-5">
     <h2 class="text-center mb-4">Laporan Pembayaran</h2>
     <p class="text-right">Tana Toraja, <?php echo $tanggal_sekarang; ?></p>
-    <table class="table-responsive table-bordered table-sm">
+    <table class="table table-bordered table-sm">
         <thead class="thead-dark">
             <tr>
                 <th>Nama Lengkap</th>
@@ -80,7 +119,7 @@ if (!empty($ids)) {
                     }
 
                     echo "<tr>";
-                    echo "<td>" . $row['nama_lengkap'] . "</td>";
+                    echo "<td>" . stripslashes($row['nama_lengkap']) . "</td>";
                     echo "<td>" . $row['jalur_program'] . "</td>";
                     echo "<td>" . $row['jurusan'] . "</td>";
                     echo "<td>Rp. " . $admisi . "</td>";

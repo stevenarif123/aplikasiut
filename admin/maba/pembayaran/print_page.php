@@ -33,7 +33,7 @@ if (isset($_POST['print'])) {
         <table class="table table-bordered table-sm">
             <thead>
                 <tr>
-                    <th>Pilih</th>
+                    <th><input type="checkbox" id="checkAll"></th>
                     <th>Nama Lengkap</th>
                     <th>Jalur Program</th>
                     <th>Jurusan</th>
@@ -51,40 +51,19 @@ if (isset($_POST['print'])) {
                 <?php
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
-                        $admisi = number_format($row['admisi'], 0, ',', '.');
-                        $almamater = number_format($row['almamater'], 0, ',', '.');
-                        $salut = number_format($row['salut'], 0, ',', '.');
-                        $spp = number_format($row['spp'], 0, ',', '.');
-                        $total_bayar = number_format($row['total_bayar'], 0, ',', '.');
-                        $jumlah_pembayaran = number_format($row['jumlah_pembayaran'], 0, ',', '.');
-                        $sisa = number_format($row['sisa'], 0, ',', '.');
-
-                        $admisi_badge_color = $row['status_admisi'] == 'lunas' ? 'badge-success' : 'badge-warning';
-                        $admisi_status = $row['status_admisi'] == 'lunas' ? 'Lunas' : 'Belum Lunas';
-                        $admisi_badge = "<span class='badge $admisi_badge_color'>Rp. $admisi - $admisi_status</span>";
-
-                        $status = '';
-                        if ($row['status_admisi'] != 'lunas') {
-                            $status = '<span class="badge badge-danger">Belum Lunas</span>';
-                        } elseif ($row['jumlah_pembayaran'] == 0) {
-                            $status = '<span class="badge badge-warning">Belum Ada Data</span>';
-                        } else {
-                            $status = '<span class="badge badge-success">Lunas</span>';
-                        }
-
                         echo "<tr>";
                         echo "<td><input type='checkbox' name='selected_ids[]' value='{$row['id']}'></td>";
-                        echo "<td>" . $row['nama_lengkap'] . "</td>";
+                        echo "<td>" . stripslashes($row['nama_lengkap']) . "</td>";
                         echo "<td>" . $row['jalur_program'] . "</td>";
                         echo "<td>" . $row['jurusan'] . "</td>";
-                        echo "<td>" . $admisi_badge . "</td>";
-                        echo "<td>Rp. " . $almamater . "</td>";
-                        echo "<td>Rp. " . $salut . "</td>";
-                        echo "<td>Rp. " . $spp . "</td>";
-                        echo "<td>Rp. " . $total_bayar . "</td>";
-                        echo "<td>Rp. " . $jumlah_pembayaran . "</td>";
-                        echo "<td>Rp. " . $sisa . "</td>";
-                        echo "<td>" . $status . "</td>";
+                        echo "<td>Rp. " . number_format($row['admisi'], 0, ',', '.') . "</td>";
+                        echo "<td>Rp. " . number_format($row['almamater'], 0, ',', '.') . "</td>";
+                        echo "<td>Rp. " . number_format($row['salut'], 0, ',', '.') . "</td>";
+                        echo "<td>Rp. " . number_format($row['spp'], 0, ',', '.') . "</td>";
+                        echo "<td>Rp. " . number_format($row['total_bayar'], 0, ',', '.') . "</td>";
+                        echo "<td>Rp. " . number_format($row['jumlah_pembayaran'], 0, ',', '.') . "</td>";
+                        echo "<td>Rp. " . number_format($row['sisa'], 0, ',', '.') . "</td>";
+                        echo "<td>" . ($row['status_admisi'] == 'lunas' ? '<span class="badge badge-success">Lunas</span>' : '<span class="badge badge-warning">Belum Lunas</span>') . "</td>";
                         echo "</tr>";
                     }
                 } else {
@@ -98,6 +77,22 @@ if (isset($_POST['print'])) {
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#checkAll").click(function(){
+        $('input[type="checkbox"][name="selected_ids[]"]').prop('checked', this.checked);
+    });
+
+    $('input[type="checkbox"][name="selected_ids[]"]').change(function(){
+        if (!$(this).prop("checked")){
+            $("#checkAll").prop("checked", false);
+        }
+        if ($('input[type="checkbox"][name="selected_ids[]"]:checked').length == $('input[type="checkbox"][name="selected_ids[]"]').length ){
+            $("#checkAll").prop("checked", true);
+        }
+    });
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
