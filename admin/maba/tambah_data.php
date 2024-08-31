@@ -241,6 +241,10 @@
                             <label class="form-check-label" for="jenis_sekolah_smk">SMK</label>
                         </div>
                     </div>
+                    <div class="form-group hidden" id="jurusan_smk_group">
+                        <label for="jurusan_smk">Jurusan SMK:</label>
+                        <input type="text" name="JurusanSMK" id="jurusan_smk" class="form-control">
+                    </div>
                     <div class="form-group" id="nama_sekolah">
                         <label for="nama_sekolah">Nama Sekolah:</label>
                         <input type="text" name="NamaSekolah" id="nama_sekolah" class="form-control">
@@ -378,18 +382,20 @@
     });
 
     function handleLayananPaket() {
-        const selectedJurusan = jurusanSelect.value;
+    const selectedJurusan = jurusanSelect.value;
 
-        // Reset layanan paket radio buttons
-        layananPaketSipas.checked = false;
-        layananPaketNonSipas.checked = false;
+    // Mengambil empat kata pertama dari nama jurusan
+    const prefixJurusan = selectedJurusan.split(" ").slice(0, 4).join(" ");
+
+    // Memeriksa apakah nama jurusan dimulai dengan salah satu dari dua jurusan yang ditargetkan
+    if (prefixJurusan === 'Pendidikan Guru Sekolah Dasar' || prefixJurusan === 'Pendidikan Guru Anak Usia') {
+        layananPaketSipas.checked = true;
+        layananPaketNonSipas.disabled = true; // Nonaktifkan NON SIPAS jika PGSD atau PAUD dipilih
+    } else {
         layananPaketNonSipas.disabled = false;
-
-        if (selectedJurusan === 'Pendidikan Guru Sekolah Dasar' || selectedJurusan === 'Pendidikan Anak Usia Dini') {
-            layananPaketSipas.checked = true;
-            layananPaketNonSipas.disabled = true; // Disable NON SIPAS when PGSD or PAUD is selected
-        }
     }
+}
+
 
     jurusanSelect.addEventListener('change', handleLayananPaket);
 
