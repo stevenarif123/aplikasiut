@@ -26,6 +26,10 @@
             right: 20px;
             z-index: 1050;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -198,7 +202,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="tahun_ijazah">Tahun Ijazah:</label>
-                        <input type="text" name="TahunIjazah" id="tahun_ijazah" class="form-control">
+                        <input type="text" name="TahunIjazah" id="tahun_ijazah" class="form-control" maxlength="4">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="nisn">NISN:</label>
@@ -206,15 +210,67 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="layanan_paket_semester">Layanan Paket Semester:</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="layanan_paket_semester_sipas" name="LayananPaketSemester" value="SIPAS" required>
-                        <label class="form-check-label" for="layanan_paket_semester_sipas">SIPAS</label>
+                <!-- RPL Specific Fields -->
+                <div id="rpl-fields" class="hidden">
+                    <div class="form-group">
+                        <label for="asal_kampus">Asal Kampus:</label>
+                        <input type="text" name="AsalKampus" id="asal_kampus" class="form-control">
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="layanan_paket_semester_non_sipas" name="LayananPaketSemester" value="NON SIPAS" required>
-                        <label class="form-check-label" for="layanan_paket_semester_non_sipas">NON SIPAS</label>
+                    <div class="form-group" id="jurusan_lama">
+                        <label for="jurusan_lama">Jurusan:</label>
+                        <input type="text" name="JurusanSMK" id="jurusan_lama" class="form-control">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="tahun_lulus_kampus">Tahun Lulus Kampus:</label>
+                            <input type="text" name="TahunLulusKampus" id="tahun_lulus_kampus" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ipk">IPK:</label>
+                            <input type="text" name="IPK" id="ipk" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="jenis_sekolah">Jenis Sekolah:</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="jenis_sekolah_sma" name="JenisSekolah" value="SMA" required>
+                            <label class="form-check-label" for="jenis_sekolah_sma">SMA</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="jenis_sekolah_smk" name="JenisSekolah" value="SMK" required>
+                            <label class="form-check-label" for="jenis_sekolah_smk">SMK</label>
+                        </div>
+                    </div>
+                    <div class="form-group hidden" id="jurusan_smk_group">
+                        <label for="jurusan_smk">Jurusan SMK:</label>
+                        <input type="text" name="JurusanSMK" id="jurusan_smk" class="form-control">
+                    </div>
+                    <div class="form-group" id="nama_sekolah">
+                        <label for="nama_sekolah">Nama Sekolah:</label>
+                        <input type="text" name="NamaSekolah" id="nama_sekolah" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Reguler Specific Fields -->
+                <div id="reguler-fields" class="hidden">
+                    <div class="form-group">
+                        <label for="jenis_sekolah">Jenis Sekolah:</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="jenis_sekolah_sma" name="JenisSekolah" value="SMA" required>
+                            <label class="form-check-label" for="jenis_sekolah_sma">SMA</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="jenis_sekolah_smk" name="JenisSekolah" value="SMK" required>
+                            <label class="form-check-label" for="jenis_sekolah_smk">SMK</label>
+                        </div>
+                    </div>
+                    <div class="form-group hidden" id="jurusan_smk_group">
+                        <label for="jurusan_smk">Jurusan SMK:</label>
+                        <input type="text" name="JurusanSMK" id="jurusan_smk" class="form-control">
+                    </div>
+                    <div class="form-group" id="nama_sekolah">
+                        <label for="nama_sekolah">Nama Sekolah:</label>
+                        <input type="text" name="NamaSekolah" id="nama_sekolah" class="form-control">
                     </div>
                 </div>
 
@@ -228,6 +284,18 @@
                         <option value="XL">XL</option>
                         <option value="XXL">XXL</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="layanan_paket_semester">Layanan Paket Semester:</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="layanan_paket_semester_sipas" name="LayananPaketSemester" value="SIPAS" required>
+                        <label class="form-check-label" for="layanan_paket_semester_sipas">SIPAS</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="layanan_paket_semester_non_sipas" name="LayananPaketSemester" value="NON SIPAS" required>
+                        <label class="form-check-label" for="layanan_paket_semester_non_sipas">NON SIPAS</label>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -252,113 +320,154 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.getElementById("tambahMahasiswaForm");
-            const jurusanSelect = document.getElementById("jurusan");
-            const nikInput = document.getElementById("nik");
-            const nomorHPInput = document.getElementById("nomor_hp");
-            const alertContainer = document.querySelector('.alert-container');
+    <script>document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("tambahMahasiswaForm");
+    const jalurProgramInputs = document.querySelectorAll('input[name="JalurProgram"]');
+    const jenisSekolahInputs = document.querySelectorAll('input[name="JenisSekolah"]');
+    const layananPaketInputs = document.querySelectorAll('input[name="LayananPaketSemester"]');
+    const jurusanSelect = document.getElementById("jurusan");
+    const jurusanSMKGroup = document.getElementById("jurusan_smk_group");
+    const rplFields = document.getElementById("rpl-fields");
+    const regulerFields = document.getElementById("reguler-fields");
+    const tahunIjazahInput = document.getElementById("tahun_ijazah");
+    const nisnInput = document.getElementById("nisn");
+    const layananPaketSipas = document.getElementById("layanan_paket_semester_sipas");
+    const layananPaketNonSipas = document.getElementById("layanan_paket_semester_non_sipas");
 
-            // Mengambil daftar jurusan dari file jurusan.php menggunakan AJAX
-            const xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        try {
-                            const jurusanList = JSON.parse(xhr.responseText);
-                            populateJurusanSelect(jurusanList);
-                        } catch (error) {
-                            showAlert("Gagal memuat daftar jurusan.", "danger");
-                            console.error("Response is not a valid JSON:", xhr.responseText);
-                        }
-                    } else {
-                        showAlert("Gagal mengambil daftar jurusan dari server.", "danger");
-                        console.error("Gagal mengambil daftar jurusan dari server.");
-                    }
-                }
-            };
-            xhr.open("GET", "./api/jurusan.php", true);
-            xhr.send();
+    // Sembunyikan input NISN secara default
+    nisnInput.parentElement.classList.add('hidden');
 
-            // Fungsi untuk mengisi dropdown jurusan dengan data dari server
-            function populateJurusanSelect(jurusanList) {
-                jurusanList.forEach(function(jurusan) {
-                    const option = document.createElement("option");
-                    option.value = jurusan;
-                    option.text = jurusan;
-                    jurusanSelect.appendChild(option);
-                });
+    // Mengambil data jurusan dari API
+    fetch('./api/jurusan.php')
+        .then(response => response.json())
+        .then(data => {
+            // Cek apakah data yang diambil benar
+            console.log('Jurusan data:', data);
+            populateJurusanDropdown(data);
+        })
+        .catch(error => console.error('Error fetching jurusan:', error));
+
+    // Fungsi untuk mengisi dropdown jurusan
+    function populateJurusanDropdown(jurusanList) {
+    jurusanList.forEach(function(jurusan) {
+        const option = document.createElement("option");
+        option.value = jurusan;  // Asumsikan jurusan adalah string sederhana
+        option.text = jurusan;   // Asumsikan jurusan adalah string sederhana
+        jurusanSelect.appendChild(option);
+    });
+}
+
+
+    jalurProgramInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            if (this.value === 'RPL') {
+                rplFields.classList.remove('hidden');
+                regulerFields.classList.add('hidden');
+            } else if (this.value === 'Reguler') {
+                regulerFields.classList.remove('hidden');
+                rplFields.classList.add('hidden');
             }
+            handleLayananPaket();
+        });
+    });
 
-            // Event listener untuk NIK (Hanya angka, max 16 karakter)
-            nikInput.addEventListener('input', function() {
-                this.value = this.value.replace(/\D/g, '').slice(0, 16);
-            });
-
-            // Event listener untuk Nomor HP (Hanya angka)
-            nomorHPInput.addEventListener('input', function() {
-                this.value = this.value.replace(/\D/g, '');
-            });
-
-            form.addEventListener("submit", async function(event) {
-                event.preventDefault();
-
-                try {
-                    const formData = new FormData(form);
-                    const response = await fetch("api/tambah_data.php", {
-                        method: "POST",
-                        body: formData
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const responseText = await response.text();
-
-                    try {
-                        const result = JSON.parse(responseText);
-
-                        if (result.success) {
-                            anime({
-                                targets: '.box-form',
-                                scale: 1.1,
-                                duration: 1000,
-                                elasticity: 0.5,
-                                complete: function() {
-                                    showAlert('Data mahasiswa berhasil ditambahkan!', 'success');
-                                    setTimeout(() => window.location.reload(), 2000); // Reload page after success
-                                }
-                            });
-                        } else {
-                            showAlert('Gagal menambahkan data mahasiswa: ' + result.message, 'danger');
-                        }
-                    } catch (error) {
-                        showAlert('Unexpected server response. Please try again later.', 'danger');
-                        console.error("Unexpected response from server:", responseText);
-                    }
-
-                } catch (error) {
-                    showAlert('Gagal menghubungi server: ' + error.message, 'danger');
-                    console.error('Fetch error:', error);
-                }
-            });
-
-            function showAlert(message, type) {
-                const alert = document.createElement('div');
-                alert.className = `alert alert-${type} alert-dismissible fade show`;
-                alert.role = 'alert';
-                alert.innerHTML = `
-                    ${message}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                `;
-                alertContainer.appendChild(alert);
-                setTimeout(() => alert.remove(), 5000); // Alert hilang setelah 5 detik
+    jenisSekolahInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            if (this.value === 'SMK') {
+                jurusanSMKGroup.classList.remove('hidden');
+            } else {
+                jurusanSMKGroup.classList.add('hidden');
             }
         });
+    });
+
+    function handleLayananPaket() {
+    const selectedJurusan = jurusanSelect.value;
+
+    // Mengambil empat kata pertama dari nama jurusan
+    const prefixJurusan = selectedJurusan.split(" ").slice(0, 4).join(" ");
+
+    // Memeriksa apakah nama jurusan dimulai dengan salah satu dari dua jurusan yang ditargetkan
+    if (prefixJurusan === 'Pendidikan Guru Sekolah Dasar' || prefixJurusan === 'Pendidikan Guru Anak Usia') {
+        layananPaketSipas.checked = true;
+        layananPaketNonSipas.disabled = true; // Nonaktifkan NON SIPAS jika PGSD atau PAUD dipilih
+    } else {
+        layananPaketNonSipas.disabled = false;
+    }
+}
+
+
+    jurusanSelect.addEventListener('change', handleLayananPaket);
+
+    tahunIjazahInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4); // Batasi input hanya 4 angka
+        const tahunIjazah = parseInt(this.value, 10);
+        if (tahunIjazah > 2014) {
+            nisnInput.parentElement.classList.remove("hidden");
+        } else {
+            nisnInput.parentElement.classList.add("hidden");
+        }
+    });
+
+    form.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        try {
+            const formData = new FormData(form);
+            const response = await fetch("api/tambah_data.php", {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const responseText = await response.text();
+
+            try {
+                const result = JSON.parse(responseText);
+
+                if (result.success) {
+                    anime({
+                        targets: '.box-form',
+                        scale: 1.1,
+                        duration: 1000,
+                        elasticity: 0.5,
+                        complete: function() {
+                            showAlert('Data mahasiswa berhasil ditambahkan!', 'success');
+                            setTimeout(() => window.location.reload(), 2000); // Reload page after success
+                        }
+                    });
+                } else {
+                    showAlert('Gagal menambahkan data mahasiswa: ' + result.message, 'danger');
+                }
+            } catch (error) {
+                showAlert('Unexpected server response. Please try again later.', 'danger');
+                console.error("Unexpected response from server:", responseText);
+            }
+
+        } catch (error) {
+            showAlert('Gagal menghubungi server: ' + error.message, 'danger');
+            console.error('Fetch error:', error);
+        }
+    });
+
+    function showAlert(message, type) {
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type} alert-dismissible fade show`;
+        alert.role = 'alert';
+        alert.innerHTML = `
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        `;
+        document.querySelector('.alert-container').appendChild(alert);
+        setTimeout(() => alert.remove(), 5000); // Alert hilang setelah 5 detik
+    }
+});
+
     </script>
 </body>
 

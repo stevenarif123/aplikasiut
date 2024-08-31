@@ -7,7 +7,7 @@ if ($koneksi->connect_error) {
 }
 
 // Ambil data mahasiswa baru
-$per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 25; // Default 25
+$per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 10; // Default 10
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start = ($page - 1) * $per_page;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -32,6 +32,21 @@ if ($search != '') {
 }
 $sql_select .= " ORDER BY $order_by $order_dir LIMIT $start, $per_page";
 $result = $koneksi->query($sql_select);
+
+
+function formatCurrency($value) {
+	// Cek apakah nilai negatif
+	$isNegative = $value < 0;
+
+	// Ubah nilai menjadi positif untuk diformat
+	$value = abs($value);
+
+	// Format nilai dengan pemisah ribuan
+	$formattedValue = number_format($value, 0, ',', '.');
+
+	// Tambahkan kembali tanda negatif jika diperlukan
+	return ($isNegative ? '-Rp ' : 'Rp ') . $formattedValue;
+}
 ?>
 
 <!DOCTYPE html>
@@ -133,8 +148,8 @@ $result = $koneksi->query($sql_select);
                         // Hitung sisa
                         $sisa = $row['jumlah_pembayaran'] - $total_bayar;
                         $sisa_formatted = number_format($sisa, 0, ',', '.');
-
-                        // Status admisi badge
+						
+                    // Status admisi badge
                         $admisi_badge_color = $row['status_admisi'] == 'lunas' ? 'badge-success' : 'badge-warning';
                         $admisi_status = $row['status_admisi'] == 'lunas' ? 'Lunas' : 'Belum Lunas';
                         $admisi_badge = "<span class='badge $admisi_badge_color'>Rp. $admisi - $admisi_status</span>";
@@ -154,16 +169,16 @@ $result = $koneksi->query($sql_select);
 
                         echo "<tr>";
                         echo "<td>" . $no++ . "</td>";
-                        echo "<td>" . $row['nama_lengkap'] . "</td>";
+                        echo "<td>" . stripslashes($row['nama_lengkap']) . "</td>";
                         echo "<td>" . $row['jalur_program'] . "</td>";
                         echo "<td>" . $row['jurusan'] . "</td>";
                         echo "<td>" . $admisi_badge . "</td>";
-                        echo "<td>Rp. " . $almamater . "</td>";
-                        echo "<td>Rp. " . $salut . "</td>";
-                        echo "<td>Rp. " . $spp . "</td>";
-                        echo "<td>Rp. " . $total_bayar_formatted . "</td>";
-                        echo "<td>Rp. " . $jumlah_pembayaran . "</td>";
-                        echo "<td>Rp. " . $sisa_formatted . "</td>";
+                        echo "<td>Rp" . $almamater . "</td>";
+                        echo "<td>Rp" . $salut . "</td>";
+                        echo "<td>Rp" . $spp . "</td>";
+                        echo "<td>Rp" . $total_bayar_formatted . "</td>";
+                        echo "<td>Rp" . $jumlah_pembayaran . "</td>";
+                        echo "<td>" . formatCurrency($sisa) . "</td>";
                         echo "<td>" . $status . "</td>";
                         echo "<td>
                             <button class='btn btn-primary btn-sm' data-toggle='modal' data-target='#editModal' data-id='{$row['id']}' data-type='admisi' data-value='{$row['admisi']}' data-status='{$row['status_admisi']}'><i class='fas fa-edit'></i></button>
@@ -241,9 +256,9 @@ $result = $koneksi->query($sql_select);
                             <div class="form-group">
                                 <label for="salut">SALUT</label>
                                 <select class="form-control" id="salut">
-                                    <option value="350000" selected>350000</option>
-                                    <option value="300000">300000</option>
-                                    <option value="250000">250000</option>
+                                    <option value="350000" selected>Rp350.000</option>
+                                    <option value="300000">Rp300.000</option>
+                                    <option value="250000">Rp250.000</option>
                                 </select>
                             </div>
                         </div>
@@ -300,91 +315,123 @@ $result = $koneksi->query($sql_select);
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#editModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget);
-                var id = button.data('id');
-                var type = button.data('type');
-                var value = button.data('value') || '';
-                var status = button.data('status') || 'belum lunas';
+$(document).ready(function() {
+    $('#editModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var type = button.data('type');
+        var value = button.data('value') || '';
+        var status = button.data('status') || 'belum lunas';
 
-                var modal = $(this);
-                modal.find('#editId').val(id);
-                modal.find('#editType').val(type);
+        var modal = $(this);
+        modal.find('#editId').val(id);
+        modal.find('#editType').val(type);
 
-                if (type === 'admisi') {
-                    modal.find('#admisiGroup').show();
-                    modal.find('#tagihanGroup').hide();
-                    modal.find('#admisi').val(value);
-                    modal.find('#admisiLunas').prop('checked', status === 'lunas');
-                } else {
-                    modal.find('#admisiGroup').hide();
-                    modal.find('#tagihanGroup').show();
-                    modal.find('#almamater').val(200000);
-                    modal.find('#salut').val(350000);
-                }
-            });
+        if (type === 'admisi') {
+            modal.find('#admisiGroup').show();
+            modal.find('#tagihanGroup').hide();
+            // Format dan tampilkan nilai admisi
+            value = formatCurrency(value);
+            modal.find('#admisi').val(value);
+            modal.find('#admisiLunas').prop('checked', status === 'lunas');
+        } else {
+            modal.find('#admisiGroup').hide();
+            modal.find('#tagihanGroup').show();
+            // Format dan tampilkan nilai almamater, spp, salut
+            var almamater = button.data('almamater') || 200000;
+            var spp = button.data('spp') || '';
+            var salut = button.data('salut') || 350000;
 
-            $('#editForm').submit(function(event) {
-                event.preventDefault();
-                var id = $('#editId').val();
-                var type = $('#editType').val();
-                var data = {
-                    id: id,
-                    type: type
-                };
+            modal.find('#almamater').val(formatCurrency(almamater));
+            modal.find('#spp').val(formatCurrency(spp));
+            modal.find('#salut').val(formatCurrency(salut));
+        }
+    });
 
-                if (type === 'admisi') {
-                    data.admisi = $('#admisi').val().replace(/[^0-9]/g, '');
-                    data.status_admisi = $('#admisiLunas').is(':checked') ? 'lunas' : 'belum lunas';
-                } else {
-                    data.almamater = $('#almamater').val().replace(/[^0-9]/g, '');
-                    data.spp = $('#spp').val().replace(/[^0-9]/g, '');
-                    data.salut = $('#salut').val();
-                }
+    $('#payModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var value = button.data('value') || '';
 
-                $.post('edit_payment.php', data, function(response) {
-                    alert(response);
-                    location.reload();
-                });
-            });
+        var modal = $(this);
+        modal.find('#payId').val(id);
+        // Format dan tampilkan nilai jumlah bayar
+        modal.find('#jumlahBayar').val(formatCurrency(value));
+    });
 
-            $('#payModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget);
-                var id = button.data('id');
-                var value = button.data('value') || '';
+    // Fungsi untuk memformat nilai menjadi format mata uang
+    function formatCurrency(value) {
+    // Cek apakah nilai negatif
+    var isNegative = value < 0;
 
-                var modal = $(this);
-                modal.find('#payId').val(id);
-                modal.find('#jumlahBayar').val(value);
-            });
+    // Ubah nilai menjadi positif untuk diformat
+    value = Math.abs(value).toString().replace(/\D/g, '');
 
-            $('#payForm').submit(function(event) {
-                event.preventDefault();
-                var id = $('#payId').val();
-                var jumlahBayar = $('#jumlahBayar').val().replace(/[^0-9]/g, '');
+    // Format nilai dengan pemisah ribuan
+    var formattedValue = new Intl.NumberFormat('id-ID').format(value);
 
-                $.post('add_payment.php', {
-                    id: id,
-                    jumlah_bayar: jumlahBayar
-                }, function(response) {
-                    alert(response);
-                    location.reload();
-                });
-            });
+    // Tambahkan kembali tanda negatif jika diperlukan
+    return (isNegative ? '-Rp ' : 'Rp ') + formattedValue;
+}
 
-            $('#whatsappModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget);
-                var nama = button.data('nama');
-                var jurusan = button.data('jurusan');
-                var spp = button.data('spp');
-                var salut = button.data('salut');
-                var almamater = button.data('almamater');
-                var total = button.data('total');
-                var pembayaran = button.data('pembayaran');
-                var sisa = button.data('sisa');
-                var waktu = new Date().getHours();
-                var salam = "Selamat ";
+    // Format input currency hanya pada input dengan class "currency-input"
+    $(document).on('input', '.currency-input', function() {
+        var value = $(this).val();
+        value = value.replace(/\D/g, '');
+        value = new Intl.NumberFormat('id-ID').format(value);
+        $(this).val('Rp' + value);
+    });
+
+    $('#editForm').submit(function(event) {
+        event.preventDefault();
+        var id = $('#editId').val();
+        var type = $('#editType').val();
+        var data = {
+            id: id,
+            type: type
+        };
+
+        if (type === 'admisi') {
+            data.admisi = $('#admisi').val().replace(/[^0-9]/g, '');
+            data.status_admisi = $('#admisiLunas').is(':checked') ? 'lunas' : 'belum lunas';
+        } else {
+            data.almamater = $('#almamater').val().replace(/[^0-9]/g, '');
+            data.spp = $('#spp').val().replace(/[^0-9]/g, '');
+            data.salut = $('#salut').val().replace(/[^0-9]/g, '');
+        }
+
+        $.post('edit_payment.php', data, function(response) {
+            alert(response);
+            location.reload();
+        });
+    });
+
+    $('#payForm').submit(function(event) {
+        event.preventDefault();
+        var id = $('#payId').val();
+        var jumlahBayar = $('#jumlahBayar').val().replace(/[^0-9]/g, '');
+
+        $.post('add_payment.php', {
+            id: id,
+            jumlah_bayar: jumlahBayar
+        }, function(response) {
+            alert(response);
+            location.reload();
+        });
+    });
+
+    $('#whatsappModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var nama = button.data('nama');
+        var jurusan = button.data('jurusan');
+        var spp = button.data('spp');
+        var salut = button.data('salut');
+        var almamater = button.data('almamater');
+        var total = button.data('total');
+        var pembayaran = button.data('pembayaran');
+        var sisa = button.data('sisa');
+        var waktu = new Date().getHours();
+        var salam = "Selamat ";
 
                 if (waktu >= 4 && waktu < 12) {
                     salam += "pagi";
@@ -394,58 +441,30 @@ $result = $koneksi->query($sql_select);
                     salam += "malam";
                 }
 
-                var message = `${salam},\n\nKami sampaikan bahwa ${nama} mendaftar ${jurusan} telah Lulus dan di terima di Universitas Terbuka. Berikut kami sertakan detail pembayaran untuk semester 1.\n\n`;
-                message += `SPP : Rp${Number(spp).toLocaleString('id-ID')}\nSALUT : Rp${Number(salut).toLocaleString('id-ID')}\nAlmamater* : Rp${Number(almamater).toLocaleString('id-ID')}\n\n*TOTAL* : *Rp${Number(total).toLocaleString('id-ID')}*\n\n`;
+        var message = `${salam},\n\nKami sampaikan bahwa ${nama} mendaftar ${jurusan} telah Lulus dan di terima di Universitas Terbuka. Berikut kami sertakan detail pembayaran untuk semester 1.\n\n`;
+        message += `SPP : Rp${Number(spp).toLocaleString('id-ID')}\nSALUT : Rp${Number(salut).toLocaleString('id-ID')}\nAlmamater* : Rp${Number(almamater).toLocaleString('id-ID')}\n\n*TOTAL* : *Rp${Number(total).toLocaleString('id-ID')}*\n\n`;
 
-                if (pembayaran > 0) {
-                    message += `*Terbayar* : Rp${Number(pembayaran).toLocaleString('id-ID')}\n`;
-                    if (sisa != 0) {
-                        message += `*Kurang/Lebih* : Rp${Number(sisa).toLocaleString('id-ID')}\n\n`;
-                    }
-                }
+        if (pembayaran > 0) {
+            message += `*Terbayar* : Rp${Number(pembayaran).toLocaleString('id-ID')}\n`;
+            if (sisa != 0) {
+                message += `*Kurang/Lebih* : Rp${Number(sisa).toLocaleString('id-ID')}\n\n`;
+            }
+        }
 
-                message += "Ket: *Almamater bersifat opsional atau tidak wajib.\n\n";
-                message += "Pembayaran dapat dilakukan melalui transfer atau cash yang diantar ke kantor. Jika melakukan pembayaran secara transfer dapat mengirim ke rekening berikut:\nNama : Ribka Padang\nBank : Mandiri\nNomor Rekening : 1700000588917\n\nKirim Bukti Transfer ke nomor 082293924242.\n\nDemikianlah penyampaian ini kami ucapkan terima kasih banyak.";
+        message += "Ket: *Almamater bersifat opsional atau tidak wajib.\n\n";
+        message += "Pembayaran dapat dilakukan melalui transfer atau cash yang diantar ke kantor. Jika melakukan pembayaran secara transfer dapat mengirim ke rekening berikut:\nNama : Ribka Padang\nBank : Mandiri\nNomor Rekening : 1700000588917\n\nKirim Bukti Transfer ke nomor 082293924242.\n\nDemikianlah penyampaian ini kami ucapkan terima kasih banyak.";
 
-                var whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        var whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
-                $('#whatsappMessage').text(message);
-                $('#sendWhatsApp').attr('href', whatsappUrl);
-            });
+        $('#whatsappMessage').text(message);
+        $('#sendWhatsApp').attr('href', whatsappUrl);
+    });
 
-            $('#sendWhatsApp').click(function() {
-                var whatsappUrl = $(this).attr('href');
-                window.open(whatsappUrl, '_blank');
-            });
-
-            // Event listener untuk input pencarian
-            $('#search').on('input', function() {
-                var search = $(this).val();
-                var search_by = $('#search_by').val();
-                var order_by = '<?php echo $order_by; ?>';
-                var order_dir = '<?php echo $order_dir; ?>';
-                var per_page = '<?php echo $per_page; ?>';
-
-                $.get('search.php', {
-                    search: search,
-                    search_by: search_by,
-                    order_by: order_by,
-                    order_dir: order_dir,
-                    per_page: per_page,
-                    page: 1
-                }, function(data) {
-                    $('#data-table').html(data);
-                });
-            });
-
-            // Format input currency hanya pada input dengan class "currency-input"
-            $(document).on('input', '.currency-input', function() {
-                var value = $(this).val();
-                value = value.replace(/\D/g, '');
-                value = new Intl.NumberFormat('id-ID').format(value);
-                $(this).val('Rp' + value);
-            });
-        });
+    $('#sendWhatsApp').click(function() {
+        var whatsappUrl = $(this).attr('href');
+        window.open(whatsappUrl, '_blank');
+    });
+});
     </script>
 </body>
 

@@ -71,12 +71,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $di_input_pada = date('Y-m-d H:i:s');
     $di_edit_pada = date('Y-m-d H:i:s');
 
-    // Prepare insert statement for mahasiswabaru20242
-    $stmt = $koneksi->prepare("INSERT INTO mahasiswabaru20242 (
-        JalurProgram, NamaLengkap, TempatLahir, TanggalLahir, NamaIbuKandung, NIK, Jurusan, NomorHP, Email, Password, Agama, JenisKelamin, 
-        StatusPerkawinan, NomorHPAlternatif, NomorIjazah, TahunIjazah, NISN, LayananPaketSemester, DiInputOleh, DiInputPada, DiEditPada, 
-        STATUS_INPUT_SIA, UkuranBaju) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    // Fields specific to RPL and Reguler
+    $asal_kampus = $koneksi->real_escape_string(trim($_POST['AsalKampus']));
+    $tahun_lulus_kampus = $koneksi->real_escape_string(trim($_POST['TahunLulusKampus']));
+    $ipk = $koneksi->real_escape_string(trim($_POST['IPK']));
+    $jenis_sekolah = $koneksi->real_escape_string(trim($_POST['JenisSekolah']));
+    $jurusan_smk = $koneksi->real_escape_string(trim($_POST['JurusanSMK']));
+    $nama_sekolah = $koneksi->real_escape_string(trim($_POST['NamaSekolah']));
+    
+    $stmt = $koneksi->prepare("INSERT INTO mahasiswabaru20242 ( 
+        JalurProgram, 
+        NamaLengkap, 
+        TempatLahir, 
+        TanggalLahir, 
+        NamaIbuKandung, 
+        NIK, 
+        Jurusan, 
+        NomorHP, 
+        Email, 
+        Password, 
+        Agama, 
+        JenisKelamin, 
+        StatusPerkawinan, 
+        NomorHPAlternatif, 
+        NomorIjazah, 
+        TahunIjazah, 
+        NISN, 
+        LayananPaketSemester, 
+        DiInputOleh, 
+        DiInputPada,
+        DiEditPada,
+        STATUS_INPUT_SIA,
+        UkuranBaju,
+        AsalKampus,
+        TahunLulusKampus,
+        IPK,
+        JenisSekolah,
+        NamaSekolah,
+        JurusanSMK) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     if (!$stmt) {
         $response["message"] = "Prepare failed: " . $koneksi->error;
@@ -85,10 +117,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $stmt->bind_param("sssssssssssssssssssssss", 
-        $jalur_program, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $nama_ibu_kandung, $nik, $jurusan, $nomor_hp, $email, $password, $agama, 
-        $jenis_kelamin, $status_perkawinan, $nomor_hp_alternatif, $nomor_ijazah, $tahun_ijazah, $nisn, $layanan_paket_semester, $di_input_oleh, 
-        $di_input_pada, $di_edit_pada, $status_input_sia, $ukuranbaju);
+    $stmt->bind_param("sssssssssssssssssssssssssssss", 
+        $jalur_program, 
+        $nama_lengkap, 
+        $tempat_lahir, 
+        $tanggal_lahir, 
+        $nama_ibu_kandung, 
+        $nik, 
+        $jurusan, 
+        $nomor_hp, 
+        $email, 
+        $password, 
+        $agama, 
+        $jenis_kelamin, 
+        $status_perkawinan, 
+        $nomor_hp_alternatif, 
+        $nomor_ijazah, 
+        $tahun_ijazah, 
+        $nisn, 
+        $layanan_paket_semester, 
+        $di_input_oleh, 
+        $di_input_pada, 
+        $di_edit_pada, 
+        $status_input_sia,
+        $ukuranbaju,
+        $asal_kampus,
+        $tahun_lulus_kampus,
+        $ipk,
+        $jenis_sekolah,
+        $nama_sekolah,
+        $jurusan_smk);
 
     if ($stmt->execute()) {
         $response["success"] = true;
@@ -102,10 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $admisi = 0;
         }
 
-        $stmtCatatan = $koneksi->prepare("INSERT INTO catatan_bayarmaba20242 
-            (nama_lengkap, jalur_program, jurusan, admisi, almamater, salut, spp, total_bayar, jumlah_pembayaran, sisa, status_admisi, tanggal_bayar) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        
+        $stmtCatatan = $koneksi->prepare("INSERT INTO catatan_bayarmaba20242 (nama_lengkap, jalur_program, jurusan, admisi, almamater, salut, spp, total_bayar, jumlah_pembayaran, sisa, status_admisi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if (!$stmtCatatan) {
             $response["success"] = false;
             $response["message"] = "Prepare failed: " . $koneksi->error;
@@ -123,7 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $status_admisi = 'belum lunas';
         $tanggalbayar = date('Y-m-d H:i:s');
 
-        $stmtCatatan->bind_param("ssssssssssss", $nama_lengkap, $jalur_program, $jurusan, $admisi, $almamater, $salut, $spp, $total_bayar, $jumlah_pembayaran, $sisa, $status_admisi, $tanggalbayar);
+        $stmtCatatan->bind_param("sssssssssss", $nama_lengkap, $jalur_program, $jurusan, $admisi, $almamater, $salut, $spp, $total_bayar, $jumlah_pembayaran, $sisa, $status_admisi);
 
         if ($stmtCatatan->execute()) {
             $response["success"] = true;
