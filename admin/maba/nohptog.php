@@ -29,13 +29,43 @@ $header = [
 ];
 fputcsv($fileHandle, $header);
 
+// Fungsi untuk mengubah setiap kata menjadi huruf pertama kapital
+function formatNama($nama) {
+    return ucwords(strtolower($nama));
+}
+
+// Fungsi untuk menghapus (S1) dari nama jurusan
+function hapusS1($jurusan) {
+    return preg_replace('/\s*\(S1\)$/', '', $jurusan);
+}
+
+// Fungsi untuk membuat singkatan dari jurusan, tapi hanya jika jurusan memiliki 3 kata atau lebih
+function singkatanJurusan($jurusan) {
+    $jurusan = hapusS1($jurusan); // Hapus (S1) dari jurusan
+    $kata = explode(' ', $jurusan);
+    if (count($kata) >= 3) {
+        $singkatan = '';
+        foreach ($kata as $k) {
+            $singkatan .= strtoupper(substr($k, 0, 1));
+        }
+        return $singkatan;
+    } else {
+        return ucwords(strtolower($jurusan)); // Tidak disingkat jika hanya satu atau dua kata
+    }
+}
+
 // Proses data mahasiswa dan tuliskan ke file CSV
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // Format nama sesuai permintaan: 24.2 JURUSAN - Nama Mahasiswa
-        $namaLengkap = $row["NamaLengkap"];
-        $jurusan = strtoupper($row["Jurusan"]);
-        $namaFormatted = "CAMABA 24.2 $jurusan - " . ucwords($namaLengkap);
+        // Format nama mahasiswa
+        $namaLengkap = formatNama(stripslashes($row["NamaLengkap"]));
+        $jurusan = singkatanJurusan($row["Jurusan"]);
+
+        // Tentukan prefix berdasarkan status
+        $prefix = ($row["STATUS_INPUT_SIA"] == "MAHASISWA UT") ? "24.2" : "CAMABA 24.2";
+
+        // Format nama sesuai dengan format yang baru
+        $namaFormatted = "$prefix $jurusan - $namaLengkap";
 
         // Siapkan data untuk setiap kontak
         $contactData = [
@@ -51,7 +81,7 @@ if ($result->num_rows > 0) {
             '', // Name Suffix
             '', // Nickname
             '', // File As
-            '', // Organization Name
+            $row["Jurusan"], // Organization Name (untuk menjelaskan kepanjangan jurusan, jika ada singkatan)
             '', // Organization Title
             '', // Organization Department
             '', // Birthday
