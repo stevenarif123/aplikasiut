@@ -44,16 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         displayMahasiswaData($dnuMahasiswa);
                     } else {
                         // Menampilkan pesan peringatan jika data tidak ditemukan
-                            echo '<div class="alert alert-warning" role="alert">
+                        echo '<div class="alert alert-warning" role="alert">
                                 Data DNU mahasiswa tidak ditemukan.
-                            </div>';
-                            // Redirect kembali ke halaman sebelumnya (misalnya halaman formulir)
-                            // Ganti "formulir_sebelumnya.php" dengan nama file atau URL halaman sebelumnya
-                            echo '<script>
-                                setTimeout(function() {
-                                    window.location.href = "pilihmasa.php?No=' . $_POST['No'] . '"; // Arahkan ke halaman pilihmasa.php dengan No yang sama
-                                }, 3000); // Mengarahkan kembali setelah 3 detik
-                            </script>';
+                              </div>';
                     }
                 }
             } else {
@@ -103,6 +96,7 @@ function getAccessToken($email, $password) {
         return null;
     }
 }
+
 // Fungsi untuk mendapatkan data DNU mahasiswa
 function getDnuMhsData($accessToken, $masa) {
     $url = "https://api-sia.ut.ac.id/backend-sia/api/graphql";
@@ -157,99 +151,54 @@ function getDnuMhsData($accessToken, $masa) {
 
 // Fungsi untuk menampilkan data mahasiswa dan DNU
 function displayMahasiswaData($dnuMahasiswa) {
-    // Implementasi kode untuk menampilkan data
+    echo "<div class='modal-header'>";
+    echo "<h5 class='modal-title'>Hasil Nilai Mahasiswa</h5>";
+    echo "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
+    echo "</div>";
+    echo "<div class='modal-body'>";
+    
+    // Tampilkan data header
+    if (isset($dnuMahasiswa['header2'])) {
+        echo "<table class='table'>";
+        foreach ($dnuMahasiswa['header2'][0] as $key => $value) {
+            echo "<tr>";
+            echo "<td>$key</td>";
+            echo "<td>$value</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "<p>Data mahasiswa tidak ditemukan.</p>";
+    }
+
+    // Tampilkan data body
+    echo "<h2>Daftar Nilai Mahasiswa</h2>";
+    echo "<p>Keterangan Masa: " . $dnuMahasiswa['ketMasa'] . "</p>";
+    echo "<table class='table table-bordered'>";
+    echo "<thead><tr><th>Nama Matakuliah</th><th>Kode Matakuliah</th><th>Grade</th><th>SKS</th><th>Mutu</th><th>Keterangan</th></tr></thead>";
+    echo "<tbody>";
+    foreach ($dnuMahasiswa['body'] as $item) {
+        echo "<tr>";
+        echo "<td>{$item['namamtk']}</td>";
+        echo "<td>{$item['kodemtk']}</td>";
+        echo "<td>{$item['grade']}</td>";
+        echo "<td>{$item['sks']}</td>";
+        echo "<td>{$item['mutu']}</td>";
+        echo "<td>{$item['ket']}</td>";
+        echo "</tr>";
+    }
+    echo "</tbody></table>";
+
+    // Tampilkan data footer
+    echo "<p>Jumlah SKS Diambil: " . $dnuMahasiswa['footer']['jmlSksDiambil'] . "</p>";
+    echo "<p>Jumlah SKS Lulus: " . $dnuMahasiswa['footer']['jmlSksLulus'] . "</p>";
+    echo "<p>Jumlah Mutu Lulus: " . $dnuMahasiswa['footer']['jmlMutuLulus'] . "</p>";
+    echo "<p>Indeks Prestasi Semester: " . $dnuMahasiswa['footer']['indeksPrestasiSemester'] . "</p>";
+
+    echo "</div>";
+    echo "<div class='modal-footer'>";
+    echo "<button type='button' class='btn btn-secondary' id='logoutButton'>Tutup</button>";
+    echo "<button type='button' class='btn btn-primary' id='copyButton'>Copy</button>";
+    echo "</div>";
 }
 ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Contoh</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-    </style>
-</head>
-<body>
-    <?php if ($dnuMahasiswa) : ?>
-            <div class="container mt-5">
-            <?php if ($dnuMahasiswa) : ?>
-        <div class="container mt-5">
-            <h2 class="mb-4">Data Mahasiswa</h2>
-            <div class="card mb-4">
-                <div class="card-body">
-                <?php
-                    if (isset($dnuMahasiswa['header2'])) {
-                        echo "<table class='table'>";
-                        foreach ($dnuMahasiswa['header2'][0] as $key => $value) {
-                            echo "<tr>";
-                            echo "<td>$key</td>";
-                            echo "<td>$value</td>";
-                            echo "</tr>";
-                        }
-                        echo "</table>";
-                    } else {
-                        echo "<p class='card-text'>Data mahasiswa tidak ditemukan.</p>";
-                    }
-                    ?>
-
-                    <h2 class="mb-4">Data DNU Mahasiswa</h2>
-                    <p class="card-text">Keterangan Masa: <?php echo $dnuMahasiswa['ketMasa']; ?></p>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nama Matakuliah</th>
-                                <th>Kode Matakuliah</th>
-                                <th>Grade</th>
-                                <th>SKS</th>
-                                <th>Mutu</th>
-                                <th>Keterangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($dnuMahasiswa['body'] as $item) : ?>
-                                <tr>
-                                    <td><?php echo $item['namamtk']; ?></td>
-                                    <td><?php echo $item['kodemtk']; ?></td>
-                                    <td><?php echo $item['grade']; ?></td>
-                                    <td><?php echo $item['sks']; ?></td>
-                                    <td><?php echo $item['mutu']; ?></td>
-                                    <td><?php echo $item['ket']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <p class="card-text">Jumlah SKS Diambil: <?php echo $dnuMahasiswa['footer']['jmlSksDiambil']; ?></p>
-                    <p class="card-text">Jumlah SKS Lulus: <?php echo $dnuMahasiswa['footer']['jmlSksLulus']; ?></p>
-                    <p class="card-text">Jumlah Mutu Lulus: <?php echo $dnuMahasiswa['footer']['jmlMutuLulus']; ?></p>
-                    <p class="card-text">Indeks Prestasi Semester: <?php echo $dnuMahasiswa['footer']['indeksPrestasiSemester']; ?></p>
-                </div>
-            </div>
-            <a href="logout.php" class="btn btn-primary">Kembali</a>
-        </div>
-    <?php endif; ?>
-
-        </div>
-    <?php endif; ?>
-</body>
-</html>
