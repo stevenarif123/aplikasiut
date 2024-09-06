@@ -140,6 +140,7 @@ $jenis_pembayaran = "Pembayaran";
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        <a href="#daftar_laporan" class="btn btn-secondary mb-3">Kembali</a>
     </form>
     <div class="mt-3">
         <a href="index.php" class="btn btn-secondary">Kembali</a>
