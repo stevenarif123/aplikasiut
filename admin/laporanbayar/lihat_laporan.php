@@ -46,7 +46,7 @@ $metodeBayar = $row['MetodeBayar'];
 $alamatFile = $row['AlamatFile'];
 ?>
 
-    <h1 class="mb-4">Detail Laporan Bayar</h1>
+<h1 class="mb-4">Detail Laporan Bayar</h1>
         <div class="row">
             <div class="col">
                 <table class="table table-bordered">
@@ -109,5 +109,5 @@ $alamatFile = $row['AlamatFile'];
         <img src="<?php echo $alamatFile; ?>" alt="Bukti Transfer" class="img-fluid" style="max-width: 300px;"><br><br>
     <?php endif; ?>
     <div class="text-center">
-        <a href="index.php" class="btn btn-primary">Kembali</a>
+    <a href="#daftar_laporan" class="btn btn-secondary mb-3">Kembali</a>
     </div>
