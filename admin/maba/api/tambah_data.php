@@ -79,7 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $jurusan_smk = $koneksi->real_escape_string(trim($_POST['JurusanSMK']));
     $nama_sekolah = $koneksi->real_escape_string(trim($_POST['NamaSekolah']));
     
-    $stmt = $koneksi->prepare("INSERT INTO mahasiswabaru20242 ( 
+    // Menggunakan parameter yang telah disiapkan
+    $stmt = $koneksi->prepare("INSERT INTO mahasiswabaru20242 (
         JalurProgram, 
         NamaLengkap, 
         TempatLahir, 
@@ -108,15 +109,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         IPK,
         JenisSekolah,
         NamaSekolah,
-        JurusanSMK) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        JurusanSMK
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     if (!$stmt) {
         $response["message"] = "Prepare failed: " . $koneksi->error;
         echo json_encode($response);
-        ob_end_flush(); // Kirim semua output dan hentikan buffering
         exit;
     }
-
+    
     $stmt->bind_param("sssssssssssssssssssssssssssss", 
         $jalur_program, 
         $nama_lengkap, 

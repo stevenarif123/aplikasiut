@@ -320,7 +320,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script>document.addEventListener("DOMContentLoaded", function() {
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("tambahMahasiswaForm");
     const jalurProgramInputs = document.querySelectorAll('input[name="JalurProgram"]');
     const jenisSekolahInputs = document.querySelectorAll('input[name="JenisSekolah"]');
@@ -341,22 +342,18 @@
     fetch('./api/jurusan.php')
         .then(response => response.json())
         .then(data => {
-            // Cek apakah data yang diambil benar
-            console.log('Jurusan data:', data);
             populateJurusanDropdown(data);
         })
         .catch(error => console.error('Error fetching jurusan:', error));
 
-    // Fungsi untuk mengisi dropdown jurusan
     function populateJurusanDropdown(jurusanList) {
-    jurusanList.forEach(function(jurusan) {
-        const option = document.createElement("option");
-        option.value = jurusan;  // Asumsikan jurusan adalah string sederhana
-        option.text = jurusan;   // Asumsikan jurusan adalah string sederhana
-        jurusanSelect.appendChild(option);
-    });
-}
-
+        jurusanList.forEach(function(jurusan) {
+            const option = document.createElement("option");
+            option.value = jurusan;  // Asumsikan jurusan adalah string sederhana
+            option.text = jurusan;   // Asumsikan jurusan adalah string sederhana
+            jurusanSelect.appendChild(option);
+        });
+    }
 
     jalurProgramInputs.forEach(input => {
         input.addEventListener('change', function() {
@@ -382,25 +379,21 @@
     });
 
     function handleLayananPaket() {
-    const selectedJurusan = jurusanSelect.value;
+        const selectedJurusan = jurusanSelect.value;
+        const prefixJurusan = selectedJurusan.split(" ").slice(0, 4).join(" ");
 
-    // Mengambil empat kata pertama dari nama jurusan
-    const prefixJurusan = selectedJurusan.split(" ").slice(0, 4).join(" ");
-
-    // Memeriksa apakah nama jurusan dimulai dengan salah satu dari dua jurusan yang ditargetkan
-    if (prefixJurusan === 'Pendidikan Guru Sekolah Dasar' || prefixJurusan === 'Pendidikan Guru Anak Usia') {
-        layananPaketSipas.checked = true;
-        layananPaketNonSipas.disabled = true; // Nonaktifkan NON SIPAS jika PGSD atau PAUD dipilih
-    } else {
-        layananPaketNonSipas.disabled = false;
+        if (prefixJurusan === 'Pendidikan Guru Sekolah Dasar' || prefixJurusan === 'Pendidikan Guru Anak Usia') {
+            layananPaketSipas.checked = true;
+            layananPaketNonSipas.disabled = true;
+        } else {
+            layananPaketNonSipas.disabled = false;
+        }
     }
-}
-
 
     jurusanSelect.addEventListener('change', handleLayananPaket);
 
     tahunIjazahInput.addEventListener('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4); // Batasi input hanya 4 angka
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
         const tahunIjazah = parseInt(this.value, 10);
         if (tahunIjazah > 2014) {
             nisnInput.parentElement.classList.remove("hidden");
@@ -436,7 +429,7 @@
                         elasticity: 0.5,
                         complete: function() {
                             showAlert('Data mahasiswa berhasil ditambahkan!', 'success');
-                            setTimeout(() => window.location.reload(), 2000); // Reload page after success
+                            setTimeout(() => window.location.reload(), 2000);
                         }
                     });
                 } else {
@@ -464,10 +457,9 @@
             </button>
         `;
         document.querySelector('.alert-container').appendChild(alert);
-        setTimeout(() => alert.remove(), 5000); // Alert hilang setelah 5 detik
+        setTimeout(() => alert.remove(), 5000);
     }
 });
-
     </script>
 </body>
 
