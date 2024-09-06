@@ -1,106 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pribadi Mahasiswa</title>
-    <style>
-        body {
-            font-family: 'Times New Roman', serif;
-            color: #000;
-            margin: 5px;
-            font-size: 16px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Pribadi Mahasiswa</title>
+  <style type="text/css" media="print">
+    @page {
+      size: A4;
+      margin: 0;
+      height: 99%;
+      page-break-after: auto !important;
+      page-break-before: auto !important;
+      page-break-inside: avoid !important;
+    }
+  </style>
+  <style>
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
 
-        .kop-surat {
-            text-align: center;
-            margin-bottom: 5px;
-        }
+    body {
+      font-size: 12px;
+      width: 21cm;
+    }
 
-        .kop-surat h1 {
-            font-size: 20px;
-            text-transform: uppercase;
-            margin: 5px 0;
-        }
+    table,
+    tr,
+    td {
+      font-size: 12px;
+    }
 
-        .kop-surat p {
-            margin: 2px 0;
-            font-size: 14px;
-        }
+    html,
+    body {
+      font-family: "Interstate-Regular";
+    }
 
-        hr {
-            border: 1px solid #000;
-            margin-bottom: 10px;
-        }
+    .flex {
+      display: flex;
+    }
 
-        .data-diri {
-            margin-bottom: 5px;
-        }
+    .text-center {
+      text-align: center;
+    }
 
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
+    .mx-auto {
+      margin: 0 auto;
+    }
 
-        .col {
-            flex: 1;
-            min-width: 50%;
-            box-sizing: border-box;
-            padding: 5px;
-        }
+    .justify-between {
+      justify-content: space-between;
+    }
 
-        .col p {
-            margin: 5px 0;
-            font-size: 16px;
-        }
+    .font-bold {
+      font-weight: 700;
+    }
 
-        /* Tabel Mata Kuliah */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+    .text-base {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
 
-        table th, table td {
-            border: 1px solid #000;
-            padding: 12px;
-            text-align: left;
-            font-size: 16px;
-        }
+    .text-lg {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
 
-        table th {
-            background-color: #f0f0f0;
-        }
+    .text-xl {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
 
-        .error-message {
-            color: red;
-            font-weight: bold;
-        }
+    .px-8 {
+      padding: 0 2rem;
+    }
 
-        .debug-log {
-            font-size: 12px;
-            background-color: #f8f8f8;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-        }
-    </style>
+    .mx-8 {
+      margin: 0 2rem;
+    }
+
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    .w-1\/2 {
+      width: 50%;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .dl-table {
+      display: flex;
+      margin: 0 0;
+    }
+
+    .dl-table .title {
+      min-width: 170px;
+    }
+
+    .text-center-table {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        width: 21cm;
+      }
+    }
+  </style>
 </head>
 <body>
-
 <div class="container">
     <div class="kop-surat">
-        <h1>SENTRA LAYANAN UNIVERSITAS TERBUKA TANA TORAJA</h1>
-        <p>Tana Toraja, Sulawesi Selatan</p>
-        <p>Jln. Buntu Pantan No. 22, Makale</p>
-        <p>http://www.uttoraja.com</p>
+        <h1 class="text-center font-bold text-xl">SENTRA LAYANAN UNIVERSITAS TERBUKA TANA TORAJA</h1>
+        <p class="text-center text-base">Tana Toraja, Sulawesi Selatan</p>
+        <p class="text-center text-base">Jln. Buntu Pantan No. 22, Makale</p>
+        <p class="text-center text-base">http://www.uttoraja.com</p>
         <hr>
+        <h2 class="text-center font-bold">DATA PRIBADI MAHASISWA</h2>
     </div>
 
     <?php
-    if (isset($_GET['Email']) && isset($_GET['Password'])) {  
-        $email = $_GET['Email'];
-        $password = $_GET['Password'];
+    if (isset($_GET['email']) && isset($_GET['password'])) {
+        $email = $_GET['email'];
+        $password = $_GET['password'];
 
         // Fungsi untuk mendapatkan access token
         function getAccessToken($email, $password) {
@@ -142,7 +174,7 @@
         $accessToken = getAccessToken($email, $password);
 
         if ($accessToken) {
-            // Query untuk data pribadi mahasiswa
+            // Fungsi untuk melakukan query
             function performQuery($accessToken, $query) {
                 $url = 'https://api-sia.ut.ac.id/backend-sia/api/graphql';
                 $headers = [
@@ -201,13 +233,32 @@
 
             // Cek dan tampilkan data pribadi jika ditemukan
             if (!empty($result1['data']['getPeragaanDp'])) {
-                echo '<div class="data-diri">';
+                echo '<div class="data-diri mx-8">';
                 echo '<div class="row">';
-                foreach ($result1['data']['getPeragaanDp'] as $key => $value) {
-                    echo '<div class="col">';
-                    echo '<p>' . htmlspecialchars($key) . ': <strong>' . htmlspecialchars($value) . '</strong> </p>';
-                    echo '</div>';
-                }
+
+                // Kolom 1 (kiri)
+                echo '<div class="w-1/2" style="font-size: 1rem;">';
+                echo '<p>NIM: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['nim']) . '</strong></p>';
+                echo '<p>Nama Mahasiswa: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaMahasiswa']) . '</strong></p>';
+                echo '<p>Nama UPBJJ: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaUpbjj']) . '</strong></p>';
+                echo '<p>Nama Fakultas: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaFakultas']) . '</strong></p>';
+                echo '<p>Nama Program Studi: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaProgramStudi']) . '</strong></p>';
+                echo '<p>Nama SIPAS: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaSipas']) . '</strong></p>';
+                echo '<p>NIK: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['nik']) . '</strong></p>';
+                echo '</div>';
+
+                // Kolom 2 (kanan)
+                echo '<div class="w-1/2" style="font-size: 1rem;">';
+                echo '<p>Tempat Lahir: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['tempatLahirMhs']) . '</strong></p>';
+                echo '<p>Tanggal Lahir: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['tanggalLahirMhs']) . '</strong></p>';
+                echo '<p>Agama: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaAgama']) . '</strong></p>';
+                echo '<p>Jenis Kelamin: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['jenisKelamin']) . '</strong></p>';
+                echo '<p>Nama Ibu Kandung: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaIbuKandung']) . '</strong></p>';
+                echo '<p>Nama Provinsi: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaProvinsi']) . '</strong></p>';
+                echo '<p>Nama Kabupaten/Kota: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaKabko']) . '</strong></p>';
+                echo '<p>Nomor HP: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['nomorHpMahasiswa']) . '</strong></p>';
+                echo '</div>';
+
                 echo '</div>'; // Penutup row
                 echo '</div>'; // Penutup data-diri
             } else {
@@ -229,8 +280,8 @@
 
             // Cek dan tampilkan data mata kuliah jika ditemukan
             if (!empty($result4['data']['getMataKuliahBerjalan'])) {
-                echo '<h2>Daftar Mata Kuliah Berjalan</h2>';
-                echo '<table>';
+                echo '<h2 class="text-center">Daftar Mata Kuliah Berjalan</h2>';
+                echo '<table class="text-center-table">';
                 echo '<thead>';
                 echo '<tr>';
                 echo '<th>No</th>';
@@ -246,6 +297,7 @@
                     echo '<td>' . htmlspecialchars($mataKuliah['kodeMataKuliah']) . '</td>';
                     echo '<td>' . htmlspecialchars($mataKuliah['namaMataKuliah']) . '</td>';
                     echo '</tr>';
+                    echo '<tr><td colspan="3">---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</td></tr>';  // Pemisah
                 }
                 echo '</tbody>';
                 echo '</table>';

@@ -29,9 +29,9 @@
         }
     </style>
     <script>
-        function cetakDP(email, password) {
+        function cetakDP(Email, Password) {
             // Membuka jendela pop-up untuk menampilkan halaman cetak DP
-            var popUp = window.open('print_dp.php?email=' + email + '&password=' + password, '_blank', 'width=800,height=600');
+            var popUp = window.open('print_dp.php?email=' + Email + '&password=' + Password, '_blank', 'width=800,height=600');
             
             // Memantau apakah jendela pop-up sudah ditutup
             var timer = setInterval(function() {
