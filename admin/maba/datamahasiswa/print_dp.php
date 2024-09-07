@@ -56,11 +56,6 @@
       font-weight: 700;
     }
 
-    .text-base {
-      font-size: 1rem;
-      line-height: 1.5rem;
-    }
-
     .text-lg {
       font-size: 1.25rem;
       line-height: 1.75rem;
@@ -111,6 +106,55 @@
       text-align: center;
     }
 
+    .tlb{
+      font-size: 1,5rem;
+    }
+
+    .data-pribadi{
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+
+    .nama-mahasiswa{
+      margin-bottom: 10px;
+    }
+
+    .flex-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .flex-item {
+      flex-basis: 48%; /* Setiap kolom mengambil 48% lebar kontainer */
+      box-sizing: border-box;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .label {
+      width: 40%; /* Lebar tetap untuk label */
+    }
+
+    .value {
+      width: 80%; /* Lebar tetap untuk nilai */
+      text-align: left;
+      font-size: 1,5rem;
+    }
+
+    .mkb{
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    
+    h1{
+      margin-top: 20px;
+    }
+
     @media print {
       body {
         width: 21cm;
@@ -122,11 +166,11 @@
 <div class="container">
     <div class="kop-surat">
         <h1 class="text-center font-bold text-xl">SENTRA LAYANAN UNIVERSITAS TERBUKA TANA TORAJA</h1>
-        <p class="text-center text-base">Tana Toraja, Sulawesi Selatan</p>
-        <p class="text-center text-base">Jln. Buntu Pantan No. 22, Makale</p>
-        <p class="text-center text-base">http://www.uttoraja.com</p>
+        <p class="text-center tlb">Makale, Tana Toraja, Sulawesi Selatan, 91811</p>
+        <p class="text-center tlb">Jln. Buntu Pantan No. 22, Makale</p>
+        <p class="text-center tlb">Webssite : uttoraja.com, Email : saluttanatoraja@gmail.com</p>
         <hr>
-        <h2 class="text-center font-bold">DATA PRIBADI MAHASISWA</h2>
+        <h2 class="text-center font-bold data-pribadi">DATA PRIBADI MAHASISWA</h2>
     </div>
 
     <?php
@@ -233,34 +277,34 @@
 
             // Cek dan tampilkan data pribadi jika ditemukan
             if (!empty($result1['data']['getPeragaanDp'])) {
-                echo '<div class="data-diri mx-8">';
-                echo '<div class="row">';
+              echo '<p class="mx-8">Nama Mahasiswa:</p>';
+              echo '<h2 class="nama-mahasiswa mx-8"><strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaMahasiswa']) . '</strong></h2>';
+              echo '<div class="flex-container data-diri mx-8">';
 
                 // Kolom 1 (kiri)
-                echo '<div class="w-1/2" style="font-size: 1rem;">';
-                echo '<p>NIM: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['nim']) . '</strong></p>';
-                echo '<p>Nama Mahasiswa: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaMahasiswa']) . '</strong></p>';
-                echo '<p>Nama UPBJJ: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaUpbjj']) . '</strong></p>';
-                echo '<p>Nama Fakultas: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaFakultas']) . '</strong></p>';
-                echo '<p>Nama Program Studi: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaProgramStudi']) . '</strong></p>';
-                echo '<p>Nama SIPAS: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaSipas']) . '</strong></p>';
-                echo '<p>NIK: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['nik']) . '</strong></p>';
+                echo '<div class="flex-item">';
+                echo '<div class="data-row"><span class="label">NIM</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['nim']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Tempat Lahir</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['tempatLahirMhs']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Tanggal Lahir</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['tanggalLahirMhs']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Agama</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['namaAgama']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Jenis Kelamin</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['jenisKelamin']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Nama Ibu Kandung</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['namaIbuKandung']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">NIK</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['nik']) . '</strong></span></div>';
                 echo '</div>';
-
+              
                 // Kolom 2 (kanan)
-                echo '<div class="w-1/2" style="font-size: 1rem;">';
-                echo '<p>Tempat Lahir: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['tempatLahirMhs']) . '</strong></p>';
-                echo '<p>Tanggal Lahir: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['tanggalLahirMhs']) . '</strong></p>';
-                echo '<p>Agama: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaAgama']) . '</strong></p>';
-                echo '<p>Jenis Kelamin: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['jenisKelamin']) . '</strong></p>';
-                echo '<p>Nama Ibu Kandung: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaIbuKandung']) . '</strong></p>';
-                echo '<p>Nama Provinsi: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaProvinsi']) . '</strong></p>';
-                echo '<p>Nama Kabupaten/Kota: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['namaKabko']) . '</strong></p>';
-                echo '<p>Nomor HP: <strong>' . htmlspecialchars($result1['data']['getPeragaanDp']['nomorHpMahasiswa']) . '</strong></p>';
+                echo '<div class="flex-item">';
+                echo '<div class="data-row"><span class="label">UPBJJ</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['namaUpbjj']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Fakultas</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['namaFakultas']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Program Studi:</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['namaProgramStudi']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">SIPAS</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['namaSipas']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Provinsi</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['namaProvinsi']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Kabupaten/Kota</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['namaKabko']) . '</strong></span></div>';
+                echo '<div class="data-row"><span class="label">Nomor HP</span><span class="value"><strong>: ' . htmlspecialchars($result1['data']['getPeragaanDp']['nomorHpMahasiswa']) . '</strong></span></div>';
                 echo '</div>';
-
-                echo '</div>'; // Penutup row
-                echo '</div>'; // Penutup data-diri
+            
+            echo '</div>'; // Penutup flex-container
+            
             } else {
                 echo '<p class="error-message">Error: Data pribadi tidak ditemukan.</p>';
             }
@@ -280,7 +324,7 @@
 
             // Cek dan tampilkan data mata kuliah jika ditemukan
             if (!empty($result4['data']['getMataKuliahBerjalan'])) {
-                echo '<h2 class="text-center">Daftar Mata Kuliah Berjalan</h2>';
+                echo '<h2 class="text-center mkb">DAFTAR MATA KULIAH</h2>';
                 echo '<table class="text-center-table">';
                 echo '<thead>';
                 echo '<tr>';
