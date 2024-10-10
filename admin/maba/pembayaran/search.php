@@ -60,7 +60,7 @@ if ($result->num_rows > 0) {
 
         echo "<tr>";
         echo "<td>" . $no++ . "</td>";
-        echo "<td>" . $row['nama_lengkap'] . "</td>";
+        echo "<td>" . stripslashes($row['nama_lengkap']) . "</td>";
         echo "<td>" . $row['jalur_program'] . "</td>";
         echo "<td>" . $row['jurusan'] . "</td>";
         echo "<td>" . $admisi_badge . "</td>";

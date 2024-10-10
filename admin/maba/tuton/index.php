@@ -67,7 +67,7 @@ require_once "../../koneksi.php";
                 // Tentukan status
                 if($existing) {
                     $status = 'Sukses';
-                    $password = $row['Password'];
+                    $password = $existing['Password']; // Mengambil password dari tabel tuton
                 } else {
                     $status = 'Belum';
                     $password = '';
@@ -83,24 +83,29 @@ require_once "../../koneksi.php";
                 echo '<td>'.$status.'</td>';
                 echo '<td>';
 
-                // Tombol Proses (tetap menggunakan teks)
+                // Tombol Proses
                 if($status != 'Sukses') {
                     echo '<button class="btn btn-primary proses-pendaftaran" data-no="'.$row['No'].'" data-nim="'.$row['NIM'].'" data-nama="'.$row['NamaLengkap'].'" data-email="'.$row['Email'].'">Proses</button> ';
                 } else {
                     echo '<button class="btn btn-secondary" disabled>Proses</button> ';
                 }
 
-                // Tombol Migrasi (gunakan ikon)
+                // Tombol Migrasi
                 if($status != 'Sukses') {
                     echo '<button class="btn btn-success migrasi-data" data-no="'.$row['No'].'" title="Migrasi"><i class="fas fa-exchange-alt"></i></button> ';
                 } else {
                     echo '<button class="btn btn-secondary" disabled><i class="fas fa-exchange-alt"></i></button> ';
                 }
 
-                // Tombol WhatsApp (gunakan ikon)
+                // Tombol WhatsApp
                 if($status == 'Sukses') {
                     $nomor_wa = $row['NomorHP'];
                     if(!empty($nomor_wa)) {
+                        // Mengganti awalan '0' menjadi '62' jika nomor dimulai dengan '0'
+                        if(substr($nomor_wa, 0, 1) == '0') {
+                            $nomor_wa = '62' . substr($nomor_wa, 1);
+                        }
+
                         // Mendapatkan waktu saat ini
                         date_default_timezone_set('Asia/Jakarta');
                         $jam = date('H');

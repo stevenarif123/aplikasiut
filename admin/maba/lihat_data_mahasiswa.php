@@ -11,7 +11,7 @@ require_once "../koneksi.php";
 $id = $_GET['No']; // Pastikan parameter 'No' sesuai dengan yang digunakan di URL
 
 // Query untuk mendapatkan data mahasiswa berdasarkan id
-$query = "SELECT * FROM mahasiswabaru WHERE No=$id";
+$query = "SELECT * FROM mahasiswabaru20242 WHERE No=$id";
 $result = mysqli_query($koneksi, $query);
 
 $mahasiswa = mysqli_fetch_assoc($result);

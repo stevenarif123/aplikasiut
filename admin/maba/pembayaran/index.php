@@ -423,6 +423,11 @@ $(document).ready(function() {
     $('#whatsappModal').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget);
         var nama = button.data('nama');
+		// Menghilangkan backslash yang mengekspansi tanda kutip tunggal atau ganda
+		nama = nama.replace(/\\/g, "'").replace(/\\"/g, '"');
+		// Menghilangkan backslash lainnya
+		nama = nama.replace(/\\/g, '');
+		
         var jurusan = button.data('jurusan');
         var spp = button.data('spp');
         var salut = button.data('salut');
@@ -433,13 +438,13 @@ $(document).ready(function() {
         var waktu = new Date().getHours();
         var salam = "Selamat ";
 
-                if (waktu >= 4 && waktu < 12) {
-                    salam += "pagi";
-                } else if (waktu >= 12 && waktu < 18) {
-                    salam += "siang";
-                } else {
-                    salam += "malam";
-                }
+        if (waktu >= 4 && waktu < 12) {
+            salam += "pagi";
+        } else if (waktu >= 12 && waktu < 18) {
+            salam += "siang";
+        } else {
+            salam += "malam";
+        }
 
         var message = `${salam},\n\nKami sampaikan bahwa ${nama} mendaftar ${jurusan} telah Lulus dan di terima di Universitas Terbuka. Berikut kami sertakan detail pembayaran untuk semester 1.\n\n`;
         message += `SPP : Rp${Number(spp).toLocaleString('id-ID')}\nSALUT : Rp${Number(salut).toLocaleString('id-ID')}\nAlmamater* : Rp${Number(almamater).toLocaleString('id-ID')}\n\n*TOTAL* : *Rp${Number(total).toLocaleString('id-ID')}*\n\n`;
@@ -451,7 +456,9 @@ $(document).ready(function() {
             }
         }
 
-        message += "Ket: *Almamater bersifat opsional atau tidak wajib.\n\n";
+        message += "Ket: *Almamater bersifat opsional atau tidak wajib*.\n\n";
+		
+		message += "*BATAS PEMBAYARAN SPP SAMPAI DENGAN TANGGAL 9 SEPTEMBER 2024*.\n\n";
         message += "Pembayaran dapat dilakukan melalui transfer atau cash yang diantar ke kantor. Jika melakukan pembayaran secara transfer dapat mengirim ke rekening berikut:\nNama : Ribka Padang\nBank : Mandiri\nNomor Rekening : 1700000588917\n\nKirim Bukti Transfer ke nomor 082293924242.\n\nDemikianlah penyampaian ini kami ucapkan terima kasih banyak.";
 
         var whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;

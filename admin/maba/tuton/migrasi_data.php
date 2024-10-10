@@ -17,7 +17,7 @@ if(isset($_POST['no'])) {
         $nama = $mahasiswa['NamaLengkap'];
         $jurusan = $mahasiswa['Jurusan'];
         $email = $mahasiswa['Email'];
-        $password = 'Tidak diketahui'; // Atau isi sesuai kebutuhan
+        $password = $mahasiswa['Password'];; // Atau isi sesuai kebutuhan
 
         // Cek apakah data sudah ada di tabel tuton
         $sql_check = "SELECT * FROM tuton WHERE NIM = ?";

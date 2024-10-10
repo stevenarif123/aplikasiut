@@ -533,6 +533,8 @@ if (isset($_GET['ajax'])) {
                                                         <option value="Pengajuan Admisi">Pengajuan Admisi</option>
                                                         <option value="Berkas Kurang">Berkas Kurang</option>
                                                         <option value="Admisi Diterima">Admisi Diterima</option>
+														<option value="Menunggu SPP">Menunggu SPP</option>
+														<option value="MAHASISWA UT">MAHASISWA UT</option>
                                                     </select>
                                                 </div>
 
@@ -984,201 +986,195 @@ if (isset($_GET['ajax'])) {
     <!-- Include jQuery -->
 
     <script>
-        // Load form for adding or editing laporan
-        $(document).on('click', '.btn-penambahan, .btn-edit_laporan', function(event) {
-            event.preventDefault();
-            var url = $(this).attr('href');
-            $('#content').load(url + window.location.search);
-        })
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCopyButtons();
+        updateAccordion();
+        updateStatusPembayaran();
+    });
+
+    function updateCopyButtons() {
+        const copyButtons = document.querySelectorAll('.copy-icon');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const textToCopy = this.previousElementSibling.textContent.trim();
+                copyToClipboard(textToCopy);
+            });
+        });
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Teks berhasil disalin!');
+        }).catch((err) => {
+            showToast('Gagal menyalin teks', true);
+            console.error('Gagal menyalin teks: ', err);
+        });
+    }
+
+    function confirmDelete(no) {
+        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            window.location.href = 'hapus_data_mahasiswa.php?No=' + no;
+        }
+    }
+
+    function updateResults() {
+    const keyword = document.getElementById('keyword').value;
+    const search_column = document.getElementById('search_column').value;
+    const limit = document.getElementById('limit').value;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `dashboard.php?ajax=1&keyword=${keyword}&search_column=${search_column}&limit=${limit}`, true);
+    xhr.onload = function() {
+        if (this.status === 200) {
+            document.getElementById('results').innerHTML = this.responseText;
             updateCopyButtons();
             updateAccordion();
-            updateStatusPembayaran();
-        });
-
-        function updateCopyButtons() {
-            const copyButtons = document.querySelectorAll('.copy-icon');
-            copyButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const textToCopy = this.previousElementSibling.textContent.trim();
-                    copyToClipboard(textToCopy);
-                });
-            });
+            updateStatusPembayaran(); // Tambahkan ini untuk memperbarui status pembayaran setelah konten dimuat
         }
+    };
+    xhr.send();
+}
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('Teks berhasil disalin!');
-            }).catch((err) => {
-                showToast('Gagal menyalin teks', true);
-                console.error('Gagal menyalin teks: ', err);
-            });
-        }
+    $(document).ready(function() {
+        updateCopyButtons(); // Make sure to call this to initialize the copy buttons
 
-        function confirmDelete(no) {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                window.location.href = 'hapus_data_mahasiswa.php?No=' + no;
-            }
-        }
+        // Trigger modal with data
+        $(document).on('click', '.edit-btn', function() {
+            var no = $(this).data('no');
 
-        function updateResults() {
-            const keyword = document.getElementById('keyword').value;
-            const search_column = document.getElementById('search_column').value;
-            const limit = document.getElementById('limit').value;
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `dashboard.php?ajax=1&keyword=${keyword}&search_column=${search_column}&limit=${limit}`, true);
-            xhr.onload = function() {
-                if (this.status === 200) {
-                    document.getElementById('results').innerHTML = this.responseText;
-                    updateCopyButtons();
-                    updateAccordion();
-                    updateStatusPembayaran(); // Tambahkan ini untuk memperbarui status pembayaran setelah konten dimuat
-                }
-            };
-            xhr.send();
-        }
-
-        $(document).ready(function() {
-            updateCopyButtons(); // Make sure to call this to initialize the copy buttons
-
-            // Trigger modal with data
-            $(document).on('click', '.edit-btn', function() {
-                var no = $(this).data('no');
-
-                $.ajax({
-                    url: 'ambil_data_mahasiswa.php', // Pastikan path ini benar
-                    method: 'POST',
-                    data: {
-                        No: no
-                    },
-                    success: function(data) {
-                        try {
-                            var user = JSON.parse(data);
-                            if (user) {
-                                // Ensure all elements are in user before accessing them
-                                $('#edit-no').val(user.No);
-                                $('#edit-namalengkap').val(user.NamaLengkap);
-                                $('#edit-nomorhp').val(user.NomorHP);
-                                $('#edit-email').val(user.Email);
-                                $('#edit-password').val(user.Password);
-                                $('#edit-statussia').val(user.STATUS_INPUT_SIA);
-                                $('#editModal').modal('show'); // Show modal after data is loaded
-                            } else {
-                                console.error('No user data returned');
-                            }
-                        } catch (e) {
-                            console.error("Error parsing JSON!", e);
-                            console.log("Raw response:", data); // Tambahkan ini untuk menampilkan respons mentah
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX error:", status, error);
-                    }
-                });
-            });
-
-            // Handle form submission
-            $('#editForm').on('submit', function(e) {
-                e.preventDefault();
-
-                var no = $('#edit-no').val();
-                var namalengkap = $('#edit-namalengkap').val();
-                var nomorhp = $('#edit-nomorhp').val();
-                var email = $('#edit-email').val();
-                var password = $('#edit-password').val();
-                var statussia = $('#edit-statussia').val();
-
-                saveData(no, namalengkap, nomorhp, email, password, statussia);
-            });
-
-            function saveData(no, namalengkap, nomorhp, email, password, statussia) {
-                const data = {
-                    No: no,
-                    NamaLengkap: namalengkap,
-                    NomorHP: nomorhp,
-                    Email: email,
-                    Password: password,
-                    STATUS_INPUT_SIA: statussia
-                };
-
-                $.ajax({
-                    url: 'simpan_data.php',
-                    method: 'POST',
-                    data: data,
-                    success: function(response) {
-                        if (response === 'success') {
-                            showToast('Data berhasil disimpan!');
-                            $('#editModal').modal('hide');
-                            location.reload(); // Optionally refresh the page to show changes
+            $.ajax({
+                url: 'ambil_data_mahasiswa.php', // Pastikan path ini benar
+                method: 'POST',
+                data: {
+                    No: no
+                },
+                success: function(data) {
+                    try {
+                        var user = JSON.parse(data);
+                        if (user) {
+                            // Ensure all elements are in user before accessing them
+                            $('#edit-no').val(user.No);
+                            $('#edit-namalengkap').val(user.NamaLengkap);
+                            $('#edit-nomorhp').val(user.NomorHP);
+                            $('#edit-email').val(user.Email);
+                            $('#edit-password').val(user.Password);
+                            $('#edit-statussia').val(user.STATUS_INPUT_SIA);
+                            $('#editModal').modal('show'); // Show modal after data is loaded
                         } else {
-                            showToast('Gagal menyimpan data: ' + response, true);
+                            console.error('No user data returned');
                         }
-                    },
-                    error: function() {
-                        showToast('Gagal menyimpan data', true);
+                    } catch (e) {
+                        console.error("Error parsing JSON!", e);
+                        console.log("Raw response:", data); // Tambahkan ini untuk menampilkan respons mentah
                     }
-                });
-            }
-
-            function showToast(message, isError = false) {
-                const toast = $('#toast');
-                toast.text(message);
-                toast.removeClass('opacity-0 bg-success bg-danger');
-                toast.addClass(isError ? 'bg-danger' : 'bg-success');
-                toast.addClass('opacity-100');
-
-                setTimeout(() => {
-                    toast.removeClass('opacity-100');
-                    toast.addClass('opacity-0');
-                }, 3000);
-            }
-
-            function updateStatusPembayaran() {
-                $('.status-pembayaran').each(function() {
-                    var nim = $(this).data('nim');
-                    var nama = $(this).data('nama');
-                    var identifier = nim ? nim : nama;
-
-                    $.ajax({
-                        url: 'get_saldo.php', // Pastikan path ini benar
-                        method: 'POST',
-                        data: {
-                            identifier: identifier
-                        },
-                        success: function(response) {
-                            var saldoData;
-                            try {
-                                saldoData = JSON.parse(response);
-                            } catch (e) {
-                                console.error("Error parsing JSON!", e);
-                                console.log("Raw response:", response); // Tambahkan ini untuk menampilkan respons mentah
-                                return;
-                            }
-                            var statusPembayaranElement = $('.status-pembayaran[data-id="' + identifier + '"]');
-                            if (saldoData && !saldoData.error) {
-                                var statusText = saldoData.isLunas ? 'Lunas' : 'Belum Lunas';
-                                var statusColor = saldoData.isLunas ? 'text-success' : 'text-danger';
-                                statusPembayaranElement.html(`<p class="${statusColor}"> ${statusText}</p>`);
-                            } else {
-                                statusPembayaranElement.html('<p>Data saldo tidak ditemukan</p>');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("AJAX error:", status, error);
-                            $('.status-pembayaran[data-id="' + identifier + '"]').html('<p>Terjadi kesalahan saat mengambil data saldo</p>');
-                        }
-                    });
-                });
-            }
-
-            $(document).ready(function() {
-                updateStatusPembayaran(); // Pastikan untuk memanggil fungsi ini setelah dokumen siap
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX error:", status, error);
+                }
             });
-
-
         });
-    </script>
+
+        // Handle form submission
+        $('#editForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var no = $('#edit-no').val();
+            var namalengkap = $('#edit-namalengkap').val();
+            var nomorhp = $('#edit-nomorhp').val();
+            var email = $('#edit-email').val();
+            var password = $('#edit-password').val();
+            var statussia = $('#edit-statussia').val();
+
+            saveData(no, namalengkap, nomorhp, email, password, statussia);
+        });
+
+        function saveData(no, namalengkap, nomorhp, email, password, statussia) {
+            const data = {
+                No: no,
+                NamaLengkap: namalengkap,
+                NomorHP: nomorhp,
+                Email: email,
+                Password: password,
+                STATUS_INPUT_SIA: statussia
+            };
+
+            $.ajax({
+                url: 'simpan_data.php',
+                method: 'POST',
+                data: data,
+                success: function(response) {
+                    if (response === 'success') {
+                        showToast('Data berhasil disimpan!');
+                        $('#editModal').modal('hide');
+                        location.reload(); // Optionally refresh the page to show changes
+                    } else {
+                        showToast('Gagal menyimpan data: ' + response, true);
+                    }
+                },
+                error: function() {
+                    showToast('Gagal menyimpan data', true);
+                }
+            });
+        }
+
+        function showToast(message, isError = false) {
+            const toast = $('#toast');
+            toast.text(message);
+            toast.removeClass('opacity-0 bg-success bg-danger');
+            toast.addClass(isError ? 'bg-danger' : 'bg-success');
+            toast.addClass('opacity-100');
+
+            setTimeout(() => {
+                toast.removeClass('opacity-100');
+                toast.addClass('opacity-0');
+            }, 3000);
+        }
+
+        function updateStatusPembayaran() {
+    $('.status-pembayaran').each(function() {
+        var nim = $(this).data('nim');
+        var nama = $(this).data('nama');
+        var identifier = nim ? nim : nama;
+
+        $.ajax({
+            url: 'get_saldo.php', // Pastikan path ini benar
+            method: 'POST',
+            data: {
+                identifier: identifier
+            },
+            success: function(response) {
+                var saldoData;
+                try {
+                    saldoData = JSON.parse(response);
+                } catch (e) {
+                    console.error("Error parsing JSON!", e);
+                    console.log("Raw response:", response); // Tambahkan ini untuk menampilkan respons mentah
+                    return;
+                }
+                var statusPembayaranElement = $('.status-pembayaran[data-id="' + identifier + '"]');
+                if (saldoData && !saldoData.error) {
+                    var statusText = saldoData.isLunas ? 'Lunas' : 'Belum Lunas';
+                    var statusColor = saldoData.isLunas ? 'text-success' : 'text-danger';
+                    statusPembayaranElement.html(`<p class="${statusColor}"> ${statusText}</p>`);
+                } else {
+                    statusPembayaranElement.html('<p>Data saldo tidak ditemukan</p>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+                $('.status-pembayaran[data-id="' + identifier + '"]').html('<p>Terjadi kesalahan saat mengambil data saldo</p>');
+            }
+        });
+    });
+}
+
+$(document).ready(function() {
+    updateStatusPembayaran(); // Pastikan untuk memanggil fungsi ini setelah dokumen siap
+});
+
+
+    });
+</script>
 
 
 

@@ -1,5 +1,5 @@
-// Koneksi ke database
 <?php
+// Koneksi ke database
 require_once("../../koneksi.php");
 
 if ($koneksi->connect_error) {
@@ -11,7 +11,7 @@ $sql_select = "SELECT NamaLengkap, JalurProgram, Jurusan FROM mahasiswabaru20242
 $result = $koneksi->query($sql_select);
 
 if ($result->num_rows > 0) {
-    // Loop melalui setiap baris data dan proses
+    // Loop melalui setiap baris data dan masukkan ke tabel catatan_bayarmaba20242
     while($row = $result->fetch_assoc()) {
         // Escape nilai-nilai yang diambil dari database
         $nama_lengkap = $koneksi->real_escape_string($row['NamaLengkap']);
@@ -32,15 +32,14 @@ if ($result->num_rows > 0) {
         $spp = 0; // nilai default SPP, nanti akan di update sesuai input
         $total_bayar = $almamater + $salut + $spp;
 
-        // Cek apakah data mahasiswa berdasarkan jalur_program dan jurusan sudah ada di tabel catatan_bayarmaba20242
-        $sql_check = "SELECT COUNT(*) as count, nama_lengkap FROM catatan_bayarmaba20242 
-                      WHERE jalur_program='$jalur_program' AND jurusan='$jurusan' 
-                      LIMIT 1"; // Batasi untuk satu hasil yang paling cocok
+        // Cek apakah data sudah ada di tabel catatan_bayarmaba20242
+        $sql_check = "SELECT COUNT(*) as count FROM catatan_bayarmaba20242 
+                      WHERE nama_lengkap='$nama_lengkap' AND jalur_program='$jalur_program' AND jurusan='$jurusan'";
         $check_result = $koneksi->query($sql_check);
         $check_row = $check_result->fetch_assoc();
 
         if ($check_row['count'] == 0) {
-            // Jika data tidak ditemukan, masukkan data baru ke tabel catatan_bayarmaba20242
+            // Masukkan data ke tabel catatan_bayarmaba20242
             $sql_insert = "INSERT INTO catatan_bayarmaba20242 (nama_lengkap, jalur_program, jurusan, admisi, almamater, salut, spp, total_bayar, jumlah_pembayaran) 
                            VALUES ('$nama_lengkap', '$jalur_program', '$jurusan', '$admisi', '$almamater', '$salut', '$spp', '$total_bayar', 0)";
 
@@ -50,24 +49,7 @@ if ($result->num_rows > 0) {
                 echo "Error: " . $sql_insert . "<br>" . $koneksi->error . "<br>";
             }
         } else {
-            // Update nama_lengkap dan jurusan jika data sudah ada, tanpa mengubah kolom lainnya
-            $nama_lengkap_lama = $check_row['nama_lengkap']; // Ambil nama lama untuk referensi
-
-            // Tampilkan pesan jika nama berubah
-            if ($nama_lengkap !== $nama_lengkap_lama) {
-                echo "Nama berubah dari $nama_lengkap_lama menjadi $nama_lengkap<br>";
-            }
-
-            // Update nama_lengkap dan jurusan, jika ditemukan data yang cocok
-            $sql_update = "UPDATE catatan_bayarmaba20242 
-                           SET nama_lengkap='$nama_lengkap', jurusan='$jurusan'
-                           WHERE jalur_program='$jalur_program' AND jurusan='$jurusan'";
-
-            if ($koneksi->query($sql_update) === TRUE) {
-                echo "Data berhasil diupdate untuk $nama_lengkap<br>";
-            } else {
-                echo "Error: " . $sql_update . "<br>" . $koneksi->error . "<br>";
-            }
+            echo "Data untuk $nama_lengkap sudah ada di tabel tujuan<br>";
         }
     }
 } else {
@@ -75,3 +57,4 @@ if ($result->num_rows > 0) {
 }
 
 $koneksi->close();
+?>

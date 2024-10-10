@@ -117,15 +117,17 @@ if ($result === false) {
 $mahasiswaData = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        $isRpl = $row["JalurProgram"] === 'RPL';
+
         $mahasiswaData[] = [
             "id" => $row["No"],
-            "email" => $row["Email"],
-            "name" => $row["NamaLengkap"],
+            "email" => stripslashes($row["Email"]),
+            "name" => stripslashes($row["NamaLengkap"]),
             "password" => $row["Password"],
             "passwordConfirmation" => $row["Password"],
             "tanggalLahirMahasiswa" => date('d/m/Y', strtotime($row["TanggalLahir"])),
-            "tempatLahirMahasiswa" => $row["TempatLahir"],
-            "namaIbuKandung" => $row["NamaIbuKandung"],
+            "tempatLahirMahasiswa" => stripslashes($row["TempatLahir"]),
+            "namaIbuKandung" => stripslashes($row["NamaIbuKandung"]),
             "nik" => $row["NIK"],
             "noHpMahasiswa" => $row["NomorHP"],
             "idNegara" => null,
@@ -133,7 +135,7 @@ if ($result->num_rows > 0) {
             "idJenjang" => 5,
             "idProdi" => (int)$row["id_prodi"],
             "isWna" => false,
-            "isRpl" => false,
+            "isRpl" => $isRpl,
             "nomorPassport" => null
         ];
     }

@@ -145,7 +145,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="email">Email:</label>
-                        <input type="email" name="Email" id="email" class="form-control" required>
+                        <input type="email" name="Email" id="email" class="form-control">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="password">Password Mahasiswa:</label>
@@ -264,7 +264,7 @@
                             <label class="form-check-label" for="jenis_sekolah_smk">SMK</label>
                         </div>
                     </div>
-                    <div class="form-group hidden" id="jurusan_smk_group">
+                    <div class="form-group hidden" id="jurusan_smk_group2">
                         <label for="jurusan_smk">Jurusan SMK:</label>
                         <input type="text" name="JurusanSMK" id="jurusan_smk" class="form-control">
                     </div>
@@ -328,6 +328,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const layananPaketInputs = document.querySelectorAll('input[name="LayananPaketSemester"]');
     const jurusanSelect = document.getElementById("jurusan");
     const jurusanSMKGroup = document.getElementById("jurusan_smk_group");
+	const jurusanSMKGroup2 = document.getElementById("jurusan_smk_group2");
     const rplFields = document.getElementById("rpl-fields");
     const regulerFields = document.getElementById("reguler-fields");
     const tahunIjazahInput = document.getElementById("tahun_ijazah");
@@ -372,8 +373,10 @@ document.addEventListener("DOMContentLoaded", function() {
         input.addEventListener('change', function() {
             if (this.value === 'SMK') {
                 jurusanSMKGroup.classList.remove('hidden');
+				jurusanSMKGroup2.classList.remove('hidden');
             } else {
                 jurusanSMKGroup.classList.add('hidden');
+				jurusanSMKGroup2.classList.add('hidden');
             }
         });
     });
@@ -424,7 +427,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (result.success) {
                     anime({
                         targets: '.box-form',
-                        scale: 1.1,
                         duration: 1000,
                         elasticity: 0.5,
                         complete: function() {

@@ -7,7 +7,7 @@ $result = $koneksi->query($sql);
 $data = [];
 while ($row = $result->fetch_assoc()) {
     // Check if data exists in mahasiswabaru table
-    $sql_check = "SELECT COUNT(*) AS count FROM mahasiswabaru WHERE nik = '" . $row['nik'] . "'";
+    $sql_check = "SELECT COUNT(*) AS count FROM mahasiswabaru20242 WHERE nik = '" . $row['nik'] . "'";
     $check_result = $koneksi->query($sql_check);
     $check_row = $check_result->fetch_assoc();
     
