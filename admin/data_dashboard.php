@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
+  header("Location: ./halaman/login.html");
   exit;
 }
 ?>

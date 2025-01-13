@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="html/assets/js/color-modes.js"></script>
+  <head><script src="../aset/js/color-modes.js"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
-<link href="html/assets/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../aset/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     <style>
       .bd-placeholder-img {
@@ -96,7 +96,7 @@
       }
     </style>
     <!-- Custom styles for this template -->
-    <link href="html/styles/sidebars.css" rel="stylesheet" type="text/css">
+    <link href="../aset/styles/sidebars.css" rel="stylesheet" type="text/css">
   </head>
   <body>
 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -186,6 +186,6 @@
     </div>
   </div>
 </main>
-<script src="html/assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../aset/dist/js/bootstrap.bundle.min.js"></script>
     <script src="html/styles/sidebars.js"></script></body>
 </html>

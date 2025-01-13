@@ -49,7 +49,7 @@ if (isset($_POST['search'])) {
   $keyword = $_POST['keyword'];
 }
 // Query untuk mencari data mahasiswa berdasarkan kata kunci
-$query = "SELECT * FROM mahasiswa WHERE NamaLengkap LIKE '%$keyword%' OR Nim LIKE '%$keyword%' ORDER BY No DESC $limit_sql";
+$query = "SELECT * FROM mahasiswa WHERE NamaLengkap LIKE '%$keyword%' OR NIM LIKE '%$keyword%' ORDER BY No DESC $limit_sql";
 $result = mysqli_query($koneksi, $query);
 if (!$result) {
   die("Query gagal: " . mysqli_error($koneksi));
@@ -60,7 +60,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Hitung jumlah total data
-$query_total = "SELECT COUNT(*) AS total FROM mahasiswa WHERE NamaLengkap LIKE '%$keyword%' OR Nim LIKE '%$keyword%'";
+$query_total = "SELECT COUNT(*) AS total FROM mahasiswa WHERE NamaLengkap LIKE '%$keyword%' OR NIM LIKE '%$keyword%'";
 $result_total = mysqli_query($koneksi, $query_total);
 $row_total = mysqli_fetch_assoc($result_total);
 $total_data = $row_total['total'];
@@ -106,8 +106,8 @@ $total_data = $row_total['total'];
                                     ?>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <td class="px-4 py-2"><?php echo $no++; ?></td>
-                                        <td class="px-4 py-2"><?php echo $mhs['Nim']; ?></td>
-                                        <td class="px-4 py-2"><?php echo $mhs['NamaLengkap']; ?></td>
+                                        <td class="px-4 py-2"><?php echo $mhs['NIM']; ?></td>
+                                        <td class="px-4 py-2"><?php echo stripcslashes($mhs['NamaLengkap']); ?></td>
                                         <td class="px-4 py-2"><?php echo $mhs['Email']; ?></td>
                                         <td class="px-4 py-2"><?php echo $mhs['Password']; ?></td>
                                         <td class="px-4 py-2"><?php echo $mhs['STATUS_INPUT_SIA']; ?></td>
@@ -157,7 +157,7 @@ $total_data = $row_total['total'];
                                 }
                                 ?>
                                 <li>
-                                    <a href="mahasiswa.php?halaman=<?php echo $i; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>" class="px-3 py-2 leading-tight <?php echo $active; ?> border border-gray-300">
+                                    <a href="index.php?halaman=<?php echo $i; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>" class="px-3 py-2 leading-tight <?php echo $active; ?> border border-gray-300">
                                         <?php echo $i; ?>
                                     </a>
                                 </li>
