@@ -1,3 +1,71 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+if (!isset($_SESSION['username'])) {
+  header("Location: ../login.php");
+}
+
+// Koneksi ke database
+require_once "../koneksi.php";
+// Di awal file atau di tempat Anda ingin konten dashboard.html muncul
+//include 'dashboard.html';
+
+if (!$koneksi) {
+  die("Koneksi gagal: " . mysqli_connect_error());
+}
+
+// Inisialisasi variabel
+$keyword = "";
+$mahasiswa = [];
+
+// Query untuk mendapatkan data user
+$username = $_SESSION['username'];
+$query = "SELECT * FROM admin WHERE username='$username'";
+$result = mysqli_query($koneksi, $query);
+$user = mysqli_fetch_assoc($result);
+if (!$result) {
+  die("Query gagal: " . mysqli_error($koneksi));
+}
+
+// Tentukan jumlah data per halaman
+$jumlah_data_per_halaman = isset($_GET['jumlah_data_per_halaman']) ? $_GET['jumlah_data_per_halaman'] : 10;
+
+// Cek jika jumlah data per halaman adalah 'all', maka query tanpa LIMIT
+if ($jumlah_data_per_halaman == 'all') {
+    $limit_sql = "";
+} else {
+    // Hitung halaman saat ini
+    $halaman_saat_ini = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
+
+    // Hitung offset data
+    $offset = ($halaman_saat_ini - 1) * (int)$jumlah_data_per_halaman;
+    $limit_sql = "LIMIT $offset, $jumlah_data_per_halaman";
+}
+
+// Periksa apakah formulir pencarian telah disubmit
+if (isset($_POST['search'])) {
+  // Ambil kata kunci dari formulir
+  $keyword = $_POST['keyword'];
+}
+// Query untuk mencari data mahasiswa berdasarkan kata kunci
+$query = "SELECT * FROM mahasiswa WHERE NamaLengkap LIKE '%$keyword%' OR Nim LIKE '%$keyword%' ORDER BY No DESC $limit_sql";
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+  die("Query gagal: " . mysqli_error($koneksi));
+}
+// Simpan hasil pencarian ke dalam array
+while ($row = mysqli_fetch_assoc($result)) {
+  $mahasiswa[] = $row;
+}
+
+// Hitung jumlah total data
+$query_total = "SELECT COUNT(*) AS total FROM mahasiswa WHERE NamaLengkap LIKE '%$keyword%' OR Nim LIKE '%$keyword%'";
+$result_total = mysqli_query($koneksi, $query_total);
+$row_total = mysqli_fetch_assoc($result_total);
+$total_data = $row_total['total'];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     
@@ -13,11 +81,11 @@
         <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
 		<!-- App css -->
-		<link href="aset/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-		<link href="aset/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+		<link href="../aset/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+		<link href="../aset/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
 		<!-- icons -->
-		<link href="aset/css/icons.min.css" rel="stylesheet" type="text/css" />
+		<link href="../aset/css/icons.min.css" rel="stylesheet" type="text/css" />
 
     </head>
 
@@ -49,7 +117,7 @@
                         </li>
                         <li class="dropdown notification-list topbar-dropdown">
                             <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <img src="aset/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
+                                <img src="../aset/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
                                 <span class="pro-user-name ml-1">
                                     Geneva <i class="mdi mdi-chevron-down"></i> 
                                 </span>
@@ -101,21 +169,21 @@
                     <div class="logo-box">
                         <a href="index.html" class="logo logo-dark text-center">
                             <span class="logo-sm">
-                                <img src="aset/images/logo-sm.png" alt="" height="22">
+                                <img src="../aset/images/logo-sm.png" alt="" height="22">
                                 <!-- <span class="logo-lg-text-light">UBold</span> -->
                             </span>
                             <span class="logo-lg">
-                                <img src="aset/images/logo-dark.png" alt="" height="20">
+                                <img src="../aset/images/logo-dark.png" alt="" height="20">
                                 <!-- <span class="logo-lg-text-light">U</span> -->
                             </span>
                         </a>
     
                         <a href="index.html" class="logo logo-light text-center">
                             <span class="logo-sm">
-                                <img src="aset/images/logo-sm.png" alt="" height="22">
+                                <img src="../aset/images/logo-sm.png" alt="" height="22">
                             </span>
                             <span class="logo-lg">
-                                <img src="aset/images/logo-light.png" alt="" height="20">
+                                <img src="../aset/images/logo-light.png" alt="" height="20">
                             </span>
                         </a>
                     </div>
@@ -301,7 +369,7 @@
                             </li>
                             
                             <li>
-                                <a href="#sidebarAset" data-toggle="collapse">
+                                <a href="#sidebar../aset" data-toggle="collapse">
                                     <i class="icon-layers"></i>
                                     <span>Aset</span>
                                     <span class="menu-arrow"></span>
@@ -309,7 +377,7 @@
                                  <div class="collapse" id="sidebarAset">
                                     <ul class="nav-second-level">
                                         <li>
-                                            <a href="aset/css/styles.css">CSS</a>
+                                            <a href="../aset/css/styles.css">CSS</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -348,8 +416,111 @@
                                             <li class="breadcrumb-item active">Dashboard</li>
                                         </ol>
                                     </div>
-                                    <h4 class="page-title">Starter</h4>
+                                    <h4 class="page-title">DATA MAHASISWA</h4>
                                 </div>
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14">  
+            <div id="content">  
+                <?php if (count($mahasiswa) > 0) { ?>  
+                    <form action="" method="POST" class="mb-3">  
+                        <div class="form-group">  
+                            <div class="input-group">  
+                                <input type="text" class="form-control" placeholder="Cari berdasarkan nama atau Nim" name="keyword">  
+                                <div class="input-group-append">  
+                                    <button type="submit" class="btn btn-primary" name="search">Cari</button>  
+                                </div>  
+                            </div>  
+                        </div>  
+                    </form>  
+                    <div class="table-responsive">  
+                        <table class="table table-bordered">  
+                            <thead>  
+                                <tr>  
+                                    <th>No</th>  
+                                    <th>NIM</th>  
+                                    <th>Nama Lengkap</th>  
+                                    <th>Email</th>  
+                                    <th>Password</th>  
+                                    <th>Status SIA</th>  
+                                    <th>Aksi</th>  
+                                </tr>  
+                            </thead>  
+                            <tbody>  
+                                <?php  
+                                $no = 1;  
+                                foreach ($mahasiswa as $mhs) {  
+                                    ?>  
+                                    <tr>  
+                                        <td><?php echo $no++; ?></td>  
+                                        <td><?php echo $mhs['Nim']; ?></td>  
+                                        <td><?php echo stripcslashes($mhs['NamaLengkap']); ?></td>  
+                                        <td><?php echo $mhs['Email']; ?></td>  
+                                        <td><?php echo $mhs['Password']; ?></td>  
+                                        <td><?php echo $mhs['STATUS_INPUT_SIA']; ?></td>  
+                                        <td>  
+                                            <a href="lihat_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-primary">Detail</a>  
+                                            <a href="edit_data.php?No=<?php echo $mhs['No']; ?>" class="btn btn-warning">Edit</a>  
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal<?php echo $mhs['No']; ?>">Hapus</button>  
+                                            <div id="exampleModal<?php echo $mhs['No']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+                                                <div class="modal-dialog" role="document">  
+                                                    <div class="modal-content">  
+                                                        <div class="modal-header">  
+                                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>  
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
+                                                                <span aria-hidden="true">&times;</span>  
+                                                            </button>  
+                                                        </div>  
+                                                        <div class="modal-body">  
+                                                            Apakah Anda yakin ingin menghapus data ini?  
+                                                        </div>  
+                                                        <div class="modal-footer">  
+                                                            <a href="hapus_data_mahasiswa.php?No=<?php echo $mhs['No']; ?>" class="btn btn-danger">Hapus</a>  
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>  
+                                                        </div>  
+                                                    </div>  
+                                                </div>  
+                                            </div>  
+                                        </td>  
+                                    </tr>  
+                                    <?php  
+                                }  
+                                ?>  
+                            </tbody>  
+                        </table>  
+                    </div>  
+                    <nav aria-label="Page navigation example" class="mt-4">  
+                        <ul class="pagination">  
+                            <?php  
+                            $jumlah_halaman = ceil($total_data / $jumlah_data_per_halaman);  
+                            for ($i = 1; $i <= $jumlah_halaman; $i++) {  
+                                if ($i == $halaman_saat_ini) {  
+                                    $active = "active";  
+                                } else {  
+                                    $active = "";  
+                                }  
+                                ?>  
+                                <li class="page-item <?php echo $active; ?>">  
+                                    <a href="index.php?halaman=<?php echo $i; ?>&jumlah_data_per_halaman=<?php echo $jumlah_data_per_halaman; ?>" class="page-link">  
+                                        <?php echo $i; ?>  
+                                    </a>  
+                                </li>  
+                                <?php  
+                            }  
+                            ?>  
+                        </ul>  
+                    </nav>  
+                <?php  
+                } else {  
+                    ?>  
+                    <div class="alert alert-warning" role="alert">  
+                        Data tidak ditemukan  
+                    </div>  
+                <?php  
+                }  
+                ?>  
+            </div>  
+        </div>  
+    </div>  
+
                             </div>
                         </div>     
                         <!-- end page title --> 
@@ -481,7 +652,7 @@
                             <a href="javascript: void(0);" class="text-reset notification-item">
                                 <div class="media">
                                     <div class="position-relative mr-2">
-                                        <img src="aset/images/users/user-9.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                        <img src="../aset/images/users/user-9.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         <i class="mdi mdi-circle user-status busy"></i>
                                     </div>
                                     <div class="media-body overflow-hidden">
@@ -500,7 +671,7 @@
                             <a href="javascript: void(0);" class="text-reset notification-item">
                                 <div class="media">
                                     <div class="position-relative mr-2">
-                                        <img src="aset/images/users/user-2.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                        <img src="../aset/images/users/user-2.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         <i class="mdi mdi-circle user-status online"></i>
                                     </div>
                                     <div class="media-body overflow-hidden">
@@ -515,7 +686,7 @@
                             <a href="javascript: void(0);" class="text-reset notification-item">
                                 <div class="media">
                                     <div class="position-relative mr-2">
-                                        <img src="aset/images/users/user-4.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                        <img src="../aset/images/users/user-4.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         <i class="mdi mdi-circle user-status away"></i>
                                     </div>
                                     <div class="media-body overflow-hidden">
@@ -530,7 +701,7 @@
                             <a href="javascript: void(0);" class="text-reset notification-item">
                                 <div class="media">
                                     <div class="position-relative mr-2">
-                                        <img src="aset/images/users/user-5.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                        <img src="../aset/images/users/user-5.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         <i class="mdi mdi-circle user-status online"></i>
                                     </div>
                                     <div class="media-body overflow-hidden">
@@ -545,7 +716,7 @@
                             <a href="javascript: void(0);" class="text-reset notification-item">
                                 <div class="media">
                                     <div class="position-relative mr-2">
-                                        <img src="aset/images/users/user-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                        <img src="../aset/images/users/user-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         <i class="mdi mdi-circle user-status online"></i>
                                     </div>
                                     <div class="media-body overflow-hidden">
@@ -560,7 +731,7 @@
                             <a href="javascript: void(0);" class="text-reset notification-item">
                                 <div class="media">
                                     <div class="position-relative mr-2">
-                                        <img src="aset/images/users/user-7.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                        <img src="../aset/images/users/user-7.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         <i class="mdi mdi-circle user-status busy"></i>
                                     </div>
                                     <div class="media-body overflow-hidden">
@@ -575,7 +746,7 @@
                             <a href="javascript: void(0);" class="text-reset notification-item">
                                 <div class="media">
                                     <div class="position-relative mr-2">
-                                        <img src="aset/images/users/user-8.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                        <img src="../aset/images/users/user-8.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         <i class="mdi mdi-circle user-status away"></i>
                                     </div>
                                     <div class="media-body overflow-hidden">
@@ -787,11 +958,13 @@
         <div class="rightbar-overlay"></div>
 
         <!-- Vendor js -->
-        <script src="aset/js/vendor.min.js"></script>
+        <script src="../aset/js/vendor.min.js"></script>
 
         <!-- App js -->
-        <script src="aset/js/app.min.js"></script>
-        
+        <script src="../aset/js/app.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>  
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
     </body>
 
 <!-- Mirrored from coderthemes.com/ubold/layouts/default/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Sep 2020 17:26:43 GMT -->
