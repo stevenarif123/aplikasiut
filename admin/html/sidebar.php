@@ -153,6 +153,19 @@
       <li>
         <div class="dropdown">
           <a href="#" class="nav-link link-body-emphasis" data-bs-toggle="dropdown" aria-expanded="false">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+            Mahasiswa Baru
+          </a>
+          <ul class="dropdown-menu text-small shadow">
+            <li><a class="dropdown-item" href="/admin/mahasiswa_baru/daftarmahasiswa.php">Daftar Mahasiswa Baru</a></li>
+            <li><a class="dropdown-item" href="/admin/mahasiswa_baru/tambah_data.php">Tambah Data Mahasiswa Baru</a></li>
+             <li><a class="dropdown-item" href="/admin/mahasiswa_baru/push.php">Input Admisi Mahasiswa Baru</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="dropdown">
+          <a href="#" class="nav-link link-body-emphasis" data-bs-toggle="dropdown" aria-expanded="false">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
             Laporan
           </a>

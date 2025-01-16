@@ -78,14 +78,14 @@ if (isset($_GET['ajax'])) {
     <meta content="Coderthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/aset/images/favicon.ico">
 
     <!-- App css -->
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="../assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="../aset/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="../aset/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
     <!-- icons -->
-    <link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="../aset/css/icons.min.css" rel="stylesheet" type="text/css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -186,7 +186,7 @@ if (isset($_GET['ajax'])) {
                     </li>
                     <li class="dropdown notification-list topbar-dropdown">
                         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            <img src="../assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
+                            <img src="../aset/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
                             <span class="pro-user-name ml-1">
                                 Geneva <i class="mdi mdi-chevron-down"></i>
                             </span>
@@ -238,21 +238,21 @@ if (isset($_GET['ajax'])) {
                 <div class="logo-box">
                     <a href="index.html" class="logo logo-dark text-center">
                         <span class="logo-sm">
-                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                            <img src="../aset/images/logo-sm.png" alt="" height="22">
                             <!-- <span class="logo-lg-text-light">UBold</span> -->
                         </span>
                         <span class="logo-lg">
-                            <img src="../assets/images/logo-dark.png" alt="" height="20">
+                            <img src="../aset/images/logo-dark.png" alt="" height="20">
                             <!-- <span class="logo-lg-text-light">U</span> -->
                         </span>
                     </a>
 
                     <a href="index.html" class="logo logo-light text-center">
                         <span class="logo-sm">
-                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                            <img src="../aset/images/logo-sm.png" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="../assets/images/logo-light.png" alt="" height="20">
+                            <img src="../aset/images/logo-light.png" alt="" height="20">
                         </span>
                     </a>
                 </div>
@@ -288,7 +288,7 @@ if (isset($_GET['ajax'])) {
 
                 <!-- User box -->
                 <div class="user-box text-center">
-                    <img src="../assets/images/users/user-1.jpg" alt="user-img" title="Mat Helme" class="rounded-circle avatar-md">
+                    <img src="../aset/images/users/user-1.jpg" alt="user-img" title="Mat Helme" class="rounded-circle avatar-md">
                     <div class="dropdown">
                         <a href="javascript: void(0);" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block" data-toggle="dropdown">Geneva Kennedy</a>
                         <div class="dropdown-menu user-pro-dropdown">
@@ -330,18 +330,18 @@ if (isset($_GET['ajax'])) {
                         <li class="menu-title">Navigation</li>
 
                         <li>
-                            <a href="index.html">
+                            <a href="../index.php">
                                 <i data-feather="airplay"></i>
                                 <span> Dashboard </span>
                             </a>
                         </li>
 
-                        <li class="menu-title mt-2">Apps</li>
+                        <li class="menu-title mt-2">Menu</li>
 
                         <li>
-                            <a href="apps-chat.html">
-                                <i data-feather="message-square"></i>
-                                <span> Chat </span>
+                            <a href="../index.php">
+                                <i data-feather="airplay"></i>
+                                <span> Dashboard </span>
                             </a>
                         </li>
 
@@ -354,28 +354,25 @@ if (isset($_GET['ajax'])) {
                             <div class="collapse" id="sidebarmhs">
                                 <ul class="nav-second-level">
                                     <li>
-                                        <a href="crm-dashboard.html">Dashboard</a>
-                                    </li>
-                                    <li>
-                                        <a href="crm-contacts.html">Contacts</a>
+                                        <a href="../data_mahasiswa/index.php">Data Mahasiswa</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
 
                         <li>
-                            <a href="#sidebarCrm" data-toggle="collapse">
-                                <i data-feather="users"></i>
+                            <a href="#sidebarMaba" data-toggle="collapse">
+                                <i data-feather="user-plus"></i>
                                 <span>Mahasiswa Baru</span>
                                 <span class="menu-arrow"></span>
                             </a>
-                            <div class="collapse" id="sidebarCrm">
+                            <div class="collapse" id="sidebarMaba">
                                 <ul class="nav-second-level">
                                     <li>
-                                        <a href="crm-dashboard.html">Dashboard</a>
+                                        <a href="../mahasiswa_baru/dashboard.php">Dashboard</a>
                                     </li>
                                     <li>
-                                        <a href="crm-contacts.html">Contacts</a>
+                                        <a href="../mahasiswa_baru/daftarmahasiswa.php">Pendaftaran</a>
                                     </li>
                                 </ul>
                             </div>
@@ -390,36 +387,79 @@ if (isset($_GET['ajax'])) {
                             <div class="collapse" id="sidebarlapkeu">
                                 <ul class="nav-second-level">
                                     <li>
-                                        <a href="crm-dashboard.html">Dashboard</a>
+                                        <a href="../laporan_pembayaran/index.php">Daftar Laporan</a>
                                     </li>
                                     <li>
-                                        <a href="crm-contacts.html">Contacts</a>
+                                        <a href="../laporan_pembayaran/laporanbayarmaba.php">Laporan Maba</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
 
                         <li>
-                            <a href="#sidebarTasks" data-toggle="collapse">
-                                <i data-feather="clipboard"></i>
-                                <span> Tasks </span>
+                            <a href="#sidebarTagihan" data-toggle="collapse">
+                                <i class="icon-tag"></i>
+                                <span>Data Tagihan</span>
                                 <span class="menu-arrow"></span>
                             </a>
-                            <div class="collapse" id="sidebarTasks">
+                            <div class="collapse" id="sidebarTagihan">
                                 <ul class="nav-second-level">
                                     <li>
-                                        <a href="task-list.html">List</a>
+                                        <a href="../data_tagihan/index.php">Data Tagihan</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li>
+                            <a href="#sidebarCekStatus" data-toggle="collapse">
+                                <i class="icon-check"></i>
+                                <span>Cek Status</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarCekStatus">
+                                <ul class="nav-second-level">
+                                    <li>
+                                        <a href="../cek_status/pilihmasa.php">Cek Status</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li>
+                            <a href="#sidebarAlatAdmin" data-toggle="collapse">
+                                <i class="icon-wrench"></i>
+                                <span>Alat Admin</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarAlatAdmin">
+                                <ul class="nav-second-level">
+                                    <li>
+                                        <a href="../alat_admin/backup_database.php">Backup Database</a>
                                     </li>
                                     <li>
-                                        <a href="task-details.html">Details</a>
+                                        <a href="../alat_admin/daftaradmin.php">Daftar Admin</a>
                                     </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li>
+                            <a href="#sidebarAset" data-toggle="collapse">
+                                <i class="icon-layers"></i>
+                                <span>Aset</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarAset">
+                                <ul class="nav-second-level">
                                     <li>
-                                        <a href="task-kanban-board.html">Kanban Board</a>
+                                        <a href="../aset/css/styles.css">CSS</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
                     </ul>
+
                 </div>
                 </li>
                 </ul>
@@ -458,9 +498,9 @@ if (isset($_GET['ajax'])) {
                             </div>
                             <h4 class="page-title">Starter</h4>
                             <div class="mb-4">
-                                <a href="./mabawebsite/" class="btn btn-primary me-2">Proses</a>
-                                <a href="./tambah_data.php" class="btn btn-primary me-2">Tambah Data</a>
-                                <a href="./push.php" class="btn btn-primary">Input Admisi</a>
+                                <a href="../mabawebsite/" class="btn btn-primary me-2">Proses</a>
+                                <a href="../tambah_data.php" class="btn btn-primary me-2">Tambah Data</a>
+                                <a href="../push.php" class="btn btn-primary">Input Admisi</a>
                             </div>
 
                             <form id="searchForm" action="index.php" method="get" class="mb-4">
@@ -533,8 +573,8 @@ if (isset($_GET['ajax'])) {
                                                         <option value="Pengajuan Admisi">Pengajuan Admisi</option>
                                                         <option value="Berkas Kurang">Berkas Kurang</option>
                                                         <option value="Admisi Diterima">Admisi Diterima</option>
-														<option value="Menunggu SPP">Menunggu SPP</option>
-														<option value="MAHASISWA UT">MAHASISWA UT</option>
+                                                        <option value="Menunggu SPP">Menunggu SPP</option>
+                                                        <option value="MAHASISWA UT">MAHASISWA UT</option>
                                                     </select>
                                                 </div>
 
@@ -652,7 +692,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-10.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-10.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status online"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -667,7 +707,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-1.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-1.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status away"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -682,7 +722,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-9.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-9.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status busy"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -701,7 +741,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-2.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-2.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status online"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -716,7 +756,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-4.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-4.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status away"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -731,7 +771,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-5.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-5.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status online"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -746,7 +786,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status online"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -761,7 +801,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-7.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-7.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status busy"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -776,7 +816,7 @@ if (isset($_GET['ajax'])) {
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="media">
                                 <div class="position-relative mr-2">
-                                    <img src="../assets/images/users/user-8.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="../aset/images/users/user-8.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                     <i class="mdi mdi-circle user-status away"></i>
                                 </div>
                                 <div class="media-body overflow-hidden">
@@ -979,202 +1019,202 @@ if (isset($_GET['ajax'])) {
     <div class="rightbar-overlay"></div>
 
     <!-- Vendor js -->
-    <script src="../assets/js/vendor.min.js"></script>
+    <script src="../aset/js/vendor.min.js"></script>
 
     <!-- App js -->
-    <script src="../assets/js/app.min.js"></script>
+    <script src="../aset/js/app.min.js"></script>
     <!-- Include jQuery -->
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        updateCopyButtons();
-        updateAccordion();
-        updateStatusPembayaran();
-    });
-
-    function updateCopyButtons() {
-        const copyButtons = document.querySelectorAll('.copy-icon');
-        copyButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const textToCopy = this.previousElementSibling.textContent.trim();
-                copyToClipboard(textToCopy);
-            });
-        });
-    }
-
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            showToast('Teks berhasil disalin!');
-        }).catch((err) => {
-            showToast('Gagal menyalin teks', true);
-            console.error('Gagal menyalin teks: ', err);
-        });
-    }
-
-    function confirmDelete(no) {
-        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-            window.location.href = 'hapus_data_mahasiswa.php?No=' + no;
-        }
-    }
-
-    function updateResults() {
-    const keyword = document.getElementById('keyword').value;
-    const search_column = document.getElementById('search_column').value;
-    const limit = document.getElementById('limit').value;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `dashboard.php?ajax=1&keyword=${keyword}&search_column=${search_column}&limit=${limit}`, true);
-    xhr.onload = function() {
-        if (this.status === 200) {
-            document.getElementById('results').innerHTML = this.responseText;
+        document.addEventListener('DOMContentLoaded', function() {
             updateCopyButtons();
             updateAccordion();
-            updateStatusPembayaran(); // Tambahkan ini untuk memperbarui status pembayaran setelah konten dimuat
-        }
-    };
-    xhr.send();
-}
-
-    $(document).ready(function() {
-        updateCopyButtons(); // Make sure to call this to initialize the copy buttons
-
-        // Trigger modal with data
-        $(document).on('click', '.edit-btn', function() {
-            var no = $(this).data('no');
-
-            $.ajax({
-                url: 'ambil_data_mahasiswa.php', // Pastikan path ini benar
-                method: 'POST',
-                data: {
-                    No: no
-                },
-                success: function(data) {
-                    try {
-                        var user = JSON.parse(data);
-                        if (user) {
-                            // Ensure all elements are in user before accessing them
-                            $('#edit-no').val(user.No);
-                            $('#edit-namalengkap').val(user.NamaLengkap);
-                            $('#edit-nomorhp').val(user.NomorHP);
-                            $('#edit-email').val(user.Email);
-                            $('#edit-password').val(user.Password);
-                            $('#edit-statussia').val(user.STATUS_INPUT_SIA);
-                            $('#editModal').modal('show'); // Show modal after data is loaded
-                        } else {
-                            console.error('No user data returned');
-                        }
-                    } catch (e) {
-                        console.error("Error parsing JSON!", e);
-                        console.log("Raw response:", data); // Tambahkan ini untuk menampilkan respons mentah
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX error:", status, error);
-                }
-            });
+            updateStatusPembayaran();
         });
 
-        // Handle form submission
-        $('#editForm').on('submit', function(e) {
-            e.preventDefault();
-
-            var no = $('#edit-no').val();
-            var namalengkap = $('#edit-namalengkap').val();
-            var nomorhp = $('#edit-nomorhp').val();
-            var email = $('#edit-email').val();
-            var password = $('#edit-password').val();
-            var statussia = $('#edit-statussia').val();
-
-            saveData(no, namalengkap, nomorhp, email, password, statussia);
-        });
-
-        function saveData(no, namalengkap, nomorhp, email, password, statussia) {
-            const data = {
-                No: no,
-                NamaLengkap: namalengkap,
-                NomorHP: nomorhp,
-                Email: email,
-                Password: password,
-                STATUS_INPUT_SIA: statussia
-            };
-
-            $.ajax({
-                url: 'simpan_data.php',
-                method: 'POST',
-                data: data,
-                success: function(response) {
-                    if (response === 'success') {
-                        showToast('Data berhasil disimpan!');
-                        $('#editModal').modal('hide');
-                        location.reload(); // Optionally refresh the page to show changes
-                    } else {
-                        showToast('Gagal menyimpan data: ' + response, true);
-                    }
-                },
-                error: function() {
-                    showToast('Gagal menyimpan data', true);
-                }
+        function updateCopyButtons() {
+            const copyButtons = document.querySelectorAll('.copy-icon');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const textToCopy = this.previousElementSibling.textContent.trim();
+                    copyToClipboard(textToCopy);
+                });
             });
         }
 
-        function showToast(message, isError = false) {
-            const toast = $('#toast');
-            toast.text(message);
-            toast.removeClass('opacity-0 bg-success bg-danger');
-            toast.addClass(isError ? 'bg-danger' : 'bg-success');
-            toast.addClass('opacity-100');
-
-            setTimeout(() => {
-                toast.removeClass('opacity-100');
-                toast.addClass('opacity-0');
-            }, 3000);
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Teks berhasil disalin!');
+            }).catch((err) => {
+                showToast('Gagal menyalin teks', true);
+                console.error('Gagal menyalin teks: ', err);
+            });
         }
 
-        function updateStatusPembayaran() {
-    $('.status-pembayaran').each(function() {
-        var nim = $(this).data('nim');
-        var nama = $(this).data('nama');
-        var identifier = nim ? nim : nama;
-
-        $.ajax({
-            url: 'get_saldo.php', // Pastikan path ini benar
-            method: 'POST',
-            data: {
-                identifier: identifier
-            },
-            success: function(response) {
-                var saldoData;
-                try {
-                    saldoData = JSON.parse(response);
-                } catch (e) {
-                    console.error("Error parsing JSON!", e);
-                    console.log("Raw response:", response); // Tambahkan ini untuk menampilkan respons mentah
-                    return;
-                }
-                var statusPembayaranElement = $('.status-pembayaran[data-id="' + identifier + '"]');
-                if (saldoData && !saldoData.error) {
-                    var statusText = saldoData.isLunas ? 'Lunas' : 'Belum Lunas';
-                    var statusColor = saldoData.isLunas ? 'text-success' : 'text-danger';
-                    statusPembayaranElement.html(`<p class="${statusColor}"> ${statusText}</p>`);
-                } else {
-                    statusPembayaranElement.html('<p>Data saldo tidak ditemukan</p>');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX error:", status, error);
-                $('.status-pembayaran[data-id="' + identifier + '"]').html('<p>Terjadi kesalahan saat mengambil data saldo</p>');
+        function confirmDelete(no) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                window.location.href = 'hapus_data_mahasiswa.php?No=' + no;
             }
+        }
+
+        function updateResults() {
+            const keyword = document.getElementById('keyword').value;
+            const search_column = document.getElementById('search_column').value;
+            const limit = document.getElementById('limit').value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `dashboard.php?ajax=1&keyword=${keyword}&search_column=${search_column}&limit=${limit}`, true);
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    document.getElementById('results').innerHTML = this.responseText;
+                    updateCopyButtons();
+                    updateAccordion();
+                    updateStatusPembayaran(); // Tambahkan ini untuk memperbarui status pembayaran setelah konten dimuat
+                }
+            };
+            xhr.send();
+        }
+
+        $(document).ready(function() {
+            updateCopyButtons(); // Make sure to call this to initialize the copy buttons
+
+            // Trigger modal with data
+            $(document).on('click', '.edit-btn', function() {
+                var no = $(this).data('no');
+
+                $.ajax({
+                    url: 'ambil_data_mahasiswa.php', // Pastikan path ini benar
+                    method: 'POST',
+                    data: {
+                        No: no
+                    },
+                    success: function(data) {
+                        try {
+                            var user = JSON.parse(data);
+                            if (user) {
+                                // Ensure all elements are in user before accessing them
+                                $('#edit-no').val(user.No);
+                                $('#edit-namalengkap').val(user.NamaLengkap);
+                                $('#edit-nomorhp').val(user.NomorHP);
+                                $('#edit-email').val(user.Email);
+                                $('#edit-password').val(user.Password);
+                                $('#edit-statussia').val(user.STATUS_INPUT_SIA);
+                                $('#editModal').modal('show'); // Show modal after data is loaded
+                            } else {
+                                console.error('No user data returned');
+                            }
+                        } catch (e) {
+                            console.error("Error parsing JSON!", e);
+                            console.log("Raw response:", data); // Tambahkan ini untuk menampilkan respons mentah
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                    }
+                });
+            });
+
+            // Handle form submission
+            $('#editForm').on('submit', function(e) {
+                e.preventDefault();
+
+                var no = $('#edit-no').val();
+                var namalengkap = $('#edit-namalengkap').val();
+                var nomorhp = $('#edit-nomorhp').val();
+                var email = $('#edit-email').val();
+                var password = $('#edit-password').val();
+                var statussia = $('#edit-statussia').val();
+
+                saveData(no, namalengkap, nomorhp, email, password, statussia);
+            });
+
+            function saveData(no, namalengkap, nomorhp, email, password, statussia) {
+                const data = {
+                    No: no,
+                    NamaLengkap: namalengkap,
+                    NomorHP: nomorhp,
+                    Email: email,
+                    Password: password,
+                    STATUS_INPUT_SIA: statussia
+                };
+
+                $.ajax({
+                    url: 'simpan_data.php',
+                    method: 'POST',
+                    data: data,
+                    success: function(response) {
+                        if (response === 'success') {
+                            showToast('Data berhasil disimpan!');
+                            $('#editModal').modal('hide');
+                            location.reload(); // Optionally refresh the page to show changes
+                        } else {
+                            showToast('Gagal menyimpan data: ' + response, true);
+                        }
+                    },
+                    error: function() {
+                        showToast('Gagal menyimpan data', true);
+                    }
+                });
+            }
+
+            function showToast(message, isError = false) {
+                const toast = $('#toast');
+                toast.text(message);
+                toast.removeClass('opacity-0 bg-success bg-danger');
+                toast.addClass(isError ? 'bg-danger' : 'bg-success');
+                toast.addClass('opacity-100');
+
+                setTimeout(() => {
+                    toast.removeClass('opacity-100');
+                    toast.addClass('opacity-0');
+                }, 3000);
+            }
+
+            function updateStatusPembayaran() {
+                $('.status-pembayaran').each(function() {
+                    var nim = $(this).data('nim');
+                    var nama = $(this).data('nama');
+                    var identifier = nim ? nim : nama;
+
+                    $.ajax({
+                        url: 'get_saldo.php', // Pastikan path ini benar
+                        method: 'POST',
+                        data: {
+                            identifier: identifier
+                        },
+                        success: function(response) {
+                            var saldoData;
+                            try {
+                                saldoData = JSON.parse(response);
+                            } catch (e) {
+                                console.error("Error parsing JSON!", e);
+                                console.log("Raw response:", response); // Tambahkan ini untuk menampilkan respons mentah
+                                return;
+                            }
+                            var statusPembayaranElement = $('.status-pembayaran[data-id="' + identifier + '"]');
+                            if (saldoData && !saldoData.error) {
+                                var statusText = saldoData.isLunas ? 'Lunas' : 'Belum Lunas';
+                                var statusColor = saldoData.isLunas ? 'text-success' : 'text-danger';
+                                statusPembayaranElement.html(`<p class="${statusColor}"> ${statusText}</p>`);
+                            } else {
+                                statusPembayaranElement.html('<p>Data saldo tidak ditemukan</p>');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("AJAX error:", status, error);
+                            $('.status-pembayaran[data-id="' + identifier + '"]').html('<p>Terjadi kesalahan saat mengambil data saldo</p>');
+                        }
+                    });
+                });
+            }
+
+            $(document).ready(function() {
+                updateStatusPembayaran(); // Pastikan untuk memanggil fungsi ini setelah dokumen siap
+            });
+
+
         });
-    });
-}
-
-$(document).ready(function() {
-    updateStatusPembayaran(); // Pastikan untuk memanggil fungsi ini setelah dokumen siap
-});
-
-
-    });
-</script>
+    </script>
 
 
 
