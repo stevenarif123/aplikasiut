@@ -1,135 +1,138 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maba Website</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body class="bg-gray-100 p-5">
-
-    <h1 class="text-2xl font-bold mb-5">Data Mahasiswa Baru</h1>
-
-    <table class="min-w-full bg-white">
-        <thead>
-            <tr>
-                <th class="py-2">Nama Lengkap</th>
-                <th class="py-2">Jurusan</th>
-                <th class="py-2">Nomor HP</th>
-                <th class="py-2">Status</th>
-                <th class="py-2">Aksi</th>
-            </tr>
-        </thead>
-        <tbody id="data-table">
-            <!-- Data will be inserted here via AJAX -->
-        </tbody>
-    </table>
-    <a class="btn btn-primary" href="../dashboard.php" role="button">Kembali</a>
-    <!-- Detail Modal -->
-    <div id="detail-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
-        <div class="bg-white p-5 rounded-lg mx-auto mt-20 max-w-lg">
-            <h2 class="text-xl font-bold mb-5">Detail Mahasiswa</h2>
-            <div id="detail-content"></div>
-            <button class="mt-5 bg-red-500 text-white py-2 px-4 rounded" onclick="$('#detail-modal').hide()">Tutup</button>
-        </div>
-    </div>
-
-    <script>
-        function getGreeting() {
-            const now = new Date();
-            const hour = now.getHours();
-            if (hour < 12) {
-                return "pagi";
-            } else if (hour < 18) {
-                return "siang";
-            } else {
-                return "malam";
-            }
-        }
-
-        $(document).ready(function() {
-            // Fetch data from mabawebsite table
-            $.ajax({
-                url: 'fetch_data.php',
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    let tableContent = '';
-                    data.forEach(item => {
-                        let status = item.processed ? "Telah di Proses" : "Belum di Proses";
-                        let processButton = item.processed ? "disabled" : "";
-                        let greeting = getGreeting();
-                        let waMessage = `Halo, selamat ${greeting} saya Steven dari UT Tana Toraja ingin menyanyakan konfirmasi atas nama ${item.nama_lengkap} yang telah mengisi form pendaftaran online dan berencana mendaftar di Jurusan ${item.jurusan} di Universitas Terbuka. Apakah benar?`;
-                        let waLink = `https://wa.me/62${item.nomor_hp.substring(1)}?text=${encodeURIComponent(waMessage)}`;
-
-                        tableContent += `
-                            <tr class="text-center">
-                                <td class="py-2">${item.nama_lengkap}</td>
-                                <td class="py-2">${item.jurusan}</td>
-                                <td class="py-2">${item.nomor_hp}</td>
-                                <td class="py-2">${status}</td>
-                                <td class="py-2">
-                                    <button class="bg-blue-500 text-white py-1 px-2 rounded mr-2" onclick="showDetails(${item.id})">Detail</button>
-                                    <a href="${waLink}" target="_blank" class="bg-green-500 text-white py-1 px-2 rounded mr-2">Hubungi WA</a>
-                                    <button class="bg-yellow-500 text-white py-1 px-2 rounded mr-2" ${processButton} onclick="processData(${item.id})">Proses</button>
-                                    <button class="bg-red-500 text-white py-1 px-2 rounded" onclick="deleteData(${item.id})">Hapus</button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                    $('#data-table').html(tableContent);
-                }
-            });
-        });
-
-        function showDetails(id) {
-            // Fetch details of a specific student
-            $.ajax({
-                url: 'fetch_details.php',
-                method: 'GET',
-                data: { id: id },
-                dataType: 'html',
-                success: function(response) {
-                    $('#detail-content').html(response);
-                    $('#detail-modal').show();
-                }
-            });
-        }
-
-        function processData(id) {
-            // Process the data (copy from mabawebsite to mahasiswabaru)
-            $.ajax({
-                url: 'process_data.php',
-                method: 'POST',
-                data: { id: id },
-                success: function(response) {
-                    alert(response);
-                    location.reload();
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: " + status + error);
-                    console.log(error);
-                }
-            });
-        }
-
-        function deleteData(id) {
-            // Delete the data
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                $.ajax({
-                    url: 'delete_data.php',
-                    method: 'POST',
-                    data: { id: id },
-                    success: function() {
-                        alert('Data telah dihapus.');
-                        location.reload();
-                    }
-                });
-            }
-        }
-    </script>
-
-</body>
-</html>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Maba Website</title>  
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
+</head>  
+<body class="bg-gray-100 p-5">  
+  
+    <h1 class="text-2xl font-bold mb-5">Data Mahasiswa Baru</h1>  
+  
+    <table class="min-w-full bg-white">  
+        <thead>  
+            <tr>  
+                <th class="py-2">Nama Lengkap</th>  
+                <th class="py-2">Jurusan</th>  
+                <th class="py-2">Nomor HP</th>  
+                <th class="py-2">Status</th>  
+                <th class="py-2">Aksi</th>  
+            </tr>  
+        </thead>  
+        <tbody id="data-table">  
+            <!-- Data will be inserted here via AJAX -->  
+        </tbody>  
+    </table>  
+    <a class="btn btn-primary" href="../dashboard.php" role="button">Kembali</a>  
+      
+    <!-- Detail Modal -->  
+    <div id="detail-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">  
+        <div class="bg-white p-5 rounded-lg mx-auto mt-20 max-w-lg">  
+            <h2 class="text-xl font-bold mb-5">Detail Mahasiswa</h2>  
+            <div id="detail-content"></div>  
+            <button class="mt-5 bg-red-500 text-white py-2 px-4 rounded" onclick="$('#detail-modal').hide()">Tutup</button>  
+        </div>  
+    </div>  
+  
+    <script>  
+        function getGreeting() {  
+            const now = new Date();  
+            const hour = now.getHours();  
+            if (hour < 12) {  
+                return "pagi";  
+            } else if (hour < 18) {  
+                return "siang";  
+            } else {  
+                return "malam";  
+            }  
+        }  
+  
+        $(document).ready(function() {  
+            // Fetch data from the API  
+            $.ajax({  
+                url: 'fetch_data.php', // Ensure this points to the correct PHP file  
+                method: 'GET',  
+                dataType: 'json',  
+                success: function(data) {  
+                    console.log(data);  
+                    let tableContent = '';  
+                    data.forEach(item => {  
+                        let status = item.processed ? "Telah di Proses" : "Belum di Proses";  
+                        let processButton = item.processed ? "disabled" : "";  
+                        let greeting = getGreeting();  
+                        let waMessage = `Halo, selamat ${greeting} saya Steven dari UT Tana Toraja ingin menyanyakan konfirmasi atas nama ${item.nama_lengkap} yang telah mengisi form pendaftaran online dan berencana mendaftar di Jurusan ${item.jurusan} di Universitas Terbuka. Apakah benar?`;  
+                        let waLink = `https://wa.me/62${item.nomor_hp.substring(1)}?text=${encodeURIComponent(waMessage)}`;  
+  
+                        tableContent += `  
+                            <tr class="text-center">  
+                                <td class="py-2">${item.nama_lengkap}</td>  
+                                <td class="py-2">${item.jurusan}</td>  
+                                <td class="py-2">${item.nomor_hp}</td>  
+                                <td class="py-2">${status}</td>  
+                                <td class="py-2">  
+                                    <button class="bg-blue-500 text-white py-1 px-2 rounded mr-2" onclick="showDetails(${item.id})">Detail</button>  
+                                    <a href="${waLink}" target="_blank" class="bg-green-500 text-white py-1 px-2 rounded mr-2">Hubungi WA</a>  
+                                    <button class="bg-yellow-500 text-white py-1 px-2 rounded mr-2" ${processButton} onclick="processData(${item.id})">Proses</button>  
+                                    <button class="bg-red-500 text-white py-1 px-2 rounded" onclick="deleteData(${item.id})">Hapus</button>  
+                                </td>  
+                            </tr>  
+                        `;  
+                    });  
+                    $('#data-table').html(tableContent);  
+                },  
+                error: function(xhr, status, error) {  
+                    console.error("AJAX Error: " + status + error);  
+                }  
+            });  
+        });  
+  
+        function showDetails(id) {  
+            // Fetch details of a specific student  
+            $.ajax({  
+                url: 'fetch_details.php',  
+                method: 'GET',  
+                data: { id: id },  
+                dataType: 'html',  
+                success: function(response) {  
+                    $('#detail-content').html(response);  
+                    $('#detail-modal').show();  
+                }  
+            });  
+        }  
+  
+        function processData(id) {  
+            // Process the data (copy from mabawebsite to mahasiswabaru)  
+            $.ajax({  
+                url: 'process_data.php',  
+                method: 'POST',  
+                data: { id: id },  
+                success: function(response) {  
+                    alert(response);  
+                    location.reload();  
+                },  
+                error: function(xhr, status, error) {  
+                    console.error("AJAX Error: " + status + error);  
+                }  
+            });  
+        }  
+  
+        function deleteData(id) {  
+            // Delete the data  
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {  
+                $.ajax({  
+                    url: 'delete_data.php',  
+                    method: 'POST',  
+                    data: { id: id },  
+                    success: function() {  
+                        alert('Data telah dihapus.');  
+                        location.reload();  
+                    }  
+                });  
+            }  
+        }  
+    </script>  
+  
+</body>  
+</html>  
