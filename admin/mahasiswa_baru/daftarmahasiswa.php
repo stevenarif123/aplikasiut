@@ -511,6 +511,7 @@ if (isset($_GET['ajax'])) {
                                             <option value="NamaLengkap">Nama Lengkap</option>
                                             <option value="Jurusan">Jurusan</option>
                                             <option value="STATUS_INPUT_SIA">Status Input SIA</option>
+                                            <option value="JalurProgram">Jalur Program</option>
                                         </select>
                                     </div>
                                     <div class="col">

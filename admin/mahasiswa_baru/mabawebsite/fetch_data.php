@@ -2,7 +2,7 @@
 require_once "../../koneksi.php";  
   
 // API endpoint  
-$apiUrl = "https://uttoraja.com/pendaftaran/api";  
+$apiUrl = "https://uttoraja.com/pendaftaran/api/pendaftar";  
   
 // Fetch data from the API  
 $response = file_get_contents($apiUrl);  

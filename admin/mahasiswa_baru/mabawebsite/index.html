@@ -63,7 +63,7 @@
                         let processButton = item.processed ? "disabled" : "";  
                         let greeting = getGreeting();  
                         let waMessage = `Halo, selamat ${greeting} saya Steven dari UT Tana Toraja ingin menyanyakan konfirmasi atas nama ${item.nama_lengkap} yang telah mengisi form pendaftaran online dan berencana mendaftar di Jurusan ${item.jurusan} di Universitas Terbuka. Apakah benar?`;  
-                        let waLink = `https://wa.me/62${item.nomor_hp.substring(1)}?text=${encodeURIComponent(waMessage)}`;  
+                        let waLink = `https://wa.me/6${item.nomor_hp.substring(1)}?text=${encodeURIComponent(waMessage)}`;  
   
                         tableContent += `  
                             <tr class="text-center">  
