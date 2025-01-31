@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
     
@@ -49,9 +50,18 @@
                         </li>
                         <li class="dropdown notification-list topbar-dropdown">
                             <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <img src="aset/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
-                                <span class="pro-user-name ml-1">
-                                    Geneva <i class="mdi mdi-chevron-down"></i> 
+                                <?php
+                                include 'koneksi.php'; // Include database connection
+                                $username = $_SESSION['username'];
+                                $query = "SELECT profilepicture FROM admin WHERE username = '$username'";
+                                $result = mysqli_query($koneksi, $query);
+                                $data = mysqli_fetch_assoc($result);
+                                $foto_profil = isset($data['profilepicture']) ? $data['profilepicture'] : 'default.jpg';
+                                $nama_user = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
+                                ?>
+                                <img src=\"uploads/<?php echo $foto_profil; ?>\" alt=\"user-image\" class=\"rounded-circle\">
+                                <span class=\"pro-user-name ml-1\">
+                                    <?php echo $nama_user; ?> <i class=\"mdi mdi-chevron-down\"></i>
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -61,21 +71,15 @@
                                 </div>
     
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <a href="my-account.php" class="dropdown-item notify-item">
                                     <i class="fe-user"></i>
                                     <span>My Account</span>
                                 </a>
-    
+
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <a href="settings.php" class="dropdown-item notify-item">
                                     <i class="fe-settings"></i>
                                     <span>Settings</span>
-                                </a>
-    
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="fe-lock"></i>
-                                    <span>Lock Screen</span>
                                 </a>
     
                                 <div class="dropdown-divider"></div>
@@ -219,34 +223,40 @@
                             <li>
                                 <a href="#sidebarMaba" data-toggle="collapse">
                                     <i data-feather="user-plus"></i>
-                                    <span>Mahasiswa Baru</span>
+                                    <span>Penerimaan Maba</span>
                                     <span class="menu-arrow"></span>
                                 </a>
                                 <div class="collapse" id="sidebarMaba">
                                     <ul class="nav-second-level">
                                         <li>
-                                            <a href="mahasiswa_baru/dashboard.php">Dashboard</a>
+                                            <a href="mahasiswa_baru/dashboard.php">Dashboard Maba</a>
                                         </li>
                                         <li>
-                                            <a href="mahasiswa_baru/daftarmahasiswa.php">Pendaftaran</a>
+                                            <a href="mahasiswa_baru/daftarmahasiswa.php">Pendaftaran Maba</a>
+                                        </li>
+                                        <li>
+                                            <a href="mahasiswa_baru/index.php">Mahasiswa Baru</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
 
                             <li>
-                                <a href="#sidebarlapkeu" data-toggle="collapse">
+                                <a href="#sidebarKeuangan" data-toggle="collapse">
                                     <i class="icon-credit-card"></i>
-                                    <span>Laporan Pembayaran</span>
+                                    <span>Keuangan</span>
                                     <span class="menu-arrow"></span>
                                 </a>
-                                <div class="collapse" id="sidebarlapkeu">
+                                <div class="collapse" id="sidebarKeuangan">
                                     <ul class="nav-second-level">
                                         <li>
-                                            <a href="laporan_pembayaran/index.php">Daftar Laporan</a>
+                                            <a href="laporan_pembayaran/index.php">Laporan Pembayaran</a>
                                         </li>
                                         <li>
                                             <a href="laporan_pembayaran/laporanbayarmaba.php">Laporan Maba</a>
+                                        </li>
+                                        <li>
+                                            <a href="laporan_pembayaran/daftar_laporan.php">Daftar Laporan</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -255,13 +265,16 @@
                             <li>
                                 <a href="#sidebarTagihan" data-toggle="collapse">
                                     <i class="icon-tag"></i>
-                                    <span>Data Tagihan</span>
+                                    <span>Tagihan</span>
                                     <span class="menu-arrow"></span>
                                 </a>
                                 <div class="collapse" id="sidebarTagihan">
                                     <ul class="nav-second-level">
                                         <li>
                                             <a href="data_tagihan/index.php">Data Tagihan</a>
+                                        </li>
+                                        <li>
+                                            <a href="data_tagihan/tagihan.php">Buat Tagihan</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -303,7 +316,7 @@
                             <li>
                                 <a href="#sidebarAset" data-toggle="collapse">
                                     <i class="icon-layers"></i>
-                                    <span>Aset</span>
+                                    <span>Aset Web</span>
                                     <span class="menu-arrow"></span>
                                 </a>
                                  <div class="collapse" id="sidebarAset">
@@ -795,4 +808,4 @@
     </body>
 
 <!-- Mirrored from coderthemes.com/ubold/layouts/default/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Sep 2020 17:26:43 GMT -->
-</html>}
+</html>
