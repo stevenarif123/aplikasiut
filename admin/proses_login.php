@@ -36,6 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Verify password
             if ($password == $row['password']) {
                 // Set session variables
+                $_SESSION['id_admin'] = $row['id_admin'];
+                $_SESSION['profilepicture'] = $row['profilepicture'];
                 $_SESSION['username'] = $row['username'];
                 $_SESSION['peran'] = $row['peran']; // Save the role in session
 
