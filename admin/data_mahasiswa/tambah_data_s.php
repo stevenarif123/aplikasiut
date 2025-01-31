@@ -8,7 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Check if the user is authenticated
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
 }
 
