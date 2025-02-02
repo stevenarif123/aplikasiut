@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sticky Notes</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], textarea {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .notes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .note {
+            position: relative;
+            background-color: #ffd700;
+            padding: 15px;
+            width: 250px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: move;
+        }
+
+        .note-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .note-content {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Sticky Notes</h1>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="noteTitle" placeholder="Judul Catatan">
+        <textarea id="noteContent" rows="2" cols="30" placeholder="Isi catatan Anda di sini..."></textarea>
+        <button onclick="addNote()">Tambah Note</button>
+    </div>
+
+    <div class="notes-container" id="notesContainer"></div>
+
+    <script>
+        function addNote() {
+            const title = document.getElementById('noteTitle').value;
+            const content = document.getElementById('noteContent').value;
+
+            if (title.trim() === "" && content.trim() === "") return;
+
+            const note = document.createElement('div');
+            note.className = 'note';
+
+            // Menambahkan tombol close
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-btn';
+            closeBtn.innerHTML = '×';
+            closeBtn.onclick = () => {
+                note.remove();
+            };
+            note.appendChild(closeBtn);
+
+            // Menambahkan judul dan konten ke note
+            if (title.trim() !== "") {
+                const titleElement = document.createElement('div');
+                titleElement.className = 'note-title';
+                titleElement.textContent = title;
+                note.appendChild(titleElement);
+            }
+
+            if (content.trim() !== "") {
+                const contentElement = document.createElement('div');
+                contentElement.className = 'note-content';
+                contentElement.textContent = content;
+                note.appendChild(contentElement);
+            }
+
+            // Set posisi awal note
+            note.style.left = '0px';
+            note.style.top = '0px';
+
+            // Menambahkan animasi saat note muncul
+            note.style.opacity = 0;
+            document.getElementById('notesContainer').appendChild(note);
+            setTimeout(() => {
+                note.style.opacity = 1;
+            }, 100);
+
+            // Kosongkan input
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+        }
+
+        function saveNotes() {
+            const notes = document.querySelectorAll('.note');
+            let notesData = [];
+
+            notes.forEach(note => {
+                const title = note.querySelector('.note-title')?.textContent || '';
+                const content = note.querySelector('.note-content')?.textContent || '';
+                const left = note.style.left;
+                const top = note.style.top;
+
+                notesData.push({ 
+                    title, 
+                    content,
+                    left: left || '0px',
+                    top: top || '0px'
+                  });
+            });
+
+            localStorage.setItem('stickyNotes', JSON.stringify(notesData));
+        }
+
+        function loadNotes() {
+            const savedNotes = JSON.parse(localStorage.getItem('stickyNotes')) || [];
+            savedNotes.forEach(note => {
+                document.getElementById('noteTitle').value = note.title;
+                document.getElementById('noteContent').value = note.content;
+                addNote();
+                
+                // Set posisi note
+                const lastNote = document.querySelector('.note:last-child');
+                if (lastNote) {
+                    lastNote.style.left = note.left;
+                    lastNote.style.top = note.top;
+                }
+            });
+        }
+
+        window.onbeforeunload = saveNotes;
+
+        loadNotes();
+
+        let isDragging = false;
+        let currentNote = null;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        document.addEventListener('mousedown', e => {
+            if (e.target.closest('.note')) {
+                currentNote = e.target.closest('.note');
+                isDragging = true;
+
+                // Get current position using getComputedStyle
+                const style = window.getComputedStyle(currentNote);
+                initialX = parseInt(style.left) || 0;
+                initialY = parseInt(style.top) || 0;
+
+                // Calculate offset from mouse position
+                const rect = currentNote.getBoundingClientRect();
+                xOffset = e.clientX - (initialX + rect.left);
+                yOffset = e.clientY - (initialY + rect.top);
+            }
+        });
+
+        document.addEventListener('mousemove', e => {
+            if (isDragging) {
+                e.preventDefault();
+
+                // Calculate new position based on mouse position and offset
+                const currentX = e.clientX - xOffset;
+                const currentY = e.clientY - yOffset;
+
+                // Set the new position
+                currentNote.style.left = currentX + 'px';
+                currentNote.style.top = currentY + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            currentNote = null;
+        });
+    </script>
+</body>
+</html>
