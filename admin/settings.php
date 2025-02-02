@@ -68,6 +68,7 @@
                 </div>
             </div>
         </div>
+        <a href="pages-starter.php" class="btn btn-secondary mt-3">Back to Dashboard</a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
