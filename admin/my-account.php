@@ -6,8 +6,6 @@
     <title>My Account</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="aset/css/styles.css">
-
-
 </head>
 <body>
     <div class="container">
@@ -36,7 +34,9 @@
                         <p><strong>Username:</strong> <?php echo $data['username']; ?></p>
                         <p><strong>Email:</strong> <?php echo $data['email']; ?></p>
                         <p><strong>Nama Lengkap:</strong> <?php echo $data['nama_lengkap']; ?></p>
-                        <!-- Add more rows for other account details -->
+                        <p><strong>Phone Number:</strong> <?php echo $data['phone_number']; ?></p>
+                        <p><strong>Profile Picture:</strong></p>
+                        <img src="uploads/<?php echo $data['profilepicture']; ?>" alt="Profile Picture" style="width: 100px; height: auto;">
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                 <div class="card">
                     <div class="card-header">Edit Account</div>
                     <div class="card-body">
-                        <form method="post" action="proses_edit_akun.php">
+                        <form method="post" action="proses_edit_akun.php" enctype="multipart/form-data">
                             <input type="hidden" name="id_admin" value="<?php echo $data['id_admin']; ?>">
                             <div class="form-group">
                                 <label for="username">Username:</label>
@@ -57,6 +57,14 @@
                             <div class="form-group">
                                 <label for="nama_lengkap">Nama Lengkap:</label>
                                 <input type="text" class="form-control" name="nama_lengkap" value="<?php echo $data['nama_lengkap']; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number:</label>
+                                <input type="text" class="form-control" name="phone_number" value="<?php echo $data['phone_number']; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="profilepicture">Profile Picture:</label>
+                                <input type="file" class="form-control" name="profilepicture">
                             </div>
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </form>

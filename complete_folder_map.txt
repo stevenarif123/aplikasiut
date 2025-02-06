@@ -1,0 +1,159 @@
+Project Folder Structure for c:/xampp/htdocs/pokjarut:
+
+ROOT FILES:
+.htaccess
+error.php
+home.php
+index.php
+structure.txt
+complete_folder_map.txt
+
+ADMIN DIRECTORY:
+admin/
+  .prettierrc
+  dashboard.php
+  data_dashboard.php
+  error.php
+  file_map.txt
+  index.php
+  koneksi.php
+  login.php
+  logout.php
+  my-account.php
+  package-lock.json
+  pages-starter.php
+  proses_edit_akun.php
+  proses_ganti_foto.php
+  proses_ganti_password.php
+  proses_login.php
+  README.md
+  settings.php
+  
+  alat_admin/
+    backup_database.php
+    backupfile.php
+    daftaradmin.php
+    registrasiadmin.php
+    backup/
+      backup_20240412_135424.sql
+      backup_20240519_183705.sql
+    nomorsurat/
+      generate_number.php
+      index.html
+      nomorsurat.php
+  
+  aset/
+    css/
+      app-dark.min.css
+      app.min.css
+      bootstrap-dark.min.css
+      bootstrap.min.css
+      icons.css
+      icons.min.css
+      icons.min.css.map
+      styles.css
+    fonts/
+      (multiple font files)
+    images/
+    js/
+    libs/
+  
+  cek_status/
+    ceknilai.php
+    error.php
+    logout.php
+    pencarian.php
+    pilihmasa.php
+    prosesceknilai.php
+    statusbayar.php
+  
+  data_mahasiswa/
+    1.php
+    edit_data.php
+    error.php
+    hapus_data_mahasiswa.php
+    index.php
+    lihat_data_mahasiswa.php
+    tambah_data_s.php
+    tambah_data.php
+  
+  data_tagihan/
+    index.php
+    kode_generator.php
+    tagihan.php
+    proses/
+  
+  halaman/
+    login.html
+  
+  html/
+    sidebar.php
+    assets/
+    styles/
+  
+  laporan_pembayaran/
+    daftar_laporan.php
+    detail_verifikasi.php
+    edit_laporan.php
+    error.php
+    hapus_laporan.php
+    index.php
+    kode_generatorlaporan.php
+    koneksi.php
+    laporanbayarmaba.php
+    lihat_laporan.php
+    penambahan.php
+    proses_penambahan.php
+    tambah_laporan.php
+    verifikasi_laporan.php
+    BuktiTF/
+  
+  mahasiswa_baru/
+    (multiple files and subdirectories)
+  
+  uploads/
+    stevenarif.jpg
+    WhatsApp Image 2025-01-29 at 18.58.00_cba7a8c0.jpg
+
+ASSETS DIRECTORY:
+assets/
+  favicon.ico
+  salut.png
+
+CSS DIRECTORY:
+css/
+  styles.css
+
+JS DIRECTORY:
+js/
+  scripts.js
+
+PENDAFTARAN DIRECTORY:
+pendaftaran/
+  coba.php
+  gambar.jpg
+  index.html
+  index.php
+  mendaftar.html
+  proses.php
+  sukses.php
+  tes.jpg
+  test.html
+  test.php
+
+WEB DIRECTORY:
+web/
+  index.html
+  assets/
+    bootstrap/
+    css/
+    fonts/
+    images/
+    js/
+    owlcarousel/
+  New folder/
+    (multiple HTML files)
+  pendaftaran/
+    index.html
+    koneksi.php
+    proses.php

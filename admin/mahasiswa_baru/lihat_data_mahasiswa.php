@@ -170,6 +170,38 @@ $mahasiswa = mysqli_fetch_assoc($result);
             <th>Status Input SIA</th>
             <td><?php echo $mahasiswa['STATUS_INPUT_SIA']; ?></td>
           </tr>
+          <tr>
+            <th>Ukuran Baju</th>
+            <td><?php echo $mahasiswa['UkuranBaju']; ?></td>
+          </tr>
+          <tr>
+            <th>Asal Kampus</th>
+            <td><?php echo $mahasiswa['AsalKampus']; ?></td>
+          </tr>
+          <tr>
+            <th>Tahun Lulus Kampus</th>
+            <td><?php echo $mahasiswa['TahunLulusKampus']; ?></td>
+          </tr>
+          <tr>
+            <th>IPK</th>
+            <td><?php echo $mahasiswa['IPK']; ?></td>
+          </tr>
+          <tr>
+            <th>Jurusan SMK</th>
+            <td><?php echo $mahasiswa['JurusanSMK']; ?></td>
+          </tr>
+          <tr>
+            <th>Jenis Sekolah</th>
+            <td><?php echo $mahasiswa['JenisSekolah']; ?></td>
+          </tr>
+          <tr>
+            <th>Nama Sekolah</th>
+            <td><?php echo $mahasiswa['NamaSekolah']; ?></td>
+          </tr>
+          <tr>
+            <th>Di Edit Pada</th>
+            <td><?php echo $mahasiswa['DiEditPada']; ?></td>
+          </tr>
         </table>
       </div>
     <?php else: ?>

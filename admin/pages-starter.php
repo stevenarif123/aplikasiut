@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php"); // Redirect to login page
+    exit(); // Ensure no further code is executed
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     
@@ -59,9 +67,9 @@
                                 $foto_profil = isset($data['profilepicture']) ? $data['profilepicture'] : 'default.jpg';
                                 $nama_user = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
                                 ?>
-                                <img src=\"uploads/<?php echo $foto_profil; ?>\" alt=\"user-image\" class=\"rounded-circle\">
-                                <span class=\"pro-user-name ml-1\">
-                                    <?php echo $nama_user; ?> <i class=\"mdi mdi-chevron-down\"></i>
+                                <img src="uploads/<?php echo $foto_profil; ?>" alt="user-image" class="rounded-circle">
+                                <span class="pro-user-name ml-1">
+                                    <?php echo $nama_user; ?> <i class="mdi mdi-chevron-down"></i>
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
