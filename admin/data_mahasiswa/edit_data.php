@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
   }
 
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
   }
 // Connect to the database
@@ -131,7 +131,7 @@ if (isset($_POST['submit'])) {
 
     // Execute update
     if (mysqli_stmt_execute($stmt)) {
-        header("Location: mahasiswa.php");
+        header("Location: ../");
         exit;
     } else {
         echo "Error updating data: " . mysqli_error($koneksi);
@@ -189,14 +189,6 @@ $selectedJurusan = $mahasiswa['Jurusan'];
 
 ?>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Data Mahasiswa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"s crossorigin="anonymous">
-  </head>
   <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
@@ -390,5 +382,3 @@ $selectedJurusan = $mahasiswa['Jurusan'];
         </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-</body>
-</html>

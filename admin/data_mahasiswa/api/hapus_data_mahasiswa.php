@@ -8,7 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Check if user is logged in
 if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
+  header("Location: ../login.php");
   exit;
 }
 
@@ -24,6 +24,6 @@ $query = "DELETE FROM mahasiswa WHERE No=$id";
 mysqli_query($koneksi, $query);
 
 // Redirect ke halaman dashboard
-header("Location: mahasiswa.php");
+header("Location: index.php");
 
 ?>
